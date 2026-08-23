@@ -29,8 +29,10 @@ import {
   scoringFromSource,
   type ChenScoring,
 } from "@/adapters/chen/boris-chen";
-import { sourceFromBoard } from "@/adapters/rankings/labels";
-import { parseRankingSource } from "@/adapters/rankings/sources";
+import {
+  parseRankingSource,
+  sourceFromBoard,
+} from "@/adapters/rankings/labels";
 import {
   defaultWeightsForExpert,
   expertSliderKeys,

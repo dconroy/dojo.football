@@ -72,7 +72,11 @@ export function parseDraftStories(raw: string | null | undefined): DraftStoriesM
     const next: DraftStoriesMap = {};
     for (const [key, value] of Object.entries(parsed as Record<string, unknown>)) {
       if (!value || typeof value !== "object") continue;
-      const row = value as { picks?: unknown; text?: unknown };
+      const row = value as {
+        picks?: unknown;
+        text?: unknown;
+        share?: unknown;
+      };
       if (typeof row.picks !== "number" || typeof row.text !== "string") continue;
       if (!row.text.trim()) continue;
       const share = typeof row.share === "string" ? row.share.trim() : "";

@@ -3,6 +3,7 @@ import { CHEN_SCORING, parseChenScoring } from "@/adapters/chen/boris-chen";
 import { fetchChenImport } from "@/adapters/chen/server-cache";
 import { fetchFfCalculatorImport } from "@/adapters/rankings/ffcalculator";
 import { fetchFantasyProsImport } from "@/adapters/rankings/fantasypros";
+import type { RankingSourceId } from "@/adapters/rankings/labels";
 import { fetchSleeperAdpImport } from "@/adapters/rankings/sleeper-adp";
 
 export const RANKING_SOURCES = {
@@ -12,19 +13,11 @@ export const RANKING_SOURCES = {
   ffcalc: { id: "ffcalc", label: "FF Calculator ADP" },
 } as const;
 
-export type RankingSourceId = keyof typeof RANKING_SOURCES;
-
-export function parseRankingSource(value?: string | null): RankingSourceId {
-  if (
-    value === "fantasypros" ||
-    value === "sleeper" ||
-    value === "ffcalc" ||
-    value === "chen"
-  ) return value;
-  return "chen";
-}
-
-export { sourceFromBoard } from "./labels";
+export {
+  parseRankingSource,
+  sourceFromBoard,
+  type RankingSourceId,
+} from "./labels";
 
 export function availableRankingSources() {
   return [
