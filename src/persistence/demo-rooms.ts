@@ -29,6 +29,10 @@ import {
   saveMockConfig,
 } from "@/adapters/yahoo/mock-store";
 import { deleteDemoChatForRoom } from "@/persistence/demo-chat";
+import {
+  forgetDemoRoomStats,
+  noteDemoRooms,
+} from "@/persistence/demo-stats";
 
 export const DEMO_ROOM_PREFIX = "demo:";
 const DEMO_AUTO_PICK_MS = 30_000;
@@ -304,6 +308,7 @@ async function recycleStaleRooms() {
     // Orphaned shell (no mock key) that's past the creation grace window.
     if (!room.leagueKey && now - room.updatedAt.getTime() > BROKEN_ROOM_TTL_MS) {
       await deleteRoom(room.id);
+      await forgetDemoRoomStats(room.id).catch(() => undefined);
       continue;
     }
     let picks = 0;
@@ -324,7 +329,28 @@ async function recycleStaleRooms() {
     const finished = picks >= room.teamCount * room.rounds || exhausted;
     const ttl = exhausted ? EXHAUSTED_TTL_MS : COMPLETE_TTL_MS;
     if (finished && now - room.updatedAt.getTime() > ttl) {
+      const seatRow = await prisma.syncCheckpoint.findUnique({
+        where: { id: seatSeenKey(room.id) },
+        select: { payload: true },
+      });
+      await noteDemoRooms([
+        {
+          roomId: room.id,
+          picks,
+          humans: Math.max(
+            activeSeatSet(
+              undefined,
+              parseSeatLeases(seatRow?.payload),
+              now,
+              isDemoClockStarted(config),
+            ).size,
+            config?.humanSlots?.length ?? 0,
+          ),
+          complete: true,
+        },
+      ]).catch(() => undefined);
       await deleteRoom(room.id);
+      await forgetDemoRoomStats(room.id).catch(() => undefined);
       continue;
     }
     if (!finished) {
@@ -347,6 +373,7 @@ async function recycleStaleRooms() {
         now - lastActivity > IDLE_ROOM_TTL_MS
       ) {
         await deleteRoom(room.id);
+        await forgetDemoRoomStats(room.id).catch(() => undefined);
       }
     }
   }
@@ -503,6 +530,12 @@ export async function listDemoRooms(): Promise<DemoRoomSummary[]> {
     },
   });
   const summaries: DemoRoomSummary[] = [];
+  const activities: Array<{
+    roomId: string;
+    picks: number;
+    humans: number;
+    complete: boolean;
+  }> = [];
   for (const row of rows) {
     if (!row.leagueKey) continue; // orphaned shell
     const config = await loadMockConfig(row.leagueKey);
@@ -545,7 +578,14 @@ export async function listDemoRooms(): Promise<DemoRoomSummary[]> {
       complete,
       exhausted,
     });
+    activities.push({
+      roomId: row.id,
+      picks,
+      humans: Math.max(active.size, config.humanSlots?.length ?? 0),
+      complete,
+    });
   }
+  await noteDemoRooms(activities).catch(() => undefined);
   return summaries;
 }
 

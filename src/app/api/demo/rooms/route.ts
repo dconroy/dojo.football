@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
+import { partitionDemoRooms } from "@/domain/demo-lobby";
 import { listDemoRooms } from "@/persistence/demo-rooms";
+import { readDemoStats } from "@/persistence/demo-stats";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -7,16 +9,18 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     const all = await listDemoRooms();
-    // Rooms someone can still join: not complete and at least one open seat.
-    const live = all.filter((room) => !room.complete);
-    const joinable = live.filter((room) => room.openSeats > 0);
+    const { open, closed } = partitionDemoRooms(all);
+    const joinable = open.filter((room) => room.openSeats > 0);
     const totalOpenSeats = joinable.reduce((sum, room) => sum + room.openSeats, 0);
-    const activePlayers = live.reduce((sum, room) => sum + room.activeSeats, 0);
+    const activePlayers = open.reduce((sum, room) => sum + room.activeSeats, 0);
     return NextResponse.json({
       totalRooms: all.length,
+      openRooms: open.length,
+      closedRooms: closed.length,
       joinableRooms: joinable.length,
       totalOpenSeats,
       activePlayers,
+      stats: await readDemoStats(),
       rooms: all.map((room, index) => ({
         id: room.id,
         name: `Room ${index + 1}`,

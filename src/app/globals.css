@@ -4214,6 +4214,38 @@ body:has(.landing) {
   max-width: 650px;
 }
 
+.demo-lobby-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 22px 0 0;
+}
+
+.demo-lobby-stats > div {
+  border: 1px solid #456252;
+  border-top: 3px solid #b8e986;
+  background: #111f17;
+  padding: 12px 14px 13px;
+}
+
+.demo-lobby-stats dt {
+  color: #8fa095;
+  font-family: var(--font-geist-mono), var(--font-mono), monospace;
+  font-size: 8px;
+  font-weight: 850;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.demo-lobby-stats dd {
+  margin: 6px 0 0;
+  color: #fff9e9;
+  font-size: clamp(22px, 2.4vw, 32px);
+  font-weight: 900;
+  letter-spacing: -.04em;
+  line-height: 1;
+}
+
 .demo-lobby-grid {
   width: min(1480px, calc(100% - clamp(40px, 8vw, 144px)));
   display: grid;
@@ -4248,6 +4280,13 @@ body:has(.landing) {
 
 .demo-rooms-panel {
   border-top: 4px solid #b8e986;
+  display: grid;
+  gap: 28px;
+}
+
+.demo-room-section + .demo-room-section {
+  border-top: 1px solid #2c3d34;
+  padding-top: 24px;
 }
 
 .demo-lobby-panel-head {
@@ -4413,6 +4452,45 @@ body:has(.landing) {
   line-height: 1.55;
 }
 
+.demo-room-pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.demo-room-pager span {
+  color: #8fa095;
+  font-family: var(--font-geist-mono), var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: .06em;
+}
+
+.demo-room-pager button {
+  min-height: 36px;
+  padding: 0 12px;
+  font-size: 11px;
+}
+
+.demo-room-view {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  border: 1px solid #658c73;
+  padding: 0 14px;
+  color: #e7eadf;
+  font-size: 12px;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.demo-room-view:hover {
+  border-color: #b8e986;
+  color: #fff9e9;
+}
+
 .demo-lobby-notice {
   width: min(1480px, calc(100% - clamp(40px, 8vw, 144px)));
   margin: 0 auto 16px;
@@ -4465,6 +4543,10 @@ body:has(.landing) {
 
   .demo-lobby-intro h1 {
     font-size: clamp(38px, 12vw, 56px);
+  }
+
+  .demo-lobby-stats {
+    grid-template-columns: 1fr 1fr;
   }
 
   .demo-room-actions input {
