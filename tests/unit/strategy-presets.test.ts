@@ -19,6 +19,14 @@ describe("expert strategy sliders", () => {
     expect(expertSliderLabel("chenRank", "chen")).toBe("Chen rank");
     expect(expertSliderLabel("chenRank", "fantasypros")).toBe("ECR rank");
     expect(expertSliderLabel("tierCliff", "fantasypros")).toBe("Tier cliff");
+    expect(expertSliderKeys("blend")).toEqual([
+      "chenRank",
+      "tierCliff",
+      "positionalNeed",
+      "turnUrgency",
+    ]);
+    expect(expertSliderLabel("chenRank", "blend")).toBe("Blend rank");
+    expect(expertSliderLabel("tierCliff", "blend")).toBe("Tier cliff");
   });
 
   it("swaps in ADP value for ADP boards", () => {
@@ -41,5 +49,15 @@ describe("expert strategy sliders", () => {
     expect(defaultWeightsForExpert("chen").chenRank).toBe(
       DEFAULT_STRATEGY_WEIGHTS.chenRank,
     );
+  });
+
+  it("gives the blend a Chen-like board with moderate ADP", () => {
+    const blend = defaultWeightsForExpert("blend");
+    const chen = defaultWeightsForExpert("chen");
+    const sleeper = defaultWeightsForExpert("sleeper");
+    expect(blend.chenRank).toBeGreaterThan(sleeper.chenRank);
+    expect(blend.tierCliff).toBe(chen.tierCliff);
+    expect(blend.adpValue).toBeGreaterThan(chen.adpValue);
+    expect(blend.adpValue).toBeLessThan(sleeper.adpValue);
   });
 });

@@ -1,10 +1,16 @@
-export type RankingSourceId = "chen" | "fantasypros" | "sleeper" | "ffcalc";
+export type RankingSourceId =
+  | "chen"
+  | "fantasypros"
+  | "sleeper"
+  | "ffcalc"
+  | "blend";
 
 export function parseRankingSource(value?: string | null): RankingSourceId {
   if (
     value === "fantasypros" ||
     value === "sleeper" ||
     value === "ffcalc" ||
+    value === "blend" ||
     value === "chen"
   ) return value;
   return "chen";
@@ -14,6 +20,7 @@ export function sourceFromBoard(
   source?: string | null,
 ): RankingSourceId {
   const text = source ?? "";
+  if (/dojo blend|\bblend ·/i.test(text)) return "blend";
   if (/fantasypros|ecr/i.test(text)) return "fantasypros";
   if (/sleeper/i.test(text)) return "sleeper";
   if (/calculator|ffcalc|adp/i.test(text)) return "ffcalc";

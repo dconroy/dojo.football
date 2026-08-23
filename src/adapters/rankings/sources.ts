@@ -1,6 +1,7 @@
 import type { ChenImport, ChenScoring } from "@/adapters/chen/boris-chen";
 import { CHEN_SCORING, parseChenScoring } from "@/adapters/chen/boris-chen";
 import { fetchChenImport } from "@/adapters/chen/server-cache";
+import { fetchBlendImport } from "@/adapters/rankings/blend";
 import { fetchFfCalculatorImport } from "@/adapters/rankings/ffcalculator";
 import { fetchFantasyProsImport } from "@/adapters/rankings/fantasypros";
 import type { RankingSourceId } from "@/adapters/rankings/labels";
@@ -11,6 +12,7 @@ export const RANKING_SOURCES = {
   fantasypros: { id: "fantasypros", label: "FantasyPros ECR" },
   sleeper: { id: "sleeper", label: "Sleeper ADP" },
   ffcalc: { id: "ffcalc", label: "FF Calculator ADP" },
+  blend: { id: "blend", label: "Dojo blend" },
 } as const;
 
 export {
@@ -27,6 +29,7 @@ export function availableRankingSources() {
       available: Boolean(process.env.FANTASYPROS_API_KEY?.trim()),
     },
     { ...RANKING_SOURCES.sleeper, available: true },
+    { ...RANKING_SOURCES.blend, available: true },
   ];
 }
 
@@ -37,6 +40,7 @@ export async function fetchRankingImport(
   if (source === "fantasypros") return fetchFantasyProsImport(scoring);
   if (source === "sleeper") return fetchSleeperAdpImport(scoring);
   if (source === "ffcalc") return fetchFfCalculatorImport(scoring);
+  if (source === "blend") return fetchBlendImport(scoring);
   return fetchChenImport(scoring);
 }
 

@@ -20,10 +20,11 @@ export function expertSliderLabel(
   if (key === "chenRank") {
     if (source === "fantasypros") return "ECR rank";
     if (source === "sleeper" || source === "ffcalc") return "Board rank";
+    if (source === "blend") return "Blend rank";
     return "Chen rank";
   }
   if (key === "tierCliff") {
-    return source === "chen" || source === "fantasypros" ? "Tier cliff" : "ADP drop";
+    return source === "sleeper" || source === "ffcalc" ? "ADP drop" : "Tier cliff";
   }
   if (key === "adpValue") return "ADP value";
   return key.replace(/([A-Z])/g, " $1");
@@ -37,6 +38,9 @@ export function expertWeightPreset(
   }
   if (source === "sleeper" || source === "ffcalc") {
     return { chenRank: 16, tierCliff: 8, adpValue: 28 };
+  }
+  if (source === "blend") {
+    return { chenRank: 28, tierCliff: 16, adpValue: 18 };
   }
   return {
     chenRank: DEFAULT_STRATEGY_WEIGHTS.chenRank,
