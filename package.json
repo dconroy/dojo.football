@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
+    "@vercel/analytics": "^2.0.1",
     "fast-xml-parser": "^5.10.1",
     "motion": "^13.1.0",
     "next": "^15.5.23",
