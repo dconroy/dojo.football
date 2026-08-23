@@ -1047,14 +1047,10 @@ h2 {
   background: var(--panel-2);
 }
 
-.recommendation.first {
-  background: var(--green-soft);
-  border-left-color: var(--green);
-}
-
 .recommendation.selected {
   box-shadow: inset 3px 0 var(--green);
   background: var(--green-soft);
+  border-left-color: var(--green);
 }
 
 .rank {
@@ -1069,13 +1065,13 @@ h2 {
   font-weight: 850;
 }
 
-.first .rank {
+.recommendation.selected .rank {
   border-color: var(--green);
   color: white;
   background: var(--green);
 }
 
-.app.dark .first .rank {
+.app.dark .recommendation.selected .rank {
   color: #0a120d;
 }
 
