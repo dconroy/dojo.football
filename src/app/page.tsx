@@ -3,19 +3,59 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 import { WarRoomHero } from "@/components/landing/war-room-hero";
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_TITLE,
+  SITE_URL,
+} from "@/config/site";
 
 import { LiveRooms } from "./live-rooms";
 import styles from "./landing.module.css";
 
 export const metadata: Metadata = {
-  title: "Draft Dojo",
-  description:
-    "A live fantasy football draft board that recalculates your best five picks after every selection.",
+  title: { absolute: SITE_TITLE },
+  description: SITE_DESCRIPTION,
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: "/",
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      name: SITE_NAME,
+      url: SITE_URL,
+      description: SITE_DESCRIPTION,
+    },
+    {
+      "@type": "WebApplication",
+      name: SITE_NAME,
+      url: SITE_URL,
+      description: SITE_DESCRIPTION,
+      applicationCategory: "SportsApplication",
+      operatingSystem: "Any",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+    },
+  ],
 };
 
 export default function LandingPage() {
   return (
     <main className={styles.landing}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className={styles.broadcastBar}>
         <span>2026 DRAFT CENTER</span>
         <span>LIVE BOARDS · ROSTER-AWARE RANKS · POST-DRAFT GRADES</span>
@@ -99,7 +139,7 @@ export default function LandingPage() {
               src="/landing/draft-board.png"
               width={1512}
               height={982}
-              alt="Draft Dojo live snake draft board"
+              alt="Live snake draft board with the on-the-clock pick, top-five recommendations, and team-by-team selections"
               sizes="(max-width: 900px) 100vw, 65vw"
             />
           </figure>
@@ -113,7 +153,7 @@ export default function LandingPage() {
                 src="/landing/ai-insights.png"
                 width={1512}
                 height={982}
-                alt="Draft Dojo roster and draft insights"
+                alt="Insights view with roster red flags, model lean, and bye-week concentration"
                 sizes="(max-width: 900px) 100vw, 35vw"
               />
             </figure>
@@ -126,7 +166,7 @@ export default function LandingPage() {
                 src="/landing/report-card.png"
                 width={1512}
                 height={982}
-                alt="Draft Dojo post-draft report card"
+                alt="Post-draft report card with letter grades and a ranked team leaderboard"
                 sizes="(max-width: 900px) 100vw, 35vw"
               />
             </figure>

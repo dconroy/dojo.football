@@ -1,1 +1,1 @@
-Draft Dojo — Recalculates your top five after every pick.
+Draft Dojo — live fantasy football draft board that recalculates your top five after every pick.
