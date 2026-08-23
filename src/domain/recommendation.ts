@@ -6,9 +6,12 @@ import {
   DEFAULT_STRATEGY_WEIGHTS,
   type StrategyConfig,
 } from "../config/strategy";
+import {
+  buildAvailabilityMap,
+  type PlayerAvailability,
+} from "./pick-availability";
 import { assignRosterSlot, openStarterSlots, rosterPicks } from "./roster";
 import {
-  followingSelectionForSlot,
   nextSelectionForSlot,
   picksForSlot,
   picksUntilFollowingSelection,
@@ -84,14 +87,6 @@ interface FactorInput {
   readonly weight?: number;
 }
 
-function returnProbability(player: Player, followingOverall: number | null): number | null {
-  if (player.estimatedReturnProbability !== undefined) {
-    return clamp(player.estimatedReturnProbability, 0, 1);
-  }
-  if (player.adp === undefined || followingOverall === null) return null;
-  return 1 / (1 + Math.exp((followingOverall - player.adp) / 6));
-}
-
 function addFactor(
   factors: FactorBreakdown[],
   input: FactorInput,
@@ -119,6 +114,7 @@ function evaluatePlayer(
   config: StrategyConfig,
   weights: StrategyWeights,
   ownRoster: readonly Pick[],
+  availability: PlayerAvailability | undefined,
 ): PlayerRecommendation | null {
   const currentOverall = state.picks.length + 1;
   const upcoming = nextSelectionForSlot(
@@ -133,12 +129,6 @@ function evaluatePlayer(
       Math.floor((Math.max(1, currentOverall) - 1) / state.teamCount) + 1,
     slot: state.userSlot,
   };
-  const following = followingSelectionForSlot(
-    currentOverall,
-    state.userSlot,
-    state.rounds,
-    state.teamCount,
-  );
   const remainingPicks = picksForSlot(
     state.userSlot,
     state.rounds,
@@ -295,7 +285,7 @@ function evaluatePlayer(
     weights,
   );
 
-  const probability = returnProbability(player, following?.overall ?? null);
+  const probability = availability?.probability ?? null;
   const urgencySignal = probability === null ? 0 : 1 - probability;
   addFactor(
     factors,
@@ -458,10 +448,19 @@ export function recommendPlayers(
       next.round >= config.specialistRound[player.position],
   );
   const ownRoster = rosterPicks(state.picks, state.userSlot);
+  const availability = buildAvailabilityMap(state, players);
   const topCount = options.topCount ?? config.topCount;
   const ranked = eligibleAvailable
     .map((player) =>
-      evaluatePlayer(player, available, state, config, weights, ownRoster),
+      evaluatePlayer(
+        player,
+        available,
+        state,
+        config,
+        weights,
+        ownRoster,
+        availability.get(player.id),
+      ),
     )
     .filter(
       (recommendation): recommendation is PlayerRecommendation =>

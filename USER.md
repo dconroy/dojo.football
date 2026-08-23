@@ -121,13 +121,16 @@ This app does not and cannot submit a Yahoo or Sleeper pick.
 
 ## Weekly HQ
 
-The **Weekly HQ** link (signed-in Yahoo boards) shows:
+The **Weekly HQ** link on signed-in Sleeper and Yahoo boards shows:
 
 - Best lineup for the week, with concrete “bench X, start Y” swaps
 - Injury and bye alarms
 - Waiver targets and league activity
 
-Same rule: it advises, you click in Yahoo.
+Same rule: it advises, you click in Sleeper or Yahoo. Sleeper matchup
+projections and percent-rostered data are not available from its public API, so
+those fields may be blank; Sleeper free agents are derived from the league
+rosters and its public player list.
 
 ---
 

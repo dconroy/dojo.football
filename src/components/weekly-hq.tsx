@@ -17,6 +17,7 @@ interface LineupPlayerDto {
 }
 
 interface WeeklyData {
+  platform: "yahoo" | "sleeper";
   league: { leagueKey: string; name: string; currentWeek?: number };
   team: { teamKey: string; name: string };
   roster: LineupPlayerDto[];
@@ -131,7 +132,11 @@ function badgeClass(badge: string) {
 
 export function WeeklyHq() {
   const [data, setData] = useState<WeeklyData | null>(null);
-  const [error, setError] = useState<{ code: string; message: string } | null>(null);
+  const [error, setError] = useState<{
+    code: string;
+    message: string;
+    platform?: "yahoo" | "sleeper";
+  } | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [leagues, setLeagues] = useState<LeagueOption[] | null>(null);
@@ -150,6 +155,10 @@ export function WeeklyHq() {
         setError({
           code: typeof body?.error === "string" ? body.error : "failed",
           message: body?.message ?? body?.error ?? `HTTP ${response.status}`,
+          platform:
+            body?.platform === "sleeper" || body?.platform === "yahoo"
+              ? body.platform
+              : undefined,
         });
       } else {
         setData(body as WeeklyData);
@@ -200,7 +209,13 @@ export function WeeklyHq() {
   );
 
   useEffect(() => {
-    if (error?.code !== "no-league" || leagues !== null) return;
+    if (
+      error?.code !== "no-league" ||
+      error.platform === "sleeper" ||
+      leagues !== null
+    ) {
+      return;
+    }
     fetch("/api/yahoo/leagues")
       .then(async (response) => {
         const body = await response.json().catch(() => null);
@@ -235,6 +250,7 @@ export function WeeklyHq() {
   const filteredWaivers = (data?.waivers ?? []).filter(
     (target) => posFilter === "ALL" || target.player.position === posFilter,
   );
+  const platformName = data?.platform === "sleeper" ? "Sleeper" : "Yahoo";
 
   return (
     <main className="app dark">
@@ -246,7 +262,8 @@ export function WeeklyHq() {
             </p>
             <h1>Weekly HQ</h1>
             <p className="brand-tagline">
-              Start smart. Stream smarter. All moves stay manual in Yahoo.
+              Start smart. Stream smarter. All moves stay manual in{" "}
+              {data ? platformName : "your league app"}.
             </p>
           </div>
         </div>
@@ -263,18 +280,28 @@ export function WeeklyHq() {
         </nav>
       </header>
 
-      {loading && !data && <div className="notice">Loading weekly data from Yahoo…</div>}
+      {loading && !data && <div className="notice">Loading weekly league data…</div>}
 
       {error && error.code === "no-league" && (
         <section className="panel weekly-setup">
           <div className="panel-heading">
             <div>
               <p className="eyebrow">One-time setup</p>
-              <h2>Connect your Yahoo league</h2>
+              <h2>
+                {error.platform === "sleeper"
+                  ? "Connect your Sleeper league"
+                  : "Connect your Yahoo league"}
+              </h2>
             </div>
           </div>
           <div className="weekly-setup-body">
-            {isAdmin ? (
+            {error.platform === "sleeper" ? (
+              <p>
+                {error.message}{" "}
+                <Link href="/login">Choose a Sleeper league and draft</Link> to
+                reconnect.
+              </p>
+            ) : isAdmin ? (
               <>
                 <p>
                   Pick your league below. This is saved for the whole draft room, so
@@ -308,7 +335,9 @@ export function WeeklyHq() {
         <section className="panel weekly-setup">
           <div className="panel-heading">
             <div>
-              <p className="eyebrow">Yahoo sync issue</p>
+              <p className="eyebrow">
+                {error.platform === "sleeper" ? "Sleeper" : "League"} sync issue
+              </p>
               <h2>Couldn&apos;t load weekly data</h2>
             </div>
           </div>
@@ -373,8 +402,8 @@ export function WeeklyHq() {
                     </p>
                   ))}
                   <p className="weekly-footnote">
-                    Make these changes in the Yahoo app — this tool never edits your
-                    lineup.
+                    Make these changes in the {platformName} app — this tool never
+                    edits your lineup.
                   </p>
                 </div>
               ) : (
@@ -624,7 +653,8 @@ export function WeeklyHq() {
           </section>
 
           <p className="weekly-meta">
-            Yahoo synced {new Date(data.syncedAt).toLocaleTimeString()} · Chen data{" "}
+            {platformName} synced {new Date(data.syncedAt).toLocaleTimeString()} ·
+            Chen data{" "}
             {formatStamp(data.chen.importedAt)} (auto-refreshes every 3 days)
           </p>
         </>

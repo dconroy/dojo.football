@@ -1,18 +1,15 @@
 import { analyzeDraftRoster } from "./draft-insights";
+import {
+  LINEUP_POSITIONS,
+  STARTER_NEED,
+  STARTER_SPOTS,
+  positionCountsFromPicks,
+  startersFilled,
+} from "./lineup-need";
 import { rosterPicks } from "./roster";
 import type { DraftState, Pick, Position } from "./types";
 
-const POSITIONS: readonly Position[] = ["QB", "RB", "WR", "TE", "K", "DEF"];
-const STARTER_NEED: Readonly<Record<Position, number>> = {
-  QB: 1,
-  RB: 2,
-  WR: 2,
-  TE: 1,
-  K: 1,
-  DEF: 1,
-};
-/** Starters + one flex = the eight lineup spots a full roster should cover. */
-const STARTER_SPOTS = 8;
+const POSITIONS = LINEUP_POSITIONS;
 
 export type LetterGrade =
   | "A+"
@@ -125,32 +122,6 @@ function clamp(value: number) {
   return Math.min(1, Math.max(0, value));
 }
 
-function positionCounts(roster: readonly Pick[]): Record<Position, number> {
-  const counts: Record<Position, number> = {
-    QB: 0,
-    RB: 0,
-    WR: 0,
-    TE: 0,
-    K: 0,
-    DEF: 0,
-  };
-  for (const pick of roster) counts[pick.player.position] += 1;
-  return counts;
-}
-
-/** How many of the eight lineup spots the roster can fill (2 RB, 2 WR, flex…). */
-function startersFilled(counts: Record<Position, number>): number {
-  let filled = 0;
-  for (const position of POSITIONS) {
-    filled += Math.min(counts[position], STARTER_NEED[position]);
-  }
-  const flexSurplus =
-    Math.max(0, counts.RB - STARTER_NEED.RB) +
-    Math.max(0, counts.WR - STARTER_NEED.WR) +
-    Math.max(0, counts.TE - STARTER_NEED.TE);
-  return Math.min(STARTER_SPOTS, filled + Math.min(1, flexSurplus));
-}
-
 /** Positive = drafted later than Chen rank (value); negative = a reach. */
 function pickValue(pick: Pick): number | null {
   return pick.player.chenRank === undefined
@@ -182,7 +153,7 @@ function measureTeam(
   currentRound: number,
   slot: number,
 ): TeamMetrics {
-  const counts = positionCounts(roster);
+  const counts = positionCountsFromPicks(roster);
   const holes = POSITIONS.filter(
     (position) => counts[position] < STARTER_NEED[position],
   ).map((position) =>

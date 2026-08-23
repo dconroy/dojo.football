@@ -1,3 +1,8 @@
+import {
+  positionFillsLineupNeed,
+  remainingLineupNeed,
+  type PositionCounts,
+} from "@/domain/lineup-need";
 import type { YahooDraftResult } from "./yahoo-api";
 
 export interface MockPlayerSeed {
@@ -119,40 +124,7 @@ const MAX_PER_POSITION: Record<MockPlayerSeed["position"], number> = {
 /** Don't touch K/DEF before this round; force the holes in the last N picks. */
 const SPECIALIST_OPEN_ROUND = 13;
 
-type PositionCount = Record<MockPlayerSeed["position"], number>;
-
-/** Minimum starters the league fields (a full lineup also adds one FLEX). */
-const STARTER_NEED: PositionCount = { QB: 1, RB: 2, WR: 2, TE: 1, K: 1, DEF: 1 };
-const FLEX_POSITIONS: ReadonlyArray<MockPlayerSeed["position"]> = ["RB", "WR", "TE"];
-
-/**
- * How many more players a seat must draft to field a legal lineup: every
- * position minimum plus one RB/WR/TE FLEX. Unlike a scalar "starters filled"
- * score, this counts each requirement explicitly so a third RB can't paper over
- * a missing TE.
- */
-function remainingLineupNeed(counts: PositionCount): number {
-  let need = 0;
-  for (const position of Object.keys(STARTER_NEED) as Array<
-    MockPlayerSeed["position"]
-  >) {
-    need += Math.max(0, STARTER_NEED[position] - counts[position]);
-  }
-  const flexSpare = FLEX_POSITIONS.reduce(
-    (spare, position) => spare + Math.max(0, counts[position] - STARTER_NEED[position]),
-    0,
-  );
-  return need + (flexSpare >= 1 ? 0 : 1);
-}
-
-/** True when drafting `position` shrinks the outstanding lineup requirement. */
-function reducesLineupNeed(
-  counts: PositionCount,
-  position: MockPlayerSeed["position"],
-): boolean {
-  const after: PositionCount = { ...counts, [position]: counts[position] + 1 };
-  return remainingLineupNeed(after) < remainingLineupNeed(counts);
-}
+type PositionCount = PositionCounts;
 
 /**
  * When a seat has only just enough picks left to finish a legal lineup, the best
@@ -169,7 +141,7 @@ export function rosterCompletionPick(
   const need = remainingLineupNeed(counts);
   if (need <= 0 || remainingPicks > need) return undefined;
   return sortable.find(
-    (player) => available(player) && reducesLineupNeed(counts, player.position),
+    (player) => available(player) && positionFillsLineupNeed(counts, player.position),
   );
 }
 

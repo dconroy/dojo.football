@@ -94,6 +94,9 @@ reproducible so the shared board never reshuffles between syncs.
   30-second human clocks, room chat with GIPHY, and no signup.
 - **Sleeper and Yahoo connections** — discover drafts/leagues and follow picks without
   automatic pick submission. Sleeper uses its public read API; Yahoo uses encrypted OAuth.
+- **Weekly HQ for Sleeper and Yahoo** — board-aware roster, matchup, standings,
+  injury, transaction, lineup, and waiver reads. Recommendations are advisory;
+  lineup changes and claims always stay manual in the league app.
 - **Multiple ranking sources** — Boris Chen, Sleeper ADP, and eligible FantasyPros ECR,
   with Standard, Half PPR, and Full PPR scoring.
 - Pick any draft slot in an **8–14 team**, **10–16 round** snake draft; drafted players
@@ -182,7 +185,9 @@ Postgres. See `docs/YAHOO_LIMITATIONS.md`.
 Sleeper needs **no setup** — no developer app, no OAuth, no API key, no env var. It uses the
 public `api.sleeper.app` read API. Users connect on `/login` by entering their Sleeper
 username; the app lists their current-season leagues/drafts and follows the picks. It never
-submits a pick in Sleeper.
+submits a pick in Sleeper. Weekly HQ also uses only public reads. It derives free agents by
+subtracting every roster from the cached Sleeper NFL player list, and uses public trending
+adds as one explainable waiver-ranking signal; it never changes a lineup or submits a claim.
 
 ## Experts (ranking sources)
 

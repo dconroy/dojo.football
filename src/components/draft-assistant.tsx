@@ -4,8 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
+  analyzeRoomTendencies,
   analyzeDraftRoster,
   availablePlayers,
+  buildAvailabilityMap,
   createDraftState,
   extendDraftWithRemotePlayers,
   makeManualPick,
@@ -19,6 +21,7 @@ import {
   type Player,
   type Position,
   type StrategyWeights,
+  type AvailabilitySignal,
 } from "@/domain";
 import { BrandLockup } from "@/components/brand-lockup";
 import { DEFAULT_STRATEGY_WEIGHTS } from "@/config/strategy";
@@ -86,6 +89,13 @@ const TURN_SOUND_STORAGE_KEY = "draft-room-turn-sound";
 const POSITIONS: readonly (Position | "ALL")[] = [
   "ALL", "QB", "RB", "WR", "TE", "K", "DEF",
 ];
+
+function availabilityLabel(signal: AvailabilitySignal): string {
+  if (signal === "take_now") return "Take now";
+  if (signal === "safe_to_wait") return "Safe to wait";
+  if (signal === "neutral") return "Toss-up";
+  return "Odds unknown";
+}
 
 function createAudioContext(): AudioContext | null {
   const AudioContextConstructor =
@@ -851,6 +861,14 @@ export function DraftAssistant({
       }),
     [state.draft, state.players, state.weights, avoids],
   );
+  const roomTendencies = useMemo(
+    () => analyzeRoomTendencies(state.draft),
+    [state.draft],
+  );
+  const availabilityById = useMemo(
+    () => buildAvailabilityMap(state.draft, state.players),
+    [state.draft, state.players],
+  );
   const myRoster = useMemo(
     () =>
       hasDraftSeat
@@ -873,9 +891,9 @@ export function DraftAssistant({
       }),
     [myRoster, current.round, recommendation],
   );
-  const insightFlags = insights.alerts.filter(
-    (alert) => alert.severity !== "info",
-  ).length;
+  const insightFlags =
+    insights.alerts.filter((alert) => alert.severity !== "info").length +
+    roomTendencies.alerts.filter((alert) => alert.confidence !== "low").length;
   const tiers = [...new Set(available.map((player) => player.chenTier))]
     .filter((value): value is number => value !== undefined)
     .sort((a, b) => a - b);
@@ -1396,6 +1414,7 @@ export function DraftAssistant({
   const detailRec = detailId
     ? recommendation.recommendations.find((item) => item.player.id === detailId)
     : undefined;
+  const detailAvailability = detailId ? availabilityById.get(detailId) : undefined;
   const detailPick = detailId
     ? state.draft.picks.find((pick) => pick.player.id === detailId)
     : undefined;
@@ -2178,6 +2197,18 @@ export function DraftAssistant({
                     </div>
                     <div>
                       <strong>
+                        {detailAvailability?.probability == null
+                          ? "—"
+                          : `${Math.round(detailAvailability.probability * 100)}%`}
+                      </strong>
+                      <span>
+                        {detailAvailability
+                          ? availabilityLabel(detailAvailability.signal)
+                          : "Next-turn odds"}
+                      </span>
+                    </div>
+                    <div>
+                      <strong>
                         {detailPlayer.percentOwned != null
                           ? `${detailPlayer.percentOwned}%`
                           : "—"}
@@ -2392,6 +2423,30 @@ export function DraftAssistant({
                   </article>
                 ))
               )}
+              <div className="room-read">
+                <h3>Room read</h3>
+                {roomTendencies.alerts.length === 0 ? (
+                  <p className="insight-empty">
+                    No confident room tendency yet. This fills in as managers make picks.
+                  </p>
+                ) : (
+                  roomTendencies.alerts.map((alert) => (
+                    <article
+                      className={`insight-card ${alert.confidence === "high" ? "warning" : "info"}`}
+                      key={`${alert.kind}-${alert.text}`}
+                    >
+                      <h3>
+                        {alert.kind === "run"
+                          ? "Position run"
+                          : alert.kind === "demand"
+                            ? "Demand before your turn"
+                            : "Team tendency"}
+                      </h3>
+                      <p>{alert.text}</p>
+                    </article>
+                  ))
+                )}
+              </div>
               <div className="bye-board">
                 <h3>Your bye weeks</h3>
                 {insights.byes.length === 0 ? (
@@ -2420,8 +2475,10 @@ export function DraftAssistant({
                 : "No remaining players fit the board — check Best available."}
             </p>
           ) : null}
-          {recommendation.recommendations.map((item, index) => (
-            <article
+          {recommendation.recommendations.map((item, index) => {
+            const availability = availabilityById.get(item.player.id);
+            return (
+              <article
               key={item.player.id}
               className={`recommendation ${index === 0 ? "first" : ""} ${selected === item.player.id ? "selected" : ""}`}
               onClick={() => selectOrInspect(item.player.id)}
@@ -2449,11 +2506,24 @@ export function DraftAssistant({
                   <span>Bye {item.player.byeWeek ?? "—"}</span>
                 </div>
                 <p>{item.explanations[0] ?? "Best calculated value available"}</p>
-                <small>Score {item.score.toFixed(1)} · {item.suggestedRosterSlot}</small>
+                <small>
+                  Score {item.score.toFixed(1)} · {item.suggestedRosterSlot}
+                  {availability ? (
+                    <span
+                      className={`availability-badge ${availability.signal}`}
+                      title={availability.reasons.join(" · ")}
+                    >
+                      {availability.probability == null
+                        ? availabilityLabel(availability.signal)
+                        : `${Math.round(availability.probability * 100)}% · ${availabilityLabel(availability.signal)}`}
+                    </span>
+                  ) : null}
+                </small>
               </div>
               {index === 0 && <span className="best-badge">BEST</span>}
-            </article>
-          ))}
+              </article>
+            );
+          })}
           {recommendation.recommendations[0] && (
             <div className="comparison">
               <strong>Why #1?</strong>

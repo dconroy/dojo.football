@@ -1,8 +1,17 @@
 import { NextResponse } from "next/server";
 import { AuthError, requireActiveUser } from "@/auth/current-user";
+import { boardIdForUser } from "@/auth/board-access";
 import { getValidYahooAccessToken } from "@/adapters/yahoo/oauth";
 import { YahooApi } from "@/adapters/yahoo/yahoo-api";
 import type { YahooFreeAgent, YahooRosterPlayer } from "@/adapters/yahoo/parsers";
+import {
+  fetchSleeperWeekly,
+  resolveSleeperLeagueId,
+} from "@/adapters/sleeper/weekly";
+import {
+  weeklyPlatformForUser,
+  type WeeklyDataDto,
+} from "@/adapters/weekly/types";
 import { scoringFromSource, type ChenScoring } from "@/adapters/chen/boris-chen";
 import {
   fetchChenImport,
@@ -106,7 +115,73 @@ function toWaiverCandidate(
 export async function GET(request: Request) {
   try {
     const user = await requireActiveUser();
-    const shared = await getOrCreateLeagueDraft();
+    const shared = await getOrCreateLeagueDraft(boardIdForUser(user));
+    if (weeklyPlatformForUser(user) === "sleeper") {
+      const userId = user.yahooGuid.startsWith("sleeper:")
+        ? user.yahooGuid.slice("sleeper:".length)
+        : null;
+      if (!userId) {
+        return NextResponse.json(
+          {
+            error: "no-league",
+            message: "Reconnect your Sleeper account to load Weekly HQ.",
+            platform: "sleeper",
+          },
+          { status: 409 },
+        );
+      }
+      const leagueId = await resolveSleeperLeagueId({
+        storedLeagueId: user.sleeperLeagueId,
+        draftId: user.sleeperDraftId,
+        userId,
+      });
+      if (!leagueId) {
+        return NextResponse.json(
+          {
+            error: "no-league",
+            message: "No Sleeper league is connected to this draft.",
+            platform: "sleeper",
+          },
+          { status: 409 },
+        );
+      }
+      const chen = await chenPlayers(scoringFromSource(shared.source));
+      const sleeper = await fetchSleeperWeekly({
+        leagueId,
+        userId,
+        chenPlayers: chen.players,
+      });
+      const lineup = optimizeLineup({
+        players: sleeper.roster,
+        slots: sleeper.slots,
+        currentWeek: sleeper.league.currentWeek,
+      });
+      const waivers = rankWaiverTargets({
+        freeAgents: sleeper.freeAgents,
+        roster: sleeper.roster,
+        slots: sleeper.slots,
+        currentWeek: sleeper.league.currentWeek,
+        hotAddNames: sleeper.hotAddNames,
+        watchlist: userPrefs(user).waiverWatch,
+        topCount: 50,
+      });
+      const data: WeeklyDataDto = {
+        platform: "sleeper",
+        league: sleeper.league,
+        team: sleeper.team,
+        roster: sleeper.roster,
+        lineup,
+        matchup: sleeper.matchup,
+        standings: sleeper.standings,
+        transactions: sleeper.transactions,
+        waivers,
+        hotAdds: sleeper.hotAdds,
+        chen: { importedAt: chen.importedAt, source: chen.source },
+        syncedAt: new Date().toISOString(),
+      };
+      return NextResponse.json(data);
+    }
+
     const requested = new URL(request.url).searchParams.get("leagueKey");
     const stored =
       shared.leagueKey && !shared.leagueKey.startsWith("mock.")
@@ -196,7 +271,8 @@ export async function GET(request: Request) {
         entry.teams.some((team) => team.teamKey === myTeam.teamKey),
       ) ?? null;
 
-    return NextResponse.json({
+    const data: WeeklyDataDto = {
+      platform: "yahoo",
       league: { leagueKey, name: meta.name, currentWeek: meta.currentWeek },
       team: { teamKey: myTeam.teamKey, name: myTeam.name },
       roster: lineupPlayers,
@@ -208,7 +284,8 @@ export async function GET(request: Request) {
       hotAdds,
       chen: { importedAt: chen.importedAt, source: chen.source },
       syncedAt: new Date().toISOString(),
-    });
+    };
+    return NextResponse.json(data);
   } catch (error) {
     if (error instanceof AuthError) {
       return NextResponse.json({ error: error.message }, { status: error.status });

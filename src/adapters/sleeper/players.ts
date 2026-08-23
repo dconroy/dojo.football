@@ -20,11 +20,13 @@ const MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // ids/teams change slowly
 const FETCH_TIMEOUT_MS = 30_000;
 const FANTASY_POSITIONS = new Set(["QB", "RB", "WR", "TE", "K", "DEF"]);
 
-interface SleeperRecord {
+export interface SleeperRecord {
   readonly name: string;
   readonly position: string;
   readonly team: string | null;
   readonly sleeperId: string;
+  readonly injuryStatus?: string;
+  readonly active?: boolean;
 }
 
 export interface SleeperHit {
@@ -91,6 +93,11 @@ export async function refreshSleeperPlayers(): Promise<SleeperRecord[] | null> {
       position,
       team: (player.team as string | undefined)?.toUpperCase() ?? null,
       sleeperId: id,
+      injuryStatus:
+        (player.injury_status as string | undefined) ??
+        (player.status as string | undefined),
+      active:
+        typeof player.active === "boolean" ? player.active : undefined,
     });
   }
   if (records.length === 0) return null;
@@ -116,7 +123,10 @@ export async function refreshSleeperPlayers(): Promise<SleeperRecord[] | null> {
 export async function getSleeperRecords(): Promise<SleeperRecord[] | null> {
   const cached = await readCached();
   const fresh =
-    cached && Date.now() - cached.fetchedAt.getTime() < MAX_AGE_MS
+    cached &&
+    Date.now() - cached.fetchedAt.getTime() < MAX_AGE_MS &&
+    // Older cache payloads predate Weekly HQ's activity/injury fields.
+    cached.records.some((record) => record.active !== undefined)
       ? cached.records
       : (await refreshSleeperPlayers()) ?? cached?.records ?? null;
   return fresh;
