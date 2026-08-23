@@ -678,7 +678,10 @@ export function DraftAssistant({
     return () => window.clearTimeout(timeout);
   }, [ready, isDemo, state, state.draft.userSlot, state.pins, state.avoids, state.weights, me]);
 
-  const current = selectionForOverall(state.draft.picks.length + 1);
+  const current = selectionForOverall(
+    state.draft.picks.length + 1,
+    state.draft.teamCount,
+  );
   const hasDraftSeat = !isDemo || demoRole === "play";
   const nextMine = nextSelectionForSlot(
     current.overall,
@@ -1220,7 +1223,10 @@ export function DraftAssistant({
           ? `Confirmed ${player.name}. Mock resume — next opponent in ~${syncIntervalSec}s.`
           : `Confirmed ${player.name} locally. Still submit the pick in Yahoo.`,
       );
-      if (ok) setSelected(null);
+      if (ok) {
+        setSelected(null);
+        setDetailId(null);
+      }
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "Unable to record pick");
     }
@@ -1680,6 +1686,15 @@ export function DraftAssistant({
               : ""}
           </span>
         </div>
+        {isMyTurn && selectedPlayer ? (
+          <button
+            type="button"
+            className="confirm strip-confirm"
+            onClick={() => void confirm(selectedPlayer)}
+          >
+            Confirm pick · {selectedPlayer.name}
+          </button>
+        ) : null}
         <button
           type="button"
           className="secondary turn-sound-toggle"
@@ -2203,35 +2218,35 @@ export function DraftAssistant({
                 </div>
               ) : null}
 
-              <div className="detail-actions">
-                <button
-                  className="secondary"
-                  onClick={() => toggleList("pins", detailPlayer.id)}
-                >
-                  {(state.pins ?? []).includes(detailPlayer.id) ? "Unpin ★" : "Pin ☆"}
-                </button>
-                <button
-                  className="secondary"
-                  onClick={() => toggleList("avoids", detailPlayer.id)}
-                >
-                  {avoids.includes(detailPlayer.id) ? "Allow" : "Avoid"}
-                </button>
-                {isMyTurn && !detailPick ? (
-                  <button
-                    className="confirm"
-                    onClick={() => {
-                      void confirm(detailPlayer);
-                      setDetailId(null);
-                    }}
-                  >
-                    Confirm {detailPlayer.name}
-                  </button>
-                ) : null}
-              </div>
               {!detailPlayer.imageUrl ? (
                 <p className="detail-note">
                   Photo &amp; live team/bye fill in from Yahoo once connected.
                 </p>
+              ) : null}
+            </div>
+            <div className="detail-actions">
+              <button
+                className="secondary"
+                onClick={() => toggleList("pins", detailPlayer.id)}
+              >
+                {(state.pins ?? []).includes(detailPlayer.id) ? "Unpin ★" : "Pin ☆"}
+              </button>
+              <button
+                className="secondary"
+                onClick={() => toggleList("avoids", detailPlayer.id)}
+              >
+                {avoids.includes(detailPlayer.id) ? "Allow" : "Avoid"}
+              </button>
+              {isMyTurn && !detailPick ? (
+                <button
+                  className="confirm"
+                  onClick={() => {
+                    void confirm(detailPlayer);
+                    setDetailId(null);
+                  }}
+                >
+                  Confirm pick · {detailPlayer.name}
+                </button>
               ) : null}
             </div>
           </div>
@@ -2374,10 +2389,14 @@ export function DraftAssistant({
             disabled={!isMyTurn || !selectedPlayer}
             onClick={() => selectedPlayer && confirm(selectedPlayer)}
           >
-            Confirm {selectedPlayer?.name ?? "pick"}
+            {isMyTurn
+              ? `Confirm pick · ${selectedPlayer?.name ?? "select a player"}`
+              : "Confirm pick"}
           </button>
           <p className="safety-note">
-            Picks are recorded on this board only — make the real pick in the Yahoo app.
+            {isMyTurn
+              ? "Select a player in the list, then confirm here or in the clock bar."
+              : "Picks are recorded on this board only — make the real pick in the Yahoo app."}
           </p>
           </>
           )}
@@ -2477,8 +2496,27 @@ export function DraftAssistant({
               </select>
             </label>
           </div>
+          {isMyTurn && selectedPlayer ? (
+            <div className="pick-dock">
+              <div>
+                <strong>Confirm your pick</strong>
+                <span>
+                  {selected
+                    ? `${selectedPlayer.name} is selected`
+                    : `Top recommendation: ${selectedPlayer.name}`}
+                </span>
+              </div>
+              <button
+                type="button"
+                className="confirm"
+                onClick={() => void confirm(selectedPlayer)}
+              >
+                Confirm pick · {selectedPlayer.name}
+              </button>
+            </div>
+          ) : null}
           <div className="player-table" role="table">
-            <div className="table-row table-head" role="row">
+            <div className={`table-row table-head ${isMyTurn ? "on-clock" : ""}`} role="row">
               <span>Rank</span><span>Player</span><span>Tier</span><span>ADP</span><span>Actions</span>
             </div>
             {filtered.length === 0 && (
@@ -2496,9 +2534,19 @@ export function DraftAssistant({
             )}
             {filtered.slice(0, 80).map((player) => (
               <div
-                className={`table-row ${selected === player.id ? "selected" : ""} ${avoids.includes(player.id) ? "avoided" : ""} ${draftedIds.has(player.id) ? "taken" : ""}`}
+                className={`table-row ${isMyTurn ? "on-clock" : ""} ${selected === player.id ? "selected" : ""} ${avoids.includes(player.id) ? "avoided" : ""} ${draftedIds.has(player.id) ? "taken" : ""}`}
                 key={player.id}
-                onClick={() => openDetail(player.id)}
+                onClick={() => {
+                  if (isMyTurn && !draftedIds.has(player.id)) {
+                    if (selected === player.id) {
+                      openDetail(player.id);
+                      return;
+                    }
+                    setSelected(player.id);
+                    return;
+                  }
+                  openDetail(player.id);
+                }}
                 role="row"
               >
                 <span>{player.chenRank ?? "—"}</span>
@@ -2515,6 +2563,29 @@ export function DraftAssistant({
                 <span><i className={`tier tier-${Math.min(player.chenTier ?? 8, 8)}`}>T{player.chenTier ?? "—"}</i></span>
                 <span>{player.adp ?? "—"}</span>
                 <span className="row-actions">
+                  {isMyTurn && !draftedIds.has(player.id) ? (
+                    <button
+                      type="button"
+                      className="draft-pick"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        setSelected(player.id);
+                        void confirm(player);
+                      }}
+                    >
+                      Draft
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        openDetail(player.id);
+                      }}
+                    >
+                      Info
+                    </button>
+                  )}
                   <button onClick={(event) => { event.stopPropagation(); toggleList("pins", player.id); }}>
                     {(state.pins ?? []).includes(player.id) ? "★" : "☆"}
                   </button>
@@ -2529,7 +2600,7 @@ export function DraftAssistant({
 
         <aside className="right-column">
           <section className="panel roster">
-            <div className="panel-heading"><h2>My roster</h2><span>{myRoster.length}/15</span></div>
+            <div className="panel-heading"><h2>My roster</h2><span>{myRoster.length}/{state.draft.rounds}</span></div>
             {insights.byes.length > 0 && (
               <div className="roster-byes">
                 {insights.byes.map((group) => (

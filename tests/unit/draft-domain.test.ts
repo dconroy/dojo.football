@@ -50,7 +50,7 @@ describe("12-team snake calculations", () => {
     for (let slot = 1; slot <= 12; slot += 1) {
       for (let round = 1; round <= 15; round += 1) {
         const overall = overallPickFor(round, slot);
-        expect(selectionForOverall(overall)).toEqual({ overall, round, slot });
+        expect(selectionForOverall(overall, 12)).toEqual({ overall, round, slot });
       }
     }
   });
@@ -74,7 +74,32 @@ describe("12-team snake calculations", () => {
 
   it("validates impossible values", () => {
     expect(() => overallPickFor(1, 0)).toThrow(RangeError);
-    expect(() => selectionForOverall(0)).toThrow(RangeError);
+    expect(() => selectionForOverall(0, 12)).toThrow(RangeError);
+  });
+});
+
+describe("8-team snake calculations", () => {
+  it("reverses every slot across odd and even rounds", () => {
+    for (let slot = 1; slot <= 8; slot += 1) {
+      for (let round = 1; round <= 15; round += 1) {
+        const overall = overallPickFor(round, slot, 8);
+        expect(selectionForOverall(overall, 8)).toEqual({ overall, round, slot });
+      }
+    }
+  });
+
+  it("gives slot 1 pick 16 at the round-2 turnaround, not a 12-team slot", () => {
+    expect(selectionForOverall(16, 8)).toEqual({
+      overall: 16,
+      round: 2,
+      slot: 1,
+    });
+    expect(picksForSlot(1, 4, 8).map((selection) => selection.overall)).toEqual([
+      1, 16, 17, 32,
+    ]);
+    // The old UI defaulted this helper to 12 teams, so pick 16 looked like
+    // someone else's turn and the confirm button stayed disabled.
+    expect(selectionForOverall(16, 12).slot).toBe(9);
   });
 });
 

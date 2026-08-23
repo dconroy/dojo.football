@@ -20,7 +20,7 @@ export function overallPickFor(round: number, slot: number, teamCount = 12): num
   return (round - 1) * teamCount + positionInRound;
 }
 
-export function selectionForOverall(overall: number, teamCount = 12): SnakeSelection {
+export function selectionForOverall(overall: number, teamCount: number): SnakeSelection {
   positiveInteger(overall, "overall");
   positiveInteger(teamCount, "teamCount");
   const round = Math.floor((overall - 1) / teamCount) + 1;
