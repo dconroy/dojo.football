@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { AuthError } from "@/auth/current-user";
-import { requireBoardAccess, requireDemoPlayer } from "@/auth/board-access";
+import {
+  requireBoardAccess,
+  requireBoardManager,
+  requireDemoPlayer,
+} from "@/auth/board-access";
 import {
   appendSharedPick,
   draftStateFor,
@@ -28,6 +32,10 @@ export async function POST(request: Request) {
         { error: "Spectators and demo players cannot control the room" },
         { status: 403 },
       );
+    }
+
+    if (!demo && body?.action && user) {
+      requireBoardManager(user);
     }
 
     if (body?.action === "undo") {
@@ -74,6 +82,16 @@ export async function POST(request: Request) {
         if (current.slot !== player.slot) {
           throw new AuthError("It is not your demo seat's turn", 403);
         }
+      }
+    } else if (user) {
+      const shared = await getOrCreateLeagueDraft(draftId);
+      const current = selectionForOverall(
+        shared.picks.length + 1,
+        shared.teamCount,
+      );
+      const slot = userPrefs(user).draftSlot;
+      if (current.slot !== slot) {
+        throw new AuthError(`Pick ${current.overall} belongs to draft slot ${current.slot}`, 403);
       }
     }
     await appendSharedPick(body.playerId, { draftId });

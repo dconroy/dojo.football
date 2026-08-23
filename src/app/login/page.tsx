@@ -47,48 +47,61 @@ export default function LoginPage() {
     event.preventDefault();
     setLoading(true);
     setSleeperError(null);
-    const response = await fetch("/api/sleeper/connect", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: username.trim() }),
-    });
-    const body = (await response.json()) as {
-      error?: string;
-      user?: { userId: string; username: string; displayName: string };
-      leagues?: SleeperLeague[];
-      drafts?: SleeperDraft[];
-    };
-    setLoading(false);
-    if (!response.ok || !body.user) {
-      setSleeperError(body.error ?? "Sleeper user not found.");
-      return;
+    try {
+      const response = await fetch("/api/sleeper/connect", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: username.trim() }),
+      });
+      const body = (await response.json().catch(() => null)) as {
+        error?: string;
+        user?: { userId: string; username: string; displayName: string };
+        leagues?: SleeperLeague[];
+        drafts?: SleeperDraft[];
+      } | null;
+      if (!response.ok || !body?.user) {
+        setSleeperError(body?.error ?? "Sleeper user not found.");
+        return;
+      }
+      setSleeperUser(body.user);
+      setLeagues(body.leagues ?? []);
+      setDrafts(body.drafts ?? []);
+    } catch {
+      setSleeperError("Could not reach Sleeper. Check your connection and try again.");
+    } finally {
+      setLoading(false);
     }
-    setSleeperUser(body.user);
-    setLeagues(body.leagues ?? []);
-    setDrafts(body.drafts ?? []);
   }
 
   async function chooseDraft(draft: SleeperDraft) {
     if (!sleeperUser) return;
     setLoading(true);
-    const response = await fetch("/api/sleeper/connect", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        userId: sleeperUser.userId,
-        username: sleeperUser.username,
-        displayName: sleeperUser.displayName,
-        draftId: draft.draft_id,
-        leagueId: draft.league_id,
-      }),
-    });
-    const body = (await response.json()) as { error?: string };
-    setLoading(false);
-    if (!response.ok) {
-      setSleeperError(body.error ?? "Could not connect that draft.");
-      return;
+    setSleeperError(null);
+    try {
+      const response = await fetch("/api/sleeper/connect", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: sleeperUser.userId,
+          username: sleeperUser.username,
+          displayName: sleeperUser.displayName,
+          draftId: draft.draft_id,
+          leagueId: draft.league_id,
+        }),
+      });
+      const body = (await response.json().catch(() => null)) as {
+        error?: string;
+      } | null;
+      if (!response.ok) {
+        setSleeperError(body?.error ?? "Could not connect that draft.");
+        return;
+      }
+      window.location.assign("/app");
+    } catch {
+      setSleeperError("Could not connect that draft. Check your connection and try again.");
+    } finally {
+      setLoading(false);
     }
-    window.location.assign("/app");
   }
 
   return (
@@ -96,7 +109,7 @@ export default function LoginPage() {
       <section className={`security-console ${yahooError ? "denied" : ""}`}>
         <p className="security-kicker">dojo.football</p>
         <h1>Choose how you draft</h1>
-        <p className="security-message">
+        <p className="security-message" role={yahooError ? "alert" : undefined}>
           {yahooError ??
             "Connect your league for a synced board, or jump into a public mock without an account."}
         </p>
@@ -138,7 +151,9 @@ export default function LoginPage() {
             </Link>
           </article>
         </div>
-        {sleeperError ? <p className="security-message">{sleeperError}</p> : null}
+        {sleeperError ? (
+          <p className="security-message" role="alert">{sleeperError}</p>
+        ) : null}
         {drafts.length > 0 ? (
           <div className="sleeper-picks">
             <p className="security-kicker">Your 2026 drafts</p>

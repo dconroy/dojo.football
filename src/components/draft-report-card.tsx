@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { DraftBoardReport, TeamReportCard } from "@/domain/draft-report";
 import { PLAYER_POSITIONS } from "@/domain/types";
+import { useDialogAccessibility } from "@/components/use-dialog-accessibility";
 
 export function DraftReportCard({
   report,
@@ -15,15 +16,18 @@ export function DraftReportCard({
 }) {
   const [openSlot, setOpenSlot] = useState(userSlot);
   const mine = report.teams.find((team) => team.slot === userSlot);
+  const dialogRef = useDialogAccessibility<HTMLElement>(true, onClose);
 
   return (
     <div className="launcher-overlay" onClick={onClose}>
       <section
+        ref={dialogRef}
         className="launcher report-card"
         onClick={(event) => event.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-labelledby="report-card-title"
+        tabIndex={-1}
       >
         <header className="launcher-head">
           <div>

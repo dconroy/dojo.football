@@ -350,19 +350,19 @@ export function DemoLobby() {
         <dl className="demo-lobby-stats" aria-label="Dojo totals">
           <div>
             <dt>Boards run</dt>
-            <dd>{formatDemoStat(stats.boardsRun)}</dd>
+            <dd>{loaded ? formatDemoStat(stats.boardsRun) : "—"}</dd>
           </div>
           <div>
             <dt>Insights given</dt>
-            <dd>{formatDemoStat(stats.insightsGiven)}</dd>
+            <dd>{loaded ? formatDemoStat(stats.insightsGiven) : "—"}</dd>
           </div>
           <div>
             <dt>Players helped</dt>
-            <dd>{formatDemoStat(stats.playersHelped)}</dd>
+            <dd>{loaded ? formatDemoStat(stats.playersHelped) : "—"}</dd>
           </div>
           <div>
             <dt>Drafting now</dt>
-            <dd>{formatDemoStat(activePlayers)}</dd>
+            <dd>{loaded ? formatDemoStat(activePlayers) : "—"}</dd>
           </div>
         </dl>
       </section>

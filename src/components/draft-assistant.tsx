@@ -35,13 +35,11 @@ import { resolvePlayerIdentity } from "@/domain/identity";
 import { formatStamp } from "@/lib/build-info";
 import { DraftReportCard } from "@/components/draft-report-card";
 import { DemoChatPanel } from "@/components/demo-chat-panel";
+import { useDialogAccessibility } from "@/components/use-dialog-accessibility";
 import { buildDraftReport } from "@/domain/draft-report";
 import {
-  demoSeatKind,
-  demoSeatKindLabel,
   humanTeamFallback,
   rpBotTeamName,
-  type DemoSeatKind,
 } from "@/domain/demo-labels";
 import { mergePollPlayers, playerRevision } from "@/lib/board-sync";
 import {
@@ -149,6 +147,7 @@ interface MeState {
   avoids: string[];
   weights: StrategyWeights;
   darkMode: boolean;
+  canManageBoard?: boolean;
 }
 
 interface PersistedUiState {
@@ -361,6 +360,18 @@ export function DraftAssistant({
   const [yahooLeaguesLoading, setYahooLeaguesLoading] = useState(false);
   const [yahooLeaguesError, setYahooLeaguesError] = useState("");
   const [detailId, setDetailId] = useState<string | null>(null);
+  const launcherDialogRef = useDialogAccessibility<HTMLDivElement>(
+    launcherOpen,
+    () => setLauncherOpen(false),
+  );
+  const adminDialogRef = useDialogAccessibility<HTMLDivElement>(
+    adminOpen,
+    () => setAdminOpen(false),
+  );
+  const detailDialogRef = useDialogAccessibility<HTMLDivElement>(
+    Boolean(detailId),
+    () => setDetailId(null),
+  );
   const [playerBrief, setPlayerBrief] = useState<{
     seasons: Array<{
       year: number;
@@ -678,8 +689,9 @@ export function DraftAssistant({
     return () => window.clearTimeout(timeout);
   }, [ready, isDemo, state, state.draft.userSlot, state.pins, state.avoids, state.weights, me]);
 
+  const totalPicks = state.draft.teamCount * state.draft.rounds;
   const current = selectionForOverall(
-    state.draft.picks.length + 1,
+    Math.min(state.draft.picks.length + 1, Math.max(1, totalPicks)),
     state.draft.teamCount,
   );
   const hasDraftSeat = !isDemo || demoRole === "play";
@@ -700,6 +712,11 @@ export function DraftAssistant({
   };
   const boardExhausted = draftBoardExhausted(boardCapacity);
   const draftComplete = draftIsFinished(boardCapacity);
+  const finishedSpectator = isDemo && demoRole === "watch" && draftComplete;
+  const canChangeRankings =
+    !draftComplete &&
+    (me?.canManageBoard === true ||
+      (isDemo && demoRole === "play" && !demoStarted));
   const isMyTurn =
     !draftComplete &&
     current.slot === state.draft.userSlot &&
@@ -905,14 +922,6 @@ export function DraftAssistant({
 
   function isHumanDemoSlot(slot: number) {
     return isDemo && members.some((member) => member.draftSlot === slot);
-  }
-
-  function kindForDemoSlot(slot: number): DemoSeatKind {
-    return demoSeatKind(
-      slot,
-      members.flatMap((member) => (member.draftSlot ? [member.draftSlot] : [])),
-      { started: demoStarted, complete: draftComplete },
-    );
   }
 
   function reconcileRemote(snapshot: SyncSnapshot) {
@@ -1433,10 +1442,8 @@ export function DraftAssistant({
   const practiceMockActive = state.leagueKey?.startsWith("mock.") ?? false;
   const manualMockActive = state.mode === "mock";
   const mockActive = practiceMockActive || manualMockActive;
-  // Any active member may restart a mock (the board is shared and the server
-  // only requires an active session). It stays hidden on the live board via
-  // `mockActive`, so nobody can wipe a real draft night mid-pick.
-  const canRestartMock = mockActive && !isDemo;
+  // Restarting replaces shared state, so keep it with the board controller.
+  const canRestartMock = mockActive && !isDemo && me?.canManageBoard === true;
   const restartMockButton = canRestartMock ? (
     <button
       className="secondary"
@@ -1611,7 +1618,7 @@ export function DraftAssistant({
       )}
 
       <section className={`control-strip ${isMyTurn ? "on-clock" : ""}`}>
-        {!hasDraftSeat ? (
+        {!hasDraftSeat && !draftComplete ? (
           <label>
             Team name
             <input
@@ -1623,13 +1630,14 @@ export function DraftAssistant({
             />
           </label>
         ) : null}
-        <label>
+        {!finishedSpectator ? <label>
           Draft slot
           {!hasDraftSeat ? (
             <select
               className="seat-picker"
               value={chosenSeat ?? ""}
               disabled={
+                draftComplete ||
                 demoTeamName.trim().length < 2 ||
                 takenSlots.length >= state.draft.teamCount
               }
@@ -1673,7 +1681,7 @@ export function DraftAssistant({
               ))}
             </select>
           )}
-        </label>
+        </label> : null}
         <div className="turn-indicator">
           <strong>
             {draftComplete
@@ -1689,10 +1697,15 @@ export function DraftAssistant({
                   : `${picksUntilMyTurn} picks until your turn`}
           </strong>
           <span>
-            Pick {current.overall} · Round {current.round} · Slot {current.slot}
-            {!isMyTurn && showAutoCountdown
-              ? ` · slot ${current.slot} auto-drafts in ${autoPickSeconds}s`
-              : ""}
+            {draftComplete
+              ? boardExhausted
+                ? `${state.draft.picks.length} picks made · ranked player pool exhausted`
+                : `${state.draft.picks.length} of ${totalPicks} picks made`
+              : `Pick ${current.overall} · Round ${current.round} · Slot ${current.slot}${
+                  !isMyTurn && showAutoCountdown
+                    ? ` · slot ${current.slot} auto-drafts in ${autoPickSeconds}s`
+                    : ""
+                }`}
           </span>
         </div>
         {isMyTurn && selectedPlayer ? (
@@ -1704,7 +1717,7 @@ export function DraftAssistant({
             Confirm pick · {selectedPlayer.name}
           </button>
         ) : null}
-        <button
+        {!draftComplete ? <button
           type="button"
           className="secondary turn-sound-toggle"
           aria-pressed={soundEnabled}
@@ -1717,7 +1730,7 @@ export function DraftAssistant({
           }}
         >
           {soundEnabled ? "🔔 Sound on" : "🔕 Sound off"}
-        </button>
+        </button> : null}
         {adminView ? (
           <>
             <button
@@ -1835,11 +1848,19 @@ export function DraftAssistant({
 
       {launcherOpen && adminView && (
         <div className="launcher-overlay" onClick={() => setLauncherOpen(false)}>
-          <div className="launcher" onClick={(event) => event.stopPropagation()}>
+          <div
+            ref={launcherDialogRef}
+            className="launcher"
+            onClick={(event) => event.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="draft-launcher-title"
+            tabIndex={-1}
+          >
             <div className="launcher-head">
               <div>
                 <p className="eyebrow">Everyone shares this board</p>
-                <h2>Start a draft</h2>
+                <h2 id="draft-launcher-title">Start a draft</h2>
               </div>
               <button className="icon-button" onClick={() => setLauncherOpen(false)}>
                 Close
@@ -1917,11 +1938,13 @@ export function DraftAssistant({
       {isAdmin && adminOpen && (
         <div className="launcher-overlay" onClick={() => setAdminOpen(false)}>
           <div
+            ref={adminDialogRef}
             className="launcher admin-overlay"
             onClick={(event) => event.stopPropagation()}
             role="dialog"
             aria-modal="true"
             aria-labelledby="admin-overlay-title"
+            tabIndex={-1}
           >
             <section className="panel admin-console">
               <div className="panel-heading">
@@ -2054,11 +2077,13 @@ export function DraftAssistant({
       {detailPlayer && (
         <div className="detail-overlay" onClick={() => setDetailId(null)}>
           <div
+            ref={detailDialogRef}
             className="detail-card"
             onClick={(event) => event.stopPropagation()}
             role="dialog"
             aria-modal="true"
             aria-labelledby="player-detail-title"
+            tabIndex={-1}
           >
             <button
               type="button"
@@ -2262,6 +2287,22 @@ export function DraftAssistant({
         </div>
       )}
 
+      {finishedSpectator ? (
+        <section className="spectator-finished panel" aria-labelledby="finished-room-title">
+          <div>
+            <p className="eyebrow">Final board</p>
+            <h2 id="finished-room-title">This draft is complete.</h2>
+            <p>
+              Review every selection below or open the report card to compare all
+              team grades and rosters.
+            </p>
+          </div>
+          <button type="button" onClick={() => setReportOpen(true)}>
+            Open report card
+          </button>
+        </section>
+      ) : null}
+
       <section className={`workspace ${!hasDraftSeat ? "spectating" : ""}`}>
         {hasDraftSeat ? (
         <aside className="panel recommendations">
@@ -2362,6 +2403,16 @@ export function DraftAssistant({
               key={item.player.id}
               className={`recommendation ${index === 0 ? "first" : ""} ${selected === item.player.id ? "selected" : ""}`}
               onClick={() => selectOrInspect(item.player.id)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  selectOrInspect(item.player.id);
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              aria-pressed={selected === item.player.id}
+              aria-label={`${item.player.name}, recommendation ${index + 1}. ${item.explanations[0] ?? "Best calculated value available"}`}
             >
               <div className="rank">{index + 1}</div>
               <PlayerAvatar name={item.player.name} imageUrl={item.player.imageUrl} />
@@ -2412,7 +2463,7 @@ export function DraftAssistant({
         </aside>
         ) : null}
 
-        <section className="panel available-panel">
+        {!finishedSpectator ? <section className="panel available-panel">
           <div className="panel-heading">
             <div>
               <p className="eyebrow">Available players</p>
@@ -2428,7 +2479,12 @@ export function DraftAssistant({
               Expert
               <select
                 value={sourceFromBoard(state.source)}
-                disabled={chenBusy}
+                disabled={chenBusy || !canChangeRankings}
+                title={
+                  canChangeRankings
+                    ? "Change the shared ranking source"
+                    : "Only the board owner can change rankings before the draft ends"
+                }
                 onChange={(event) => {
                   const next = event.target.value;
                   if (next === sourceFromBoard(state.source)) return;
@@ -2448,7 +2504,12 @@ export function DraftAssistant({
               Scoring
               <select
                 value={scoringFromSource(state.source)}
-                disabled={chenBusy}
+                disabled={chenBusy || !canChangeRankings}
+                title={
+                  canChangeRankings
+                    ? "Change the shared scoring format"
+                    : "Only the board owner can change scoring before the draft ends"
+                }
                 onChange={(event) => {
                   const next = event.target.value as ChenScoring;
                   if (next === scoringFromSource(state.source)) return;
@@ -2524,9 +2585,13 @@ export function DraftAssistant({
               </button>
             </div>
           ) : null}
-          <div className="player-table" role="table">
+          <div className="player-table" role="table" aria-label="Available fantasy players">
             <div className={`table-row table-head ${isMyTurn ? "on-clock" : ""}`} role="row">
-              <span>Rank</span><span>Player</span><span>Tier</span><span>ADP</span><span>Actions</span>
+              <span role="columnheader">Rank</span>
+              <span role="columnheader">Player</span>
+              <span role="columnheader">Tier</span>
+              <span role="columnheader">ADP</span>
+              <span role="columnheader">Actions</span>
             </div>
             {filtered.length === 0 && (
               <p className="empty-filter">
@@ -2554,8 +2619,8 @@ export function DraftAssistant({
                 }}
                 role="row"
               >
-                <span>{player.chenRank ?? "—"}</span>
-                <span className="player-cell">
+                <span role="cell">{player.chenRank ?? "—"}</span>
+                <span className="player-cell" role="cell">
                   <PlayerAvatar name={player.name} imageUrl={player.imageUrl} size={30} />
                   <span className="player-cell-copy">
                     <strong>{player.name}</strong>
@@ -2565,9 +2630,9 @@ export function DraftAssistant({
                     </small>
                   </span>
                 </span>
-                <span><i className={`tier tier-${Math.min(player.chenTier ?? 8, 8)}`}>T{player.chenTier ?? "—"}</i></span>
-                <span>{player.adp ?? "—"}</span>
-                <span className="row-actions">
+                <span role="cell"><i className={`tier tier-${Math.min(player.chenTier ?? 8, 8)}`}>T{player.chenTier ?? "—"}</i></span>
+                <span role="cell">{player.adp ?? "—"}</span>
+                <span className="row-actions" role="cell">
                   {isMyTurn && !draftedIds.has(player.id) ? (
                     <button
                       type="button"
@@ -2591,19 +2656,26 @@ export function DraftAssistant({
                       Info
                     </button>
                   )}
-                  <button onClick={(event) => { event.stopPropagation(); toggleList("pins", player.id); }}>
-                    {(state.pins ?? []).includes(player.id) ? "★" : "☆"}
-                  </button>
-                  <button onClick={(event) => { event.stopPropagation(); toggleList("avoids", player.id); }}>
-                    {avoids.includes(player.id) ? "Allow" : "Avoid"}
-                  </button>
+                  {hasDraftSeat ? (
+                    <>
+                      <button
+                        aria-label={`${(state.pins ?? []).includes(player.id) ? "Unpin" : "Pin"} ${player.name}`}
+                        onClick={(event) => { event.stopPropagation(); toggleList("pins", player.id); }}
+                      >
+                        {(state.pins ?? []).includes(player.id) ? "★" : "☆"}
+                      </button>
+                      <button onClick={(event) => { event.stopPropagation(); toggleList("avoids", player.id); }}>
+                        {avoids.includes(player.id) ? "Allow" : "Avoid"}
+                      </button>
+                    </>
+                  ) : null}
                 </span>
               </div>
             ))}
           </div>
-        </section>
+        </section> : null}
 
-        <aside className="right-column">
+        {hasDraftSeat ? <aside className="right-column">
           <section className="panel roster">
             <div className="panel-heading"><h2>My roster</h2><span>{myRoster.length}/{state.draft.rounds}</span></div>
             {insights.byes.length > 0 && (
@@ -2677,7 +2749,7 @@ export function DraftAssistant({
               what your league-mates see.
             </p>
           </section>
-        </aside>
+        </aside> : null}
       </section>
 
       <section className="panel board">

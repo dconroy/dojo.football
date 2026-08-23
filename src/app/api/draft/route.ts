@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { AuthError } from "@/auth/current-user";
-import { requireBoardAccess, requireDemoPlayer } from "@/auth/board-access";
+import {
+  requireBoardAccess,
+  requireBoardManager,
+  requireDemoPlayer,
+} from "@/auth/board-access";
 import {
   ConflictError,
   applyChenImport,
@@ -77,6 +81,8 @@ export async function PUT(request: Request) {
         );
       }
       await requireDemoPlayer(draftId, demo);
+    } else if (user) {
+      requireBoardManager(user);
     }
 
     if (body?.action === "reset") {

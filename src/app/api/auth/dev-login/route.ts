@@ -10,9 +10,11 @@ import {
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
+  const e2eSecret = process.env.E2E_LOGIN_SECRET?.trim();
+  const developmentSecret = process.env.APP_ACCESS_PASSWORD?.trim();
   const expected =
-    process.env.E2E_LOGIN_SECRET ??
-    (process.env.NODE_ENV !== "production" ? process.env.APP_ACCESS_PASSWORD : undefined);
+    e2eSecret ||
+    (process.env.NODE_ENV !== "production" ? developmentSecret : undefined);
   if (!expected) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }

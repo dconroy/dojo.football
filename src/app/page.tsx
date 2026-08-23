@@ -50,6 +50,13 @@ const jsonLd = {
 };
 
 export default function LandingPage() {
+  const dateline = new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    timeZone: "America/New_York",
+  })
+    .format(new Date())
+    .toUpperCase();
   return (
     <main className={styles.landing}>
       <script
@@ -59,7 +66,7 @@ export default function LandingPage() {
       <div className={styles.broadcastBar}>
         <span>2026 DRAFT CENTER</span>
         <span>LIVE BOARDS · ROSTER-AWARE RANKS · POST-DRAFT GRADES</span>
-        <span>AUG 19 · PRESEASON WK 2</span>
+        <span>{dateline} · 2026 SEASON</span>
       </div>
 
       <header className={styles.nav}>

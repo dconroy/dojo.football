@@ -40,7 +40,7 @@ without resetting the shared room.
 ### Sleeper
 
 1. Open [dojo.football/login](https://dojo.football/login).
-2. Type your Sleeper username and click **Connect Sleeper**.
+2. Type your Sleeper username and click **Find my drafts**.
 3. Pick the 2026 draft you want to follow.
 4. Draft in the **Sleeper app**. This board pulls picks and keeps your Top five current.
 
@@ -78,7 +78,7 @@ Each card has a reason and a score. When in doubt, take #1. “Why #1?” compar
 |---|---|
 | **Boris Chen** | Weekly tiers (default). Best if you already trust Chen. |
 | **FantasyPros ECR** | Expert consensus. Needs a FantasyPros **HOF** API key (MVP is not enough). |
-| **FF Calculator ADP** | Market ADP, not an analyst. Tiers are grouped from ADP gaps. |
+| **Sleeper ADP** | Sleeper market ADP, not an analyst ranking. Tiers are grouped from ADP gaps. |
 
 **Scoring** is separate: **0.5 PPR** (default), **PPR**, or **standard**. Switching lists remaps ranks. It does not wipe picks.
 

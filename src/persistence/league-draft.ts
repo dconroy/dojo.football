@@ -28,7 +28,7 @@ import {
 import { getSleeperIndex } from "@/adapters/sleeper/players";
 import { byeWeekForTeam } from "@/config/nfl-byes";
 import { normalizeTeam } from "@/domain/identity";
-import type { User } from "@prisma/client";
+import type { Prisma, User } from "@prisma/client";
 import type { Position } from "@/domain";
 import { playerRevision } from "@/lib/board-sync";
 
@@ -425,24 +425,27 @@ export function draftStateFor(shared: SharedDraft, userSlot: number): DraftState
   };
 }
 
+function boardMemberWhere(draftId: string): Prisma.UserWhereInput {
+  return draftId === LEAGUE_DRAFT_ID
+    ? {
+        boardId: null,
+        NOT: { yahooGuid: { startsWith: "sleeper:" } },
+      }
+    : {
+        OR: [
+          { boardId: draftId },
+          draftId.startsWith("sleeper:")
+            ? { sleeperDraftId: draftId.slice("sleeper:".length) }
+            : { boardId: draftId },
+        ],
+      };
+}
+
 export async function listMemberSeats(
   draftId = LEAGUE_DRAFT_ID,
 ): Promise<MemberSeat[]> {
   const users = await prisma.user.findMany({
-    where:
-      draftId === LEAGUE_DRAFT_ID
-        ? {
-            boardId: null,
-            NOT: { yahooGuid: { startsWith: "sleeper:" } },
-          }
-        : {
-            OR: [
-              { boardId: draftId },
-              draftId.startsWith("sleeper:")
-                ? { sleeperDraftId: draftId.slice("sleeper:".length) }
-                : { boardId: draftId },
-            ],
-          },
+    where: boardMemberWhere(draftId),
     orderBy: { createdAt: "asc" },
     select: {
       id: true,
@@ -514,7 +517,11 @@ export async function appendSharedPick(
   const next = makeManualPick(draftStateFor(current, 1), player, {
     madeAt: options.madeAt ?? new Date().toISOString(),
   });
-  return saveSharedDraft({ draftId: options.draftId, picks: next.picks });
+  return saveSharedDraft({
+    draftId: options.draftId,
+    picks: next.picks,
+    expectedUpdatedAt: current.updatedAt,
+  });
 }
 
 export async function savePicks(
@@ -529,7 +536,11 @@ export async function undoSharedPick(
 ): Promise<SharedDraft> {
   const current = await getOrCreateLeagueDraft(draftId);
   const next = undoLastPick(draftStateFor(current, 1));
-  return saveSharedDraft({ draftId, picks: next.picks });
+  return saveSharedDraft({
+    draftId,
+    picks: next.picks,
+    expectedUpdatedAt: current.updatedAt,
+  });
 }
 
 export async function resetSharedDraft(
@@ -539,7 +550,10 @@ export async function resetSharedDraft(
 ): Promise<SharedDraft> {
   // A brand-new draft starts every manager's pins and avoids from scratch — they
   // target a specific board, so they shouldn't bleed across drafts.
-  await prisma.user.updateMany({ data: { pinsJson: "[]", avoidsJson: "[]" } });
+  await prisma.user.updateMany({
+    where: boardMemberWhere(draftId),
+    data: { pinsJson: "[]", avoidsJson: "[]" },
+  });
   return saveSharedDraft({
     draftId,
     mode,

@@ -1,5 +1,6 @@
 import type { User } from "@prisma/client";
 import type { DemoClaims } from "@/auth/demo-session";
+import { canManageBoard } from "@/auth/board-access";
 import { DEFAULT_STRATEGY_WEIGHTS } from "@/config/strategy";
 import { playerRevision } from "@/lib/board-sync";
 import {
@@ -44,7 +45,8 @@ async function withAudience(
         pins: [] as string[],
         avoids: [] as string[],
         weights: DEFAULT_STRATEGY_WEIGHTS,
-        darkMode: true,
+      darkMode: true,
+      canManageBoard: false,
       },
       demo: {
         role: demo.role,
@@ -65,6 +67,7 @@ async function withAudience(
       id: user.id,
       displayName: user.displayName,
       role: user.role,
+      canManageBoard: canManageBoard(user),
       ...prefs,
     },
   };

@@ -49,33 +49,48 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Sleeper user id required" }, { status: 400 });
   }
 
+  // Never mint a session from client-echoed identifiers alone. Sleeper profiles
+  // are public, but the selected draft must still belong to the looked-up user.
+  const found = await lookupSleeperUser(username);
+  const selectedDraft = found?.drafts.find(
+    (draft) => draft.draft_id === body.draftId,
+  );
+  const leagueMatches =
+    !body.leagueId || selectedDraft?.league_id === body.leagueId;
+  if (!found || found.userId !== userId || !selectedDraft || !leagueMatches) {
+    return NextResponse.json(
+      { error: "That Sleeper draft does not belong to this username" },
+      { status: 403 },
+    );
+  }
+
   const yahooGuid = `sleeper:${userId}`;
   const expiresAt = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
   const user = await prisma.user.upsert({
     where: { yahooGuid },
     create: {
       yahooGuid,
-      displayName: body.displayName?.trim() || username,
+      displayName: found.displayName,
       role: "member",
       status: "active",
       encryptedAccessToken: "sleeper.none.none",
       encryptedRefreshToken: "sleeper.none.none",
       expiresAt,
-      sleeperUsername: username,
-      sleeperLeagueId: body.leagueId ?? null,
-      sleeperDraftId: body.draftId,
+      sleeperUsername: found.username,
+      sleeperLeagueId: selectedDraft.league_id ?? null,
+      sleeperDraftId: selectedDraft.draft_id,
     },
     update: {
-      displayName: body.displayName?.trim() || username,
+      displayName: found.displayName,
       status: "active",
-      sleeperUsername: username,
-      sleeperLeagueId: body.leagueId ?? null,
-      sleeperDraftId: body.draftId,
+      sleeperUsername: found.username,
+      sleeperLeagueId: selectedDraft.league_id ?? null,
+      sleeperDraftId: selectedDraft.draft_id,
     },
   });
 
-  const draftRowId = `sleeper:${body.draftId}`;
-  const leagueKey = `sleeper.${body.draftId}`;
+  const draftRowId = `sleeper:${selectedDraft.draft_id}`;
+  const leagueKey = `sleeper.${selectedDraft.draft_id}`;
   await getOrCreateLeagueDraft(draftRowId);
   const existing = await getOrCreateLeagueDraft(draftRowId);
   if (existing.picks.length === 0 || existing.leagueKey !== leagueKey) {
