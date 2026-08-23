@@ -179,7 +179,7 @@ function evaluatePlayer(
       explanation:
         player.chenRank === undefined
           ? "No Chen rank supplied"
-          : `Chen rank ${player.chenRank} rewards proven draft value`,
+          : `Rank ${player.chenRank} rewards proven draft value`,
     },
     weights,
   );
@@ -194,7 +194,7 @@ function evaluatePlayer(
       explanation:
         player.chenTier === undefined
           ? "No Chen tier supplied"
-          : `Chen tier ${player.chenTier} receives a ${tierSignal.toFixed(2)} tier signal`,
+          : `Tier ${player.chenTier} receives a ${tierSignal.toFixed(2)} tier signal`,
     },
     weights,
   );

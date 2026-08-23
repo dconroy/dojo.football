@@ -4,6 +4,7 @@ import {
   autoPickDeadline,
   autoPickIfDue,
   claimHumanSlot,
+  mergeMockRankingSeeds,
   mockDraftResults,
   recordUserPick,
 } from "./mock-runner";
@@ -56,6 +57,13 @@ export async function replaceMockPlayersBeforeDraft(
   leagueKey: string,
   players: readonly MockPlayerSeed[],
 ): Promise<boolean> {
+  return replaceMockPlayers(leagueKey, players);
+}
+
+export async function replaceMockPlayers(
+  leagueKey: string,
+  players: readonly MockPlayerSeed[],
+): Promise<boolean> {
   for (let guard = 0; guard < 8; guard += 1) {
     const row = await prisma.syncCheckpoint.findUnique({
       where: { id: checkpointId(leagueKey) },
@@ -67,13 +75,13 @@ export async function replaceMockPlayersBeforeDraft(
     } catch {
       throw new Error(`No mock draft running for ${leagueKey}`);
     }
-    if (mockDraftResults(config).picks.length > 0) return false;
+    const nextPlayers = mergeMockRankingSeeds(config.players, players);
     const result = await prisma.syncCheckpoint.updateMany({
       where: { id: row.id, sequence: row.sequence },
       data: {
         sequence: row.sequence + 1,
         syncedAt: new Date(),
-        payload: JSON.stringify({ ...config, players }),
+        payload: JSON.stringify({ ...config, players: nextPlayers }),
       },
     });
     if (result.count === 1) return true;

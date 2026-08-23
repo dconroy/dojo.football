@@ -30,6 +30,13 @@ import {
   type ChenScoring,
 } from "@/adapters/chen/boris-chen";
 import { sourceFromBoard } from "@/adapters/rankings/labels";
+import { parseRankingSource } from "@/adapters/rankings/sources";
+import {
+  defaultWeightsForExpert,
+  expertSliderKeys,
+  expertSliderLabel,
+  withExpertWeights,
+} from "@/adapters/rankings/strategy-presets";
 import { MOCK_PLAYERS } from "@/fixtures/mock-players";
 import { resolvePlayerIdentity } from "@/domain/identity";
 import { formatStamp } from "@/lib/build-info";
@@ -719,8 +726,7 @@ export function DraftAssistant({
   const finishedSpectator = isDemo && demoRole === "watch" && draftComplete;
   const canChangeRankings =
     !draftComplete &&
-    (me?.canManageBoard === true ||
-      (isDemo && demoRole === "play" && !demoStarted));
+    (me?.canManageBoard === true || (isDemo && demoRole === "play"));
   const isMyTurn =
     !draftComplete &&
     current.slot === state.draft.userSlot &&
@@ -1315,6 +1321,7 @@ export function DraftAssistant({
       const parsed = await response.json();
       if (!response.ok) throw new Error(parsed.error ?? "Import failed");
       if (!parsed.players?.length) throw new Error("Import contained no players");
+      const previousExpert = sourceFromBoard(stateRef.current.source);
       await mutateDraft(
         "/api/draft",
         { action: "chen", chen: parsed },
@@ -1327,6 +1334,13 @@ export function DraftAssistant({
             )
           : `Loaded ${parsed.players.length} ${CHEN_SCORING[scoring].label} ranks.`,
       );
+      if (previousExpert !== source) {
+        const nextExpert = parseRankingSource(source);
+        setState((previous) => ({
+          ...previous,
+          weights: withExpertWeights(previous.weights, nextExpert),
+        }));
+      }
     } catch (error) {
       setNotice(
         `${error instanceof Error ? error.message : "Rankings fetch failed"}. Try again or import a CSV.`,
@@ -2489,7 +2503,7 @@ export function DraftAssistant({
                 title={
                   canChangeRankings
                     ? "Change the shared ranking source"
-                    : "Only the board owner can change rankings before the draft ends"
+                    : "Only seated players can change rankings before the draft ends"
                 }
                 onChange={(event) => {
                   const next = event.target.value;
@@ -2514,7 +2528,7 @@ export function DraftAssistant({
                 title={
                   canChangeRankings
                     ? "Change the shared scoring format"
-                    : "Only the board owner can change scoring before the draft ends"
+                    : "Only seated players can change scoring before the draft ends"
                 }
                 onChange={(event) => {
                   const next = event.target.value as ChenScoring;
@@ -2722,9 +2736,12 @@ export function DraftAssistant({
 
           <section className="panel settings">
             <div className="panel-heading"><h2>Strategy</h2></div>
-            {(["chenRank", "tierCliff", "positionalNeed", "turnUrgency"] as const).map((key) => (
+            {expertSliderKeys(sourceFromBoard(state.source)).map((key) => (
               <label key={key}>
-                <span>{key.replace(/([A-Z])/g, " $1")} <b>{state.weights[key]}</b></span>
+                <span>
+                  {expertSliderLabel(key, sourceFromBoard(state.source))}{" "}
+                  <b>{state.weights[key]}</b>
+                </span>
                 <input
                   type="range"
                   min="0"
@@ -2744,7 +2761,7 @@ export function DraftAssistant({
               onClick={() =>
                 setState((previous) => ({
                   ...previous,
-                  weights: DEFAULT_STRATEGY_WEIGHTS,
+                  weights: defaultWeightsForExpert(sourceFromBoard(previous.source)),
                 }))
               }
             >

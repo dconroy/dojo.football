@@ -110,7 +110,7 @@ export async function PUT(request: Request) {
         );
         if (!changed) {
           throw new ConflictError(
-            "Rankings cannot be changed after the demo draft begins",
+            "That room changed while updating rankings; try again",
           );
         }
       }

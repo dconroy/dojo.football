@@ -9,6 +9,40 @@ export interface MockPlayerSeed {
   readonly adp?: number;
 }
 
+function mockPlayerKey(player: Pick<MockPlayerSeed, "name" | "position">): string {
+  return `${player.name.toLowerCase()}|${player.position}`;
+}
+
+/**
+ * Update ranks on the running mock without renaming already-drafted ids.
+ * New experts keep existing pick identities so the clock does not stall.
+ */
+export function mergeMockRankingSeeds(
+  current: readonly MockPlayerSeed[],
+  incoming: readonly MockPlayerSeed[],
+): MockPlayerSeed[] {
+  const byId = new Map(incoming.map((player) => [player.id, player]));
+  const byKey = new Map(incoming.map((player) => [mockPlayerKey(player), player]));
+  const merged = current.map((player) => {
+    const hit = byId.get(player.id) ?? byKey.get(mockPlayerKey(player));
+    if (!hit) return player;
+    return {
+      ...player,
+      chenRank: hit.chenRank,
+      adp: hit.adp ?? player.adp,
+      team: hit.team || player.team,
+    };
+  });
+  const seen = new Set(merged.map(mockPlayerKey));
+  for (const player of incoming) {
+    const key = mockPlayerKey(player);
+    if (seen.has(key)) continue;
+    merged.push(player);
+    seen.add(key);
+  }
+  return merged;
+}
+
 export interface MockDraftConfig {
   readonly leagueKey: string;
   readonly teamCount: number;

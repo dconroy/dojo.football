@@ -5,6 +5,7 @@ import {
   autoPickPlayerId,
   claimHumanSlot,
   isWaitingOnUser,
+  mergeMockRankingSeeds,
   mockDraftResults,
   projectedDraftOrder,
   recordUserPick,
@@ -338,5 +339,20 @@ describe("mock-runner", () => {
     const claimed = claimHumanSlot(afterFirst, 3);
     expect(claimed.humanSlots).toEqual([1, 3]);
     expect(() => claimHumanSlot(claimed, 3)).toThrow(/already taken/);
+  });
+
+  it("updates ranks mid-draft without renaming already-drafted ids", () => {
+    const current = [
+      { id: "chen-1", name: "Stud", position: "RB" as const, team: "SF", chenRank: 2 },
+      { id: "chen-2", name: "Bye", position: "WR" as const, team: "CHI", chenRank: 40 },
+    ];
+    const incoming = [
+      { id: "fp-9", name: "Stud", position: "RB" as const, team: "SF", chenRank: 6, adp: 8 },
+      { id: "fp-3", name: "Rookie", position: "WR" as const, team: "NYJ", chenRank: 12, adp: 15 },
+    ];
+    const merged = mergeMockRankingSeeds(current, incoming);
+    expect(merged[0]).toMatchObject({ id: "chen-1", name: "Stud", chenRank: 6, adp: 8 });
+    expect(merged.some((player) => player.id === "fp-3")).toBe(true);
+    expect(merged.filter((player) => player.name === "Stud")).toHaveLength(1);
   });
 });
