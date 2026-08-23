@@ -6,6 +6,9 @@ const PUBLIC_EXACT = new Set([
   "/dojo-mark.png",
   "/login",
   "/demo",
+  "/robots.txt",
+  "/sitemap.xml",
+  "/manifest.webmanifest",
   "/api/auth/login",
   "/api/auth/gate",
   "/api/auth/logout",
@@ -57,5 +60,7 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|manifest.webmanifest).*)",
+  ],
 };
