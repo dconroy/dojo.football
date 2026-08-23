@@ -3,10 +3,15 @@ import { prisma } from "@/persistence/prisma";
 import {
   getOrCreateLeagueDraft,
   saveSharedDraft,
-  seedPlayersForScoring,
+  seedPlayersForDraft,
   type MemberSeat,
   type SharedDraft,
 } from "@/persistence/league-draft";
+import {
+  draftBoardExhausted,
+  draftIsFinished,
+  uniquePlayerCount,
+} from "@/domain/draft-capacity";
 import {
   parseChenScoring,
   scoringFromSource,
@@ -28,6 +33,7 @@ import { deleteDemoChatForRoom } from "@/persistence/demo-chat";
 export const DEMO_ROOM_PREFIX = "demo:";
 const DEMO_AUTO_PICK_MS = 30_000;
 const COMPLETE_TTL_MS = 45 * 60 * 1000;
+const EXHAUSTED_TTL_MS = 15 * 60 * 1000;
 const IDLE_ROOM_TTL_MS = 60 * 60 * 1000;
 // A room with no mock config is a half-created/orphaned shell (e.g. recreated
 // from a stale cookie). Give creation a grace window, then recycle it.
@@ -306,18 +312,26 @@ async function recycleStaleRooms() {
     } catch {
       picks = 0;
     }
-    const complete = picks >= room.teamCount * room.rounds;
-    const stale = now - room.updatedAt.getTime() > COMPLETE_TTL_MS;
-    if (complete && stale) {
+    const config = room.leagueKey ? await loadMockConfig(room.leagueKey) : null;
+    const exhausted =
+      isDemoClockStarted(config) &&
+      draftBoardExhausted({
+        picks,
+        playerCount: uniquePlayerCount(config?.players ?? []),
+        teamCount: room.teamCount,
+        rounds: room.rounds,
+      });
+    const finished = picks >= room.teamCount * room.rounds || exhausted;
+    const ttl = exhausted ? EXHAUSTED_TTL_MS : COMPLETE_TTL_MS;
+    if (finished && now - room.updatedAt.getTime() > ttl) {
       await deleteRoom(room.id);
       continue;
     }
-    if (!complete) {
+    if (!finished) {
       const seatRow = await prisma.syncCheckpoint.findUnique({
         where: { id: seatSeenKey(room.id) },
         select: { payload: true, syncedAt: true },
       });
-      const config = room.leagueKey ? await loadMockConfig(room.leagueKey) : null;
       const activeSeats = activeSeatSet(
         undefined,
         parseSeatLeases(seatRow?.payload),
@@ -347,7 +361,12 @@ function openSeats(
   if (!config || !shared.leagueKey) {
     return { complete: false, taken: new Set<number>(), openCount: 0, broken: true };
   }
-  const complete = shared.picks.length >= shared.teamCount * shared.rounds;
+  const complete = draftIsFinished({
+    picks: shared.picks.length,
+    playerCount: uniquePlayerCount(config.players),
+    teamCount: shared.teamCount,
+    rounds: shared.rounds,
+  });
   return {
     complete,
     taken: activeSlots,
@@ -456,6 +475,7 @@ export interface DemoRoomSummary {
   readonly totalPicks: number;
   readonly started: boolean;
   readonly complete: boolean;
+  readonly exhausted: boolean;
 }
 
 function picksFromJson(picksJson: string): unknown[] {
@@ -499,7 +519,14 @@ export async function listDemoRooms(): Promise<DemoRoomSummary[]> {
       picksFromJson(row.picksJson).length,
       snapshot?.draftResults.length ?? 0,
     );
-    const complete = picks >= totalPicks;
+    const capacity = {
+      picks,
+      playerCount: uniquePlayerCount(config.players),
+      teamCount: row.teamCount,
+      rounds: row.rounds,
+    };
+    const exhausted = draftBoardExhausted(capacity);
+    const complete = draftIsFinished(capacity);
     const openSeatList = Array.from(
       { length: row.teamCount },
       (_, index) => index + 1,
@@ -516,6 +543,7 @@ export async function listDemoRooms(): Promise<DemoRoomSummary[]> {
       totalPicks,
       started: Boolean(config.startedAtIso) && Number.isFinite(Date.parse(config.startedAtIso)),
       complete,
+      exhausted,
     });
   }
   return summaries;
@@ -587,9 +615,23 @@ export async function claimDemoSeat(
   const snapshot = await loadMockSnapshot(shared.leagueKey);
   if (
     snapshot &&
-    snapshot.draftResults.length >= loaded.teamCount * loaded.rounds
+    draftIsFinished({
+      picks: snapshot.draftResults.length,
+      playerCount: uniquePlayerCount(loaded.players),
+      teamCount: loaded.teamCount,
+      rounds: loaded.rounds,
+    })
   ) {
-    throw new Error("This demo draft is complete");
+    throw new Error(
+      draftBoardExhausted({
+        picks: snapshot.draftResults.length,
+        playerCount: uniquePlayerCount(loaded.players),
+        teamCount: loaded.teamCount,
+        rounds: loaded.rounds,
+      })
+        ? "This demo draft ran out of players and is closed"
+        : "This demo draft is complete",
+    );
   }
   if (requestedSlot != null) {
     if (
@@ -669,7 +711,11 @@ export async function createDemoRoom(
   const settings = validateDemoRoomInput(input);
   const roomId = `${DEMO_ROOM_PREFIX}${randomUUID()}`;
   const leagueKey = leagueKeyFor(roomId);
-  const seeded = await seedPlayersForScoring(settings.scoring);
+  const seeded = await seedPlayersForDraft(
+    settings.scoring,
+    settings.teamCount,
+    settings.rounds,
+  );
   await prisma.leagueDraft.create({
     data: {
       id: roomId,

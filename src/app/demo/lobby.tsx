@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { BrandLockup } from "@/components/brand-lockup";
+import { draftSizeNote } from "@/domain/draft-capacity";
 
 type Scoring = "standard" | "half-ppr" | "ppr";
 
@@ -21,6 +22,7 @@ interface DemoRoom {
   totalPicks: number;
   started: boolean;
   complete: boolean;
+  exhausted?: boolean;
 }
 
 interface RoomsResponse {
@@ -315,17 +317,23 @@ export function DemoLobby() {
                   <div className="demo-room-main">
                     <strong>
                       {SCORING_LABELS[room.scoring]}
-                      {room.complete ? " · Draft complete" : ""}
+                      {room.exhausted
+                        ? " · Board empty"
+                        : room.complete
+                          ? " · Draft complete"
+                          : ""}
                     </strong>
                     <span>
                       {room.totalSeats} teams · {room.rounds} rounds
                     </span>
                     <span>
-                      {room.complete
-                        ? `${room.totalPicks} of ${room.totalPicks} picks made`
-                        : room.started
-                          ? `${room.activeSeats} seated · ${room.openSeats} open · pick ${Math.min(room.picks + 1, room.totalPicks)}`
-                          : `${room.activeSeats} seated · ${room.openSeats} open · waiting to start`}
+                      {room.exhausted
+                        ? `${room.picks} of ${room.totalPicks} picks · closed`
+                        : room.complete
+                          ? `${room.totalPicks} of ${room.totalPicks} picks made`
+                          : room.started
+                            ? `${room.activeSeats} seated · ${room.openSeats} open · pick ${Math.min(room.picks + 1, room.totalPicks)}`
+                            : `${room.activeSeats} seated · ${room.openSeats} open · waiting to start`}
                     </span>
                   </div>
                   <div className="demo-room-actions">
@@ -375,7 +383,11 @@ export function DemoLobby() {
                       }
                       onClick={() => void joinRoom(room)}
                     >
-                      {room.complete ? "Complete" : "Join"}
+                      {room.exhausted
+                        ? "Closed"
+                        : room.complete
+                          ? "Complete"
+                          : "Join"}
                     </button>
                   </div>
                 </li>
@@ -457,6 +469,7 @@ export function DemoLobby() {
               {busy ? "Creating…" : "Create public draft"}
             </button>
           </form>
+          <p className="demo-create-note">{draftSizeNote(teamCount, rounds)}</p>
           <p className="demo-create-note">
             You will get a unique invite link. The draft stays paused until you
             start it, so you can wait for friends. Robots fill empty seats after

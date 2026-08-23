@@ -44,6 +44,11 @@ import {
   type DemoSeatKind,
 } from "@/domain/demo-labels";
 import { mergePollPlayers, playerRevision } from "@/lib/board-sync";
+import {
+  draftBoardExhausted,
+  draftIsFinished,
+  shortBoardMessage,
+} from "@/domain/draft-capacity";
 
 interface RemoteDraftPick {
   pick: number;
@@ -684,9 +689,14 @@ export function DraftAssistant({
   const picksUntilMyTurn = nextMine
     ? Math.max(0, nextMine.overall - current.overall)
     : 0;
-  const draftComplete =
-    state.draft.picks.length >=
-    state.draft.teamCount * state.draft.rounds;
+  const boardCapacity = {
+    picks: state.draft.picks.length,
+    playerCount: state.players.length,
+    teamCount: state.draft.teamCount,
+    rounds: state.draft.rounds,
+  };
+  const boardExhausted = draftBoardExhausted(boardCapacity);
+  const draftComplete = draftIsFinished(boardCapacity);
   const isMyTurn =
     !draftComplete &&
     current.slot === state.draft.userSlot &&
@@ -1085,6 +1095,19 @@ export function DraftAssistant({
       setNotice("Load Chen or import a CSV before starting a practice mock.");
       return;
     }
+    if (
+      state.players.length <
+      state.draft.teamCount * state.draft.rounds
+    ) {
+      setNotice(
+        shortBoardMessage(
+          state.players.length,
+          state.draft.teamCount,
+          state.draft.rounds,
+        ),
+      );
+      return;
+    }
     if (!confirmClearBoard()) return;
     setLauncherOpen(false);
     const key = `mock.${Math.random().toString(36).slice(2, 8)}`;
@@ -1276,7 +1299,14 @@ export function DraftAssistant({
       await mutateDraft(
         "/api/draft",
         { action: "chen", chen: parsed },
-        `Loaded ${parsed.players.length} ${CHEN_SCORING[scoring].label} ranks.`,
+        parsed.players.length <
+          stateRef.current.draft.teamCount * stateRef.current.draft.rounds
+          ? shortBoardMessage(
+              parsed.players.length,
+              stateRef.current.draft.teamCount,
+              stateRef.current.draft.rounds,
+            )
+          : `Loaded ${parsed.players.length} ${CHEN_SCORING[scoring].label} ranks.`,
       );
     } catch (error) {
       setNotice(
@@ -1543,6 +1573,15 @@ export function DraftAssistant({
             Admin tools are hidden but you&apos;re still the admin.
           </span>
           <button onClick={() => setPreviewMember(false)}>Back to admin view</button>
+        </div>
+      )}
+
+      {boardExhausted && (
+        <div className="preview-banner" role="status">
+          <span>
+            The board ran out of ranked players after {state.draft.picks.length} of{" "}
+            {state.draft.teamCount * state.draft.rounds} picks. This draft is closed.
+          </span>
         </div>
       )}
 

@@ -34,8 +34,8 @@ describe("FantasyPros public rankings merge", () => {
       player_position_id: "WR",
       rank_ecr: index + 1,
     }));
-    expect(capFantasyProsPage(rows, "WR")).toHaveLength(90);
-    expect(capFantasyProsPage(rows, "K")).toHaveLength(20);
+    expect(capFantasyProsPage(rows, "WR")).toHaveLength(120);
+    expect(capFantasyProsPage(rows, "K")).toHaveLength(32);
   });
 
   it("keeps kickers and defenses behind skill starters", () => {

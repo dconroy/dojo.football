@@ -16,15 +16,15 @@ const CACHE_MAX_AGE_MS = 12 * 60 * 60 * 1000;
 const STALE_OK_MS = 7 * 24 * 60 * 60 * 1000;
 const LOCK_MS = 2 * 60 * 1000;
 const inflight = new Map<ChenScoring, Promise<ChenImport | null>>();
-/** Draft-useful depth. A 14-team, 16-round board is 224 picks; 1000 names are waste. */
+/** Draft-useful depth. 14×16 is 224 picks; keep a cushion without the full 1000. */
 export const FP_POSITION_CAP: Readonly<Record<string, number>> = {
-  QB: 32,
-  RB: 80,
-  WR: 90,
-  TE: 30,
-  K: 20,
-  DST: 20,
-  DEF: 20,
+  QB: 40,
+  RB: 100,
+  WR: 120,
+  TE: 40,
+  K: 32,
+  DST: 32,
+  DEF: 32,
 };
 
 export interface FpPlayer {

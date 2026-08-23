@@ -18,8 +18,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://dojo.football"),
   title: "Draft Dojo",
   description: "Recalculates your top five after every pick.",
+  openGraph: {
+    title: "Draft Dojo",
+    description: "Recalculates your top five after every pick.",
+    url: "https://dojo.football",
+    siteName: "Draft Dojo",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Draft Dojo",
+    description: "Recalculates your top five after every pick.",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {

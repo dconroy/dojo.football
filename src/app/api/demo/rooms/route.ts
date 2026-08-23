@@ -30,6 +30,7 @@ export async function GET() {
         totalPicks: room.totalPicks,
         started: room.started,
         complete: room.complete,
+        exhausted: room.exhausted,
       })),
     });
   } catch {

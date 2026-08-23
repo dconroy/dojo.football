@@ -15,6 +15,11 @@ import {
   type ChenScoring,
 } from "@/adapters/chen/boris-chen";
 import { getFreshChenImport } from "@/adapters/chen/server-cache";
+import { extendRankingImport } from "@/adapters/rankings/extend-board";
+import {
+  requiredPickCount,
+  shortBoardMessage,
+} from "@/domain/draft-capacity";
 import { shouldAutoRefreshChen } from "@/adapters/rankings/labels";
 import {
   getPlayerMetaIndex,
@@ -123,6 +128,31 @@ export async function seedPlayersForScoring(scoring: ChenScoring) {
   const seeded = shapeChenImport(await getFreshChenImport(undefined, scoring));
   if (!seeded) {
     throw new Error(`Player rankings are unavailable for ${scoring}`);
+  }
+  return seeded;
+}
+
+/** Chen first, then other ranking lists until the room has enough names. */
+export async function seedPlayersForDraft(
+  scoring: ChenScoring,
+  teamCount: number,
+  rounds: number,
+) {
+  const need = requiredPickCount(teamCount, rounds);
+  const imported = await getFreshChenImport(undefined, scoring);
+  if (!imported?.players.length) {
+    throw new Error(`Player rankings are unavailable for ${scoring}`);
+  }
+  const extended =
+    imported.players.length >= need
+      ? imported
+      : await extendRankingImport(imported, scoring, need);
+  const seeded = shapeChenImport(extended);
+  if (!seeded) {
+    throw new Error(`Player rankings are unavailable for ${scoring}`);
+  }
+  if (seeded.players.length < need) {
+    throw new Error(shortBoardMessage(seeded.players.length, teamCount, rounds));
   }
   return seeded;
 }

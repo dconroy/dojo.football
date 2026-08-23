@@ -55,6 +55,19 @@ describe("mock-runner", () => {
     expect(waitingSlot(running, 50_000)).toBe(1);
   });
 
+  it("stops projecting when the ranked list is shorter than the draft", () => {
+    const short = config({
+      teamCount: 4,
+      rounds: 10,
+      humanSlots: [1],
+      picksBySlot: { 1: ["p1", "p5", "p9"] },
+      players: seeds(12),
+    });
+    const order = projectedDraftOrder(short);
+    expect(order.length).toBeGreaterThan(3);
+    expect(order.length).toBeLessThanOrEqual(12);
+  });
+
   it("maps snake slots correctly", () => {
     expect(slotForOverall(1, 12)).toBe(1);
     expect(slotForOverall(5, 12)).toBe(5);

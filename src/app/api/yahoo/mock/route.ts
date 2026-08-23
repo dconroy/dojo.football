@@ -11,6 +11,7 @@ import {
   loadMockConfig,
   saveMockConfig,
 } from "@/adapters/yahoo/mock-store";
+import { shortBoardMessage } from "@/domain/draft-capacity";
 import type { MockPlayerSeed } from "@/adapters/yahoo/mock-runner";
 import type { MockDraftConfig } from "@/adapters/yahoo/mock-runner";
 import {
@@ -140,7 +141,7 @@ export async function POST(request: Request) {
   if (players.length < teamCount * rounds) {
     return NextResponse.json(
       {
-        error: `Need at least ${teamCount * rounds} players; received ${players.length}`,
+        error: shortBoardMessage(players.length, teamCount, rounds),
       },
       { status: 400 },
     );
