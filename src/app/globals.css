@@ -1052,6 +1052,11 @@ h2 {
   border-left-color: var(--green);
 }
 
+.recommendation.selected {
+  box-shadow: inset 3px 0 var(--green);
+  background: var(--green-soft);
+}
+
 .rank {
   width: 29px;
   height: 29px;

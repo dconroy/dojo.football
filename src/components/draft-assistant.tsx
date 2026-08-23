@@ -1376,6 +1376,15 @@ export function DraftAssistant({
     setDetailId(id);
   }
 
+  function selectOrInspect(id: string) {
+    if (selected === id) {
+      openDetail(id);
+      return;
+    }
+    setSelected(id);
+    setDetailId(null);
+  }
+
   const detailReady = Boolean(detailPlayer);
   useEffect(() => {
     if (!detailId) {
@@ -2351,8 +2360,8 @@ export function DraftAssistant({
           {recommendation.recommendations.map((item, index) => (
             <article
               key={item.player.id}
-              className={`recommendation ${index === 0 ? "first" : ""}`}
-              onClick={() => openDetail(item.player.id)}
+              className={`recommendation ${index === 0 ? "first" : ""} ${selected === item.player.id ? "selected" : ""}`}
+              onClick={() => selectOrInspect(item.player.id)}
             >
               <div className="rank">{index + 1}</div>
               <PlayerAvatar name={item.player.name} imageUrl={item.player.imageUrl} />
@@ -2537,15 +2546,11 @@ export function DraftAssistant({
                 className={`table-row ${isMyTurn ? "on-clock" : ""} ${selected === player.id ? "selected" : ""} ${avoids.includes(player.id) ? "avoided" : ""} ${draftedIds.has(player.id) ? "taken" : ""}`}
                 key={player.id}
                 onClick={() => {
-                  if (isMyTurn && !draftedIds.has(player.id)) {
-                    if (selected === player.id) {
-                      openDetail(player.id);
-                      return;
-                    }
-                    setSelected(player.id);
+                  if (draftedIds.has(player.id)) {
+                    openDetail(player.id);
                     return;
                   }
-                  openDetail(player.id);
+                  selectOrInspect(player.id);
                 }}
                 role="row"
               >
