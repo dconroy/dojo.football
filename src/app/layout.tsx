@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import { BuildFooter } from "@/components/build-footer";
@@ -80,6 +81,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
         {children}
         <BuildFooter />
         <Analytics />
+        <SpeedInsights />
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`}
           strategy="afterInteractive"
