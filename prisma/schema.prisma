@@ -111,6 +111,7 @@ model LeagueDraft {
   playersJson   String   @default("[]")
   importedAt    String   @default("Synthetic fixture")
   source        String   @default("Built-in mock data")
+  storiesJson   String   @default("{}")
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }

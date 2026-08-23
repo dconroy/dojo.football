@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { DraftBoardReport, TeamReportCard } from "@/domain/draft-report";
 import { PLAYER_POSITIONS } from "@/domain/types";
 import { useDialogAccessibility } from "@/components/use-dialog-accessibility";
@@ -7,16 +7,48 @@ export function DraftReportCard({
   report,
   userSlot,
   teamLabel,
+  draftId,
   onClose,
 }: {
   report: DraftBoardReport;
   userSlot: number;
   teamLabel: (slot: number) => string;
+  draftId?: string | null;
   onClose: () => void;
 }) {
   const [openSlot, setOpenSlot] = useState(userSlot);
+  const [story, setStory] = useState("");
+  const [share, setShare] = useState("");
+  const [storyStatus, setStoryStatus] = useState<"idle" | "loading" | "ready">("idle");
+  const [copied, setCopied] = useState(false);
   const mine = report.teams.find((team) => team.slot === userSlot);
   const dialogRef = useDialogAccessibility<HTMLElement>(true, onClose);
+
+  useEffect(() => {
+    if (!report.complete || userSlot < 1 || !draftId) return;
+    let cancelled = false;
+    setStoryStatus("loading");
+    void fetch(`/api/draft/story?draftId=${encodeURIComponent(draftId)}`, {
+      method: "POST",
+    })
+      .then((response) => response.json())
+      .then((body: { story?: string | null; share?: string | null }) => {
+        if (cancelled) return;
+        if (body.story) {
+          setStory(body.story);
+          setShare(body.share ?? "");
+          setStoryStatus("ready");
+          return;
+        }
+        setStoryStatus("idle");
+      })
+      .catch(() => {
+        if (!cancelled) setStoryStatus("idle");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [report.complete, report.totalPicks, userSlot, draftId]);
 
   return (
     <div className="launcher-overlay" onClick={onClose}>
@@ -52,6 +84,31 @@ export function DraftReportCard({
                 {teamLabel(mine.slot)} · your team
               </p>
               <p className="report-hero-summary">{mine.summary}</p>
+              {storyStatus === "loading" ? (
+                <p className="report-story loading">Writing your recap…</p>
+              ) : null}
+              {storyStatus === "ready" && story ? (
+                <div className="report-story">
+                  <p className="eyebrow">Your draft story</p>
+                  <p>{story}</p>
+                  {share ? (
+                    <button
+                      type="button"
+                      className="secondary report-share"
+                      onClick={() => {
+                        void navigator.clipboard.writeText(share).then(() => {
+                          setCopied(true);
+                          window.setTimeout(() => setCopied(false), 2000);
+                        }).catch(() => {
+                          window.prompt("Copy this recap:", share);
+                        });
+                      }}
+                    >
+                      {copied ? "Copied" : "Copy share line"}
+                    </button>
+                  ) : null}
+                </div>
+              ) : null}
               <ul className="report-reasons">
                 {mine.reasons.map((reason, index) => (
                   <li key={index} className={`tone-${reason.tone}`}>

@@ -3,6 +3,7 @@ export * from "./demo-lobby";
 export * from "./draft-capacity";
 export * from "./draft-insights";
 export * from "./draft-report";
+export * from "./draft-story";
 export * from "./identity";
 export * from "./lineup";
 export * from "./recommendation";

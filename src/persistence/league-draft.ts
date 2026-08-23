@@ -3,6 +3,10 @@ import { DEFAULT_STRATEGY_WEIGHTS } from "@/config/strategy";
 import {
   makeManualPick,
   undoLastPick,
+  parseDraftStories,
+  withDraftStory,
+  INVITE_STORY_KEY,
+  type DraftStoriesMap,
   type DraftState,
   type Pick,
   type Player,
@@ -654,6 +658,47 @@ export async function applyChenImport(
   });
   lastByeCheck.delete(draftId);
   return saved;
+}
+
+export async function readDraftStories(
+  draftId = LEAGUE_DRAFT_ID,
+): Promise<DraftStoriesMap> {
+  const row = await prisma.leagueDraft.findUnique({
+    where: { id: draftId },
+    select: { storiesJson: true },
+  });
+  return parseDraftStories(row?.storiesJson);
+}
+
+export async function saveDraftStoryCopy(
+  draftId: string,
+  slot: number,
+  pickCount: number,
+  text: string,
+  share?: string,
+): Promise<DraftStoriesMap> {
+  const current = await readDraftStories(draftId);
+  const next = withDraftStory(current, slot, pickCount, text, share);
+  await prisma.leagueDraft.update({
+    where: { id: draftId },
+    data: { storiesJson: JSON.stringify(next) },
+  });
+  return next;
+}
+
+export async function saveInviteLine(
+  draftId: string,
+  line: string,
+): Promise<void> {
+  const current = await readDraftStories(draftId);
+  const next: DraftStoriesMap = {
+    ...current,
+    [INVITE_STORY_KEY]: { picks: 0, text: line.trim() },
+  };
+  await prisma.leagueDraft.update({
+    where: { id: draftId },
+    data: { storiesJson: JSON.stringify(next) },
+  });
 }
 
 export function userPrefs(user: User): {

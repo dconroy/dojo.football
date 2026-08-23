@@ -3357,6 +3357,41 @@ button.board-pick:hover {
   font-size: 12px;
 }
 
+.report-story {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--grade) 28%, var(--line));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--grade) 6%, var(--panel));
+}
+
+.report-story.loading {
+  color: var(--muted);
+  font-size: 12px;
+  font-style: italic;
+}
+
+.report-story .eyebrow {
+  margin-bottom: 6px;
+}
+
+.report-story > p:last-of-type {
+  margin: 0;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.report-share,
+.app.dark .report-share {
+  margin-top: 10px;
+  width: auto;
+  min-height: 30px;
+  border-color: var(--line);
+  background: transparent;
+  color: var(--text);
+}
+
 .report-reasons {
   display: grid;
   gap: 5px;

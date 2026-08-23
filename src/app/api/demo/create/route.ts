@@ -5,6 +5,7 @@ import {
   demoCookieOptions,
 } from "@/auth/demo-session";
 import { DEFAULT_STRATEGY_WEIGHTS } from "@/config/strategy";
+import { maybeWriteInviteLine } from "@/adapters/openai/invite-line";
 import { draftStateFor } from "@/persistence/league-draft";
 import {
   createDemoRoom,
@@ -32,6 +33,14 @@ export async function POST(request: NextRequest) {
     }
     const settings = validateDemoRoomInput(body);
     const { shared, slot, sessionId } = await createDemoRoom(settings);
+    const inviteLine = await maybeWriteInviteLine({
+      draftId: shared.id,
+      host: settings.displayName,
+      teamCount: settings.teamCount,
+      rounds: settings.rounds,
+      scoring: settings.scoring,
+      slot,
+    });
     const token = await createDemoToken({
       roomId: shared.id,
       slot,
@@ -58,6 +67,7 @@ export async function POST(request: NextRequest) {
         slot,
         roomId: shared.id,
         ...(await demoClientState(shared.id)),
+        inviteLine,
       },
     });
     response.cookies.set(DEMO_COOKIE_NAME, token, demoCookieOptions());

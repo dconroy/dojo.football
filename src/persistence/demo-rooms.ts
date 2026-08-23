@@ -2,11 +2,13 @@ import { randomUUID } from "node:crypto";
 import { prisma } from "@/persistence/prisma";
 import {
   getOrCreateLeagueDraft,
+  readDraftStories,
   saveSharedDraft,
   seedPlayersForDraft,
   type MemberSeat,
   type SharedDraft,
 } from "@/persistence/league-draft";
+import { cachedInviteLine } from "@/domain";
 import {
   draftBoardExhausted,
   draftIsFinished,
@@ -825,10 +827,17 @@ export async function demoRoomStarted(roomId: string): Promise<boolean> {
 export async function demoClientState(roomId: string): Promise<{
   takenSlots: number[];
   started: boolean;
+  inviteLine: string | null;
 }> {
+  const [takenSlots, started, stories] = await Promise.all([
+    takenSeatsFor(roomId),
+    demoRoomStarted(roomId),
+    readDraftStories(roomId),
+  ]);
   return {
-    takenSlots: await takenSeatsFor(roomId),
-    started: await demoRoomStarted(roomId),
+    takenSlots,
+    started,
+    inviteLine: cachedInviteLine(stories),
   };
 }
 

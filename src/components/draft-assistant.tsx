@@ -183,6 +183,7 @@ interface DemoInfo {
   roomId: string;
   takenSlots?: number[];
   started?: boolean;
+  inviteLine?: string | null;
 }
 
 interface YahooLeagueChoice {
@@ -322,6 +323,7 @@ export function DraftAssistant({
   const [chosenSeat, setChosenSeat] = useState<number | null>(null);
   const [demoStarted, setDemoStarted] = useState(!isDemo);
   const [demoTeamName, setDemoTeamName] = useState("");
+  const [inviteLine, setInviteLine] = useState<string | null>(null);
   const [inviteCopied, setInviteCopied] = useState(false);
   const inviteCopiedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [rankingSources, setRankingSources] = useState<
@@ -471,6 +473,7 @@ export function DraftAssistant({
         }
         if (payload.demo.takenSlots) setTakenSlots(payload.demo.takenSlots);
         setDemoStarted(payload.demo.started !== false);
+        if (payload.demo.inviteLine) setInviteLine(payload.demo.inviteLine);
       }
       if (payload.updatedAt) {
         setState((prev) =>
@@ -516,6 +519,7 @@ export function DraftAssistant({
       if (payload.demo.role === "play") setDemoTeamName(payload.me.teamName);
       if (payload.demo.takenSlots) setTakenSlots(payload.demo.takenSlots);
       setDemoStarted(payload.demo.started !== false);
+      if (payload.demo.inviteLine) setInviteLine(payload.demo.inviteLine);
     }
     if (message) setNotice(message);
   }
@@ -1476,8 +1480,9 @@ export function DraftAssistant({
   async function copyDemoInvite() {
     if (!draftId) return;
     const invite = `${window.location.origin}/demo?room=${encodeURIComponent(draftId)}&join=1`;
+    const text = inviteLine ? `${inviteLine}\n${invite}` : invite;
     try {
-      await navigator.clipboard.writeText(invite);
+      await navigator.clipboard.writeText(text);
       setInviteCopied(true);
       if (inviteCopiedTimer.current) clearTimeout(inviteCopiedTimer.current);
       inviteCopiedTimer.current = setTimeout(() => {
@@ -1842,6 +1847,7 @@ export function DraftAssistant({
           report={draftReport}
           userSlot={hasDraftSeat ? state.draft.userSlot : 0}
           teamLabel={teamLabel}
+          draftId={draftId}
           onClose={() => setReportOpen(false)}
         />
       )}

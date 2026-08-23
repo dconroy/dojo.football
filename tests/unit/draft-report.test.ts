@@ -5,6 +5,14 @@ import {
   letterGrade,
   limitIncompleteGrade,
 } from "../../src/domain/draft-report";
+import {
+  cachedDraftStory,
+  fallbackShareLine,
+  formatDraftStoryFacts,
+  packDraftStoryFacts,
+  parseDraftStories,
+  withDraftStory,
+} from "../../src/domain/draft-story";
 import type { DraftState, Pick, Player, Position } from "../../src/domain";
 
 function player(
@@ -110,5 +118,44 @@ describe("draft report card", () => {
     expect(incompleteTeam?.holes).toContain("No K");
     expect(["A+", "A", "A-"]).not.toContain(incompleteTeam?.grade);
     expect(["A+", "A", "A-"]).toContain(completeTeam?.grade);
+  });
+
+  it("packs a compact fact sheet from the already-graded card", () => {
+    const draft: DraftState = {
+      teamCount: 8,
+      rounds: 12,
+      userSlot: 1,
+      picks: [
+        pick(1, player("ReachWR", "WR", 80)),
+        pick(16, player("Stud", "RB", 3)),
+        pick(17, player("QB One", "QB", 25)),
+        pick(32, player("WR Two", "WR", 40)),
+        pick(33, player("TE One", "TE", 50)),
+        pick(48, player("Kick", "K", 140)),
+      ],
+    };
+    const team = buildDraftReport(draft).teams.find((entry) => entry.slot === 1);
+    expect(team).toBeTruthy();
+    const facts = packDraftStoryFacts(team!, "dave", 8);
+    expect(facts.teamName).toBe("dave");
+    expect(facts.grade).toBe(team!.grade);
+    expect(facts.rank).toBe(team!.rank);
+    expect(facts.field).toBe(8);
+    expect(facts.reasons.length).toBeGreaterThan(0);
+    expect(facts.reasons.length).toBeLessThanOrEqual(6);
+    expect(facts.picks.some((line) => line.includes("Stud (RB)"))).toBe(true);
+    const blob = formatDraftStoryFacts(facts);
+    expect(blob).toContain("Grade:");
+    expect(blob).toContain(team!.grade);
+    expect(blob.split("\n").length).toBeLessThanOrEqual(12);
+    expect(fallbackShareLine(facts)).toContain("Draft Dojo");
+  });
+
+  it("returns a cached story only when the pick count still matches", () => {
+    const stored = withDraftStory({}, 4, 112, "You went stars and scrubs.", "C+ in an 8-team snake.");
+    expect(cachedDraftStory(stored, 4, 112)?.text).toMatch(/stars and scrubs/);
+    expect(cachedDraftStory(stored, 4, 112)?.share).toMatch(/C\+/);
+    expect(cachedDraftStory(stored, 4, 96)).toBeNull();
+    expect(cachedDraftStory(parseDraftStories("not-json"), 4, 112)).toBeNull();
   });
 });

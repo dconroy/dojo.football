@@ -19,6 +19,7 @@ const PUBLIC_EXACT = new Set([
   "/api/demo/join",
   "/api/draft",
   "/api/draft/pick",
+  "/api/draft/story",
   "/api/players/brief",
   "/api/yahoo/mock",
   "/api/yahoo/sync",

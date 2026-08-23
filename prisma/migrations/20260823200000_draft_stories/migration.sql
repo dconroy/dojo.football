@@ -1,0 +1,1 @@
+ALTER TABLE "LeagueDraft" ADD COLUMN "storiesJson" TEXT NOT NULL DEFAULT '{}';
