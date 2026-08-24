@@ -283,9 +283,6 @@ export function projectedDraftOrder(config: MockDraftConfig): MockPlayerSeed[] {
     () => ({ QB: 0, RB: 0, WR: 0, TE: 0, K: 0, DEF: 0 }),
   );
   const remaining = new Set(sortable.map((player) => player.id));
-  for (const slot of humanSlots) {
-    for (const id of picksBySlot[slot] ?? []) remaining.delete(id);
-  }
 
   const picks: MockPlayerSeed[] = [];
   const consumed: Record<number, number> = {};

@@ -148,6 +148,61 @@ describe("mock-runner", () => {
     expect(projectedDraftOrder(afterTwo).length).toBeGreaterThanOrEqual(3);
   });
 
+  it("never rewrites published robot picks when a later human pick is recorded", () => {
+    const base = config({
+      teamCount: 4,
+      rounds: 2,
+      humanSlots: [1, 3],
+      picksBySlot: { 1: ["p1"], 3: ["p3"] },
+    });
+    const published = projectedDraftOrder(base);
+    expect(published).toHaveLength(5);
+    const conflictingPlayerId = published.at(-1)!.id;
+
+    // This stale selection conflicts with the already-published robot pick at
+    // overall 5. Replaying must stop at the conflict, never reserve that player
+    // early and silently replace the historical robot pick with another player.
+    const stale = {
+      ...base,
+      picksBySlot: { 1: ["p1"], 3: ["p3", conflictingPlayerId] },
+    };
+    expect(projectedDraftOrder(stale)).toEqual(published);
+  });
+
+  it("completes a 10-team, 15-round draft with four humans without changing history", () => {
+    let draft = config({
+      teamCount: 10,
+      rounds: 15,
+      humanSlots: [1, 2, 3, 4],
+      picksBySlot: {},
+      players: seeds(200),
+      varietySeed: "four-human-production-regression",
+    });
+    let now = 1_000_000;
+
+    for (let guard = 0; guard < 100; guard += 1) {
+      const before = projectedDraftOrder(draft);
+      if (before.length === draft.teamCount * draft.rounds) break;
+      const slot = slotForOverall(before.length + 1, draft.teamCount);
+      expect(draft.humanSlots).toContain(slot);
+      const publishedIds = new Set(before.map((player) => player.id));
+      const player = draft.players.find((candidate) => !publishedIds.has(candidate.id));
+      expect(player).toBeDefined();
+
+      now += 1_000_000;
+      draft = recordUserPick(draft, player!.id, now, slot);
+      expect(
+        projectedDraftOrder(draft)
+          .slice(0, before.length)
+          .map((candidate) => candidate.id),
+      ).toEqual(before.map((candidate) => candidate.id));
+    }
+
+    const completed = projectedDraftOrder(draft);
+    expect(completed).toHaveLength(150);
+    expect(new Set(completed.map((player) => player.id))).toHaveLength(150);
+  });
+
   it("rejects a confirm from a slot that is not on the clock", () => {
     const base = config({ humanSlots: [1, 3], picksBySlot: {} });
     expect(() => recordUserPick(base, "p1", 10_000, 3)).toThrow(/slot 1/);
@@ -214,7 +269,10 @@ describe("mock-runner", () => {
         chenRank: 210 + n,
       })),
     ];
-    const humanPicks = skill.slice(0, 6).map((player) => player.id);
+    // Keep the pre-seeded human selections below the range robots reach in
+    // this short draft. The projector consumes human picks chronologically;
+    // future selections are not allowed to reserve players from earlier turns.
+    const humanPicks = skill.slice(-6).map((player) => player.id);
     const base = config({
       teamCount: 4,
       rounds: 6,
