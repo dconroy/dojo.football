@@ -11,6 +11,7 @@ import {
   overallPickFor,
   picksForSlot,
   picksUntilFollowingSelection,
+  picksUntilNextSelection,
   selectionForOverall,
   shouldApplySyncUpdate,
   createStaleSyncGuard,
@@ -70,6 +71,12 @@ describe("12-team snake calculations", () => {
       const secondPick = overallPickFor(2, slot);
       expect(picksUntilFollowingSelection(secondPick, slot)).toBe(2 * (slot - 1));
     }
+  });
+
+  it("counts selections before the user's upcoming turn", () => {
+    expect(picksUntilNextSelection(13, 1)).toBe(11);
+    expect(picksUntilNextSelection(24, 1)).toBe(0);
+    expect(picksUntilNextSelection(2, 12)).toBe(10);
   });
 
   it("validates impossible values", () => {
@@ -262,5 +269,16 @@ describe("remote pick reconcile", () => {
       "3",
       "chen:TE:tyler warren",
     ]);
+  });
+
+  it("refuses to rewrite a published mock board", () => {
+    const first = player("1", "RB");
+    const current = makeManualPick(
+      createDraftState(1, { teamCount: 4, rounds: 3 }),
+      first,
+    );
+    expect(() =>
+      extendDraftWithRemotePlayers(current, [player("2", "WR")], undefined, false),
+    ).toThrow(/differs at pick 1/);
   });
 });

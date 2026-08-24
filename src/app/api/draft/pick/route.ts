@@ -15,6 +15,7 @@ import {
 } from "@/persistence/league-draft";
 import { boardPayload } from "@/persistence/draft-payload";
 import { demoRoomStarted } from "@/persistence/demo-rooms";
+import { appendMockUserPick } from "@/adapters/yahoo/mock-store";
 import { opponentPick, selectionForOverall, simulateToUserTurn } from "@/domain";
 
 export const runtime = "nodejs";
@@ -93,6 +94,21 @@ export async function POST(request: Request) {
       if (current.slot !== slot) {
         throw new AuthError(`Pick ${current.overall} belongs to draft slot ${current.slot}`, 403);
       }
+    }
+    const shared = await getOrCreateLeagueDraft(draftId);
+    if (shared.picks.some((pick) => pick.player.id === body.playerId)) {
+      return NextResponse.json(await boardPayload(draftId, user, demo));
+    }
+    if (shared.leagueKey?.startsWith("mock.")) {
+      const current = selectionForOverall(
+        shared.picks.length + 1,
+        shared.teamCount,
+      );
+      await appendMockUserPick(
+        shared.leagueKey,
+        body.playerId,
+        current.slot,
+      );
     }
     await appendSharedPick(body.playerId, { draftId });
     return NextResponse.json(await boardPayload(draftId, user, demo));

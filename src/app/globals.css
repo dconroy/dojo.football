@@ -4763,6 +4763,12 @@ body:has(.landing) {
 }
 
 @media (max-width: 800px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
   .demo-lobby-header,
   .demo-lobby-intro,
   .demo-lobby-grid,
@@ -4781,6 +4787,24 @@ body:has(.landing) {
 
   .demo-lobby-intro h1 {
     font-size: clamp(38px, 12vw, 56px);
+  }
+
+  .demo-share-card {
+    width: calc(100% - 32px);
+    margin-top: max(24px, 6vh);
+    padding: 20px 16px;
+  }
+
+  .demo-share-card h1 {
+    font-size: clamp(32px, 10vw, 44px);
+  }
+
+  .demo-share-actions {
+    flex-wrap: wrap;
+  }
+
+  .demo-share-actions button {
+    flex: 1 1 140px;
   }
 
   .demo-lobby-stats {

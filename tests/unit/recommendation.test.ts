@@ -69,6 +69,7 @@ describe("transparent recommendations", () => {
     expect(result.recommendations).toHaveLength(5);
     expect(result.currentOverall).toBe(13);
     expect(result.currentRound).toBe(2);
+    expect(result.picksUntilNextSelection).toBe(11);
     expect(result.picksUntilFollowingSelection).toBe(0);
     expect(result.recommendations[0].player.id).toBe("elite-rb");
 

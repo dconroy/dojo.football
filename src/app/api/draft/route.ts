@@ -97,6 +97,11 @@ export async function PUT(request: Request) {
         if (!current.leagueKey) {
           throw new ConflictError("This demo room is missing its mock draft");
         }
+        if (current.picks.length > 0) {
+          throw new ConflictError(
+            "Rankings cannot change after a demo draft has started",
+          );
+        }
         const changed = await replaceMockPlayersBeforeDraft(
           current.leagueKey,
           body.chen.players.map((player) => ({
@@ -133,6 +138,12 @@ export async function PUT(request: Request) {
       const current = await getOrCreateLeagueDraft(draftId);
       const replacingMock =
         body.replace === true && current.leagueKey?.startsWith("mock.");
+      if (replacingMock && current.picks.length > 0) {
+        return NextResponse.json(
+          { error: "Refusing to rewrite published mock picks" },
+          { status: 409 },
+        );
+      }
       if (!replacingMock && body.picks.length < current.picks.length) {
         return NextResponse.json(
           { error: "Refusing to shrink the shared board" },

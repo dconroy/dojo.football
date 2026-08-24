@@ -99,6 +99,7 @@ export interface RecommendationResult {
   readonly evaluatedCount: number;
   readonly currentOverall: number;
   readonly currentRound: number;
+  readonly picksUntilNextSelection: number | null;
   readonly picksUntilFollowingSelection: number | null;
 }
 

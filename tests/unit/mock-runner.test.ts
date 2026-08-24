@@ -110,6 +110,12 @@ describe("mock-runner", () => {
     expect(nextTick.picks.length).toBeGreaterThanOrEqual(6);
   });
 
+  it("treats a retried confirmation as idempotent", () => {
+    const base = config();
+    const confirmed = recordUserPick(base, "p5", 20_000, 5);
+    expect(recordUserPick(confirmed, "p5", 20_000, 5)).toBe(confirmed);
+  });
+
   it("normalizes the legacy single-seat shape", () => {
     const legacy = config({
       humanSlots: undefined,

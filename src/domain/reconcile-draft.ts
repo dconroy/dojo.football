@@ -27,10 +27,14 @@ export function extendDraftWithRemotePlayers(
   current: DraftState,
   remotePlayers: readonly Player[],
   madeAt?: string,
+  allowRebuild = true,
 ): { draft: DraftState; applied: number; rebuilt: boolean } {
   const prefix = Math.min(current.picks.length, remotePlayers.length);
   for (let index = 0; index < prefix; index += 1) {
     if (current.picks[index]?.player.id !== remotePlayers[index]?.id) {
+      if (!allowRebuild) {
+        throw new Error(`remote order differs at pick ${index + 1}`);
+      }
       const draft = rebuildDraftFromPlayers(current, remotePlayers, madeAt);
       return { draft, applied: draft.picks.length, rebuilt: true };
     }
@@ -43,6 +47,9 @@ export function extendDraftWithRemotePlayers(
   let applied = 0;
   for (const player of remotePlayers.slice(current.picks.length)) {
     if (draft.picks.some((pick) => pick.player.id === player.id)) {
+      if (!allowRebuild) {
+        throw new Error("remote order repeats an existing player");
+      }
       const rebuilt = rebuildDraftFromPlayers(current, remotePlayers, madeAt);
       return { draft: rebuilt, applied: rebuilt.picks.length, rebuilt: true };
     }

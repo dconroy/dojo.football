@@ -15,6 +15,7 @@ import {
   nextSelectionForSlot,
   picksForSlot,
   picksUntilFollowingSelection,
+  picksUntilNextSelection,
 } from "./snake";
 import type {
   DraftState,
@@ -491,6 +492,12 @@ export function recommendPlayers(
     currentRound:
       next?.round ??
       Math.floor((Math.max(1, currentOverall) - 1) / state.teamCount) + 1,
+    picksUntilNextSelection: picksUntilNextSelection(
+      currentOverall,
+      state.userSlot,
+      state.rounds,
+      state.teamCount,
+    ),
     picksUntilFollowingSelection: picksUntilFollowingSelection(
       currentOverall,
       state.userSlot,

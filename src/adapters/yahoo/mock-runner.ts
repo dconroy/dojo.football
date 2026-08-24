@@ -456,6 +456,13 @@ export function recordUserPick(
   if (!Number.isFinite(Date.parse(config.startedAtIso))) {
     throw new Error("Mock draft has not started");
   }
+  const normalized = normalizeSeats(config);
+  if (
+    expectedSlot !== undefined &&
+    normalized.picksBySlot[expectedSlot]?.at(-1) === playerId
+  ) {
+    return config;
+  }
   const slot = waitingSlot(config, now);
   if (slot === null) {
     throw new Error("Mock draft is not waiting on a human pick");
@@ -465,7 +472,7 @@ export function recordUserPick(
       `Mock draft is on the clock for slot ${slot}, not slot ${expectedSlot}`,
     );
   }
-  const { humanSlots, picksBySlot } = normalizeSeats(config);
+  const { humanSlots, picksBySlot } = normalized;
   const alreadyPicked =
     projectedDraftOrder(config).some((player) => player.id === playerId) ||
     Object.values(picksBySlot).some((ids) => ids.includes(playerId));

@@ -71,6 +71,17 @@ export function followingSelectionForSlot(
   );
 }
 
+/** Number of selections remaining before the user's upcoming turn. */
+export function picksUntilNextSelection(
+  currentOverall: number,
+  slot: number,
+  rounds = 15,
+  teamCount = 12,
+): number | null {
+  const next = nextSelectionForSlot(currentOverall, slot, rounds, teamCount);
+  return next ? next.overall - currentOverall : null;
+}
+
 /** Number of selections made by other teams between the user's next two turns. */
 export function picksUntilFollowingSelection(
   currentOverall: number,

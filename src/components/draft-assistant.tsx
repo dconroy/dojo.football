@@ -734,7 +734,8 @@ export function DraftAssistant({
   const finishedSpectator = isDemo && demoRole === "watch" && draftComplete;
   const canChangeRankings =
     !draftComplete &&
-    (me?.canManageBoard === true || (isDemo && demoRole === "play"));
+    (me?.canManageBoard === true ||
+      (isDemo && demoRole === "play" && state.draft.picks.length === 0));
   const isMyTurn =
     !draftComplete &&
     current.slot === state.draft.userSlot &&
@@ -1036,6 +1037,7 @@ export function DraftAssistant({
               current.draft,
               resolvedRemote,
               snapshot.syncedAt,
+              false,
             )
           : (() => {
               let nextDraft = current.draft;
@@ -1232,25 +1234,6 @@ export function DraftAssistant({
       return;
     }
     try {
-      if (leagueKey.startsWith("mock.")) {
-        const response = await fetch("/api/yahoo/mock", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            action: "confirm",
-            leagueKey,
-            playerId: player.id,
-            slot: state.draft.userSlot,
-          }),
-        });
-        const body = await response.json().catch(() => ({}));
-        if (!response.ok) {
-          setNotice(
-            `Couldn't record that pick: ${body.error ?? response.status}`,
-          );
-          return;
-        }
-      }
       const ok = await mutateDraft(
         "/api/draft/pick",
         { playerId: player.id },
@@ -2369,9 +2352,9 @@ export function DraftAssistant({
                     : "no flags"
                   : draftComplete
                     ? "draft complete"
-                    : recommendation.picksUntilFollowingSelection === null
+                    : recommendation.picksUntilNextSelection === null
                       ? "last pick"
-                      : `${recommendation.picksUntilFollowingSelection} picks until your next turn`}
+                      : `${recommendation.picksUntilNextSelection} picks until your next turn`}
               </span>
               <b className="live-pill">LIVE</b>
             </div>
