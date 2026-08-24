@@ -3,11 +3,9 @@ import { describe, expect, it } from "vitest";
 import type { TeamReportCard } from "../../src/domain/draft-report";
 import {
   buildReportCardShareModel,
-  fallbackReportCardShareText,
   REPORT_CARD_IMAGE_HEIGHT,
   REPORT_CARD_IMAGE_WIDTH,
   reportCardFileName,
-  reportCardShareText,
   wrapTextLines,
 } from "../../src/domain/report-card-share";
 
@@ -61,7 +59,7 @@ describe("report-card sharing", () => {
     expect(model.picks[0]).toBe("R1 · Player 1 · RB");
   });
 
-  it("uses generated share copy when present and client copy otherwise", () => {
+  it("includes the draft story in the image model", () => {
     const model = buildReportCardShareModel(
       team,
       "Sunday Heroes",
@@ -70,11 +68,6 @@ describe("report-card sharing", () => {
     );
 
     expect(model.story).toBe("A patient draft turned into a balanced contender.");
-    expect(reportCardShareText("  Custom recap!  ", model)).toBe("Custom recap!");
-    expect(reportCardShareText("", model)).toBe(fallbackReportCardShareText(model));
-    expect(reportCardShareText(null, model)).toContain(
-      "I drafted an A- roster (2nd of 12) in Draft Dojo.",
-    );
   });
 
   it("creates safe filenames and truncates wrapped image copy", () => {

@@ -1,14 +1,13 @@
 export const DRAFT_STORY_MODEL = "gpt-4o-mini";
 
 export const DRAFT_STORY_SYSTEM =
-  "You are a sharp fantasy recap writer for Draft Dojo. Write JSON only with keys story and share. story: one second-person paragraph, 80-110 words, witty but not mean, mentioning the grade plus one high and one low from the facts. share: one brag under 180 characters that names Draft Dojo. Use only supplied facts. Do not invent players, ranks, or scores. No bullets. No title. No markdown.";
+  "You are a sharp fantasy recap writer for Draft Dojo. Write JSON only with the key story. story: one second-person paragraph, 80-110 words, witty but not mean, mentioning the grade plus one high and one low from the facts. Use only supplied facts. Do not invent players, ranks, or scores. No bullets. No title. No markdown.";
 
 export const DRAFT_INVITE_SYSTEM =
   "You write one punchy Draft Dojo invite line. JSON only: {\"line\":\"...\"}. Max 140 characters. Mention the host first name, team count, and scoring if given. Sound like a commissioner texting the group chat. No quotes. No hashtags. No URL.";
 
 export interface DraftStoryCopy {
   readonly story: string;
-  readonly share: string;
 }
 
 type FetchLike = (
@@ -98,9 +97,8 @@ export async function generateDraftStory(
   });
   const parsed = parseJsonObject(raw);
   const story = typeof parsed.story === "string" ? parsed.story.trim() : "";
-  const share = typeof parsed.share === "string" ? parsed.share.trim() : "";
   if (!story) throw new Error("OpenAI returned an empty story");
-  return { story, share };
+  return { story };
 }
 
 export async function generateInviteLine(

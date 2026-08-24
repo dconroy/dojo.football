@@ -48,7 +48,6 @@ interface RoomsResponse {
 interface CreatedDraft {
   roomId: string;
   slot: number;
-  inviteLine?: string | null;
 }
 
 const SCORING_LABELS: Record<Scoring, string> = {
@@ -257,7 +256,7 @@ export function DemoLobby() {
       });
       const body = (await response.json()) as {
         error?: string;
-        demo?: { roomId: string; slot: number; inviteLine?: string | null };
+        demo?: { roomId: string; slot: number };
       };
       if (!response.ok || !body.demo?.roomId) {
         setNotice(body.error ?? "Could not create the draft.");
@@ -266,7 +265,6 @@ export function DemoLobby() {
       setCreated({
         roomId: body.demo.roomId,
         slot: body.demo.slot,
-        inviteLine: body.demo.inviteLine,
       });
     } catch {
       setNotice("Could not create the draft. Try again.");
@@ -278,9 +276,8 @@ export function DemoLobby() {
   async function copyInvite() {
     if (!created) return;
     const url = `${window.location.origin}${invitePath(created.roomId)}`;
-    const text = created.inviteLine ? `${created.inviteLine}\n${url}` : url;
     try {
-      await copyText(text);
+      await copyText(url);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -303,8 +300,8 @@ export function DemoLobby() {
           <p className="eyebrow">Your draft is ready</p>
           <h1>Invite your friends to the mock draft.</h1>
           <p>
-            {created.inviteLine ??
-              `You have slot ${created.slot}. The clock stays paused until you start it from the board — share this link, wait for friends, then kick it off when you’re ready.`}
+            You have slot {created.slot}. Share this link, wait for friends, then start
+            the draft when you’re ready.
           </p>
           <label>
             Invite link

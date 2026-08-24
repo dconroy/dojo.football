@@ -8,7 +8,6 @@ import {
 import {
   buildDraftReport,
   cachedDraftStory,
-  fallbackShareLine,
   formatDraftStoryFacts,
   packDraftStoryFacts,
 } from "@/domain";
@@ -34,32 +33,27 @@ export async function POST(request: Request) {
         ? user.draftSlot
         : null;
     if (!slot) {
-      return NextResponse.json({ story: null, share: null });
+      return NextResponse.json({ story: null });
     }
 
     const shared = await getOrCreateLeagueDraft(draftId);
     const report = buildDraftReport(draftStateFor(shared, slot));
     if (!report.complete) {
-      return NextResponse.json({ story: null, share: null });
+      return NextResponse.json({ story: null });
     }
     const team = report.teams.find((entry) => entry.slot === slot);
     if (!team) {
-      return NextResponse.json({ story: null, share: null });
+      return NextResponse.json({ story: null });
     }
 
     const pickCount = shared.picks.length;
     const cached = cachedDraftStory(await readDraftStories(draftId), slot, pickCount);
     if (cached) {
-      return NextResponse.json({
-        story: cached.text,
-        share:
-          cached.share ??
-          fallbackShareLine(packDraftStoryFacts(team, "you", report.teams.length)),
-      });
+      return NextResponse.json({ story: cached.text });
     }
 
     if (!openaiConfigured()) {
-      return NextResponse.json({ story: null, share: null });
+      return NextResponse.json({ story: null });
     }
 
     const teamName = demo
@@ -70,13 +64,12 @@ export async function POST(request: Request) {
         : `Slot ${slot}`;
     const facts = packDraftStoryFacts(team, teamName, report.teams.length);
     const copy = await generateDraftStory(formatDraftStoryFacts(facts));
-    const share = copy.share || fallbackShareLine(facts);
-    await saveDraftStoryCopy(draftId, slot, pickCount, copy.story, share);
-    return NextResponse.json({ story: copy.story, share });
+    await saveDraftStoryCopy(draftId, slot, pickCount, copy.story);
+    return NextResponse.json({ story: copy.story });
   } catch (error) {
     if (error instanceof AuthError) {
       return NextResponse.json({ error: error.message }, { status: error.status });
     }
-    return NextResponse.json({ story: null, share: null });
+    return NextResponse.json({ story: null });
   }
 }

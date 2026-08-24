@@ -39,20 +39,6 @@ export function buildReportCardShareModel(
   };
 }
 
-export function fallbackReportCardShareText(
-  model: ReportCardShareModel,
-): string {
-  const article = /^[AF]/.test(model.grade) ? "an" : "a";
-  return `I drafted ${article} ${model.grade} roster (${model.rankLabel}) in Draft Dojo. ${model.summary}`.trim();
-}
-
-export function reportCardShareText(
-  generatedShareText: string | null | undefined,
-  model: ReportCardShareModel,
-): string {
-  return generatedShareText?.trim() || fallbackReportCardShareText(model);
-}
-
 export function reportCardFileName(teamName: string): string {
   const slug = teamName
     .trim()

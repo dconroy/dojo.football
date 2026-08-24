@@ -126,7 +126,3 @@ export function cachedInviteLine(stories: DraftStoriesMap): string | null {
   const row = stories[INVITE_STORY_KEY];
   return row?.text?.trim() || null;
 }
-
-export function fallbackShareLine(facts: DraftStoryFacts): string {
-  return `I just drafted a ${facts.grade} roster (${facts.rank} of ${facts.field}) in Draft Dojo.`;
-}

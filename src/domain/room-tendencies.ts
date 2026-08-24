@@ -176,7 +176,7 @@ export function analyzeRoomTendencies(state: DraftState): RoomTendencies {
     alerts.push({
       kind: "demand",
       confidence: strongest.teamsNeeding >= 4 ? "high" : "medium",
-      text: `${strongest.position} demand ahead — ${strongest.teamsNeeding} of ${strongest.picksInWindow} selections before your next turn fill a lineup need`,
+      text: `${strongest.teamsNeeding} of ${strongest.picksInWindow} picks ahead belong to teams that still need ${strongest.position}`,
     });
   }
   if (run) {

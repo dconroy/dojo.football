@@ -7,7 +7,6 @@ import {
 } from "../../src/domain/draft-report";
 import {
   cachedDraftStory,
-  fallbackShareLine,
   formatDraftStoryFacts,
   packDraftStoryFacts,
   parseDraftStories,
@@ -148,7 +147,6 @@ describe("draft report card", () => {
     expect(blob).toContain("Grade:");
     expect(blob).toContain(team!.grade);
     expect(blob.split("\n").length).toBeLessThanOrEqual(12);
-    expect(fallbackShareLine(facts)).toContain("Draft Dojo");
   });
 
   it("returns a cached story only when the pick count still matches", () => {

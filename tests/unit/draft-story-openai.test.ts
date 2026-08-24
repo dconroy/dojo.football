@@ -15,7 +15,7 @@ function jsonResponse(payload: unknown, status = 200): Response {
 }
 
 describe("openai draft copy", () => {
-  it("sends a capped gpt-4o-mini request and parses story plus share", async () => {
+  it("sends a capped gpt-4o-mini request and parses the story", async () => {
     const fetchMock = vi.fn(async (_url: string, init: { body: string }) => {
       const body = JSON.parse(init.body) as {
         model: string;
@@ -31,7 +31,6 @@ describe("openai draft copy", () => {
             message: {
               content: JSON.stringify({
                 story: "You swung for the fences at slot 1.",
-                share: "C+ and chaos in Draft Dojo.",
               }),
             },
           },
@@ -44,7 +43,6 @@ describe("openai draft copy", () => {
       fetch: fetchMock as never,
     });
     expect(copy.story).toMatch(/slot 1/);
-    expect(copy.share).toMatch(/Draft Dojo/);
     expect(fetchMock).toHaveBeenCalledOnce();
   });
 

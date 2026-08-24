@@ -5,7 +5,6 @@ import {
   REPORT_CARD_IMAGE_HEIGHT,
   REPORT_CARD_IMAGE_WIDTH,
   reportCardFileName,
-  reportCardShareText,
   wrapTextLines,
   type ReportCardShareModel,
 } from "@/domain/report-card-share";
@@ -27,7 +26,6 @@ export function DraftReportCard({
 }) {
   const [openSlot, setOpenSlot] = useState(userSlot);
   const [story, setStory] = useState("");
-  const [share, setShare] = useState("");
   const [storyStatus, setStoryStatus] = useState<"idle" | "loading" | "ready">("idle");
   const [shareStatus, setShareStatus] = useState("");
   const [fileShareSupported, setFileShareSupported] = useState(false);
@@ -43,7 +41,6 @@ export function DraftReportCard({
       : null,
     [mine, report.teams.length, story, teamLabel],
   );
-  const shareText = shareModel ? reportCardShareText(share, shareModel) : "";
   const dialogRef = useDialogAccessibility<HTMLElement>(true, onClose);
 
   useEffect(() => {
@@ -69,11 +66,10 @@ export function DraftReportCard({
       method: "POST",
     })
       .then((response) => response.json())
-      .then((body: { story?: string | null; share?: string | null }) => {
+      .then((body: { story?: string | null }) => {
         if (cancelled) return;
         if (body.story) {
           setStory(body.story);
-          setShare(body.share ?? "");
           setStoryStatus("ready");
           return;
         }
@@ -146,7 +142,7 @@ export function DraftReportCard({
                       type="button"
                       className="secondary report-share"
                       onClick={() => {
-                        void shareReportCard(shareModel, shareText, setShareStatus);
+                        void shareReportCard(shareModel, setShareStatus);
                       }}
                     >
                       Share PNG
@@ -160,15 +156,6 @@ export function DraftReportCard({
                     }}
                   >
                     Download PNG
-                  </button>
-                  <button
-                    type="button"
-                    className="secondary report-share"
-                    onClick={() => {
-                      void copyReportCardText(shareText, setShareStatus);
-                    }}
-                  >
-                    Copy share text
                   </button>
                   <small aria-live="polite" style={{ flexBasis: "100%" }}>
                     {shareStatus || "Share your fixed-size report card image."}
@@ -303,7 +290,6 @@ function ordinal(value: number): string {
 
 async function shareReportCard(
   model: ReportCardShareModel,
-  text: string,
   setStatus: (status: string) => void,
 ): Promise<void> {
   try {
@@ -319,11 +305,7 @@ async function shareReportCard(
       setStatus("File sharing is not supported here. Download the PNG instead.");
       return;
     }
-    await navigator.share({
-      files: [file],
-      title: `${model.teamName} · Draft Dojo report card`,
-      text,
-    });
+    await navigator.share({ files: [file] });
     setStatus("Report card shared.");
   } catch (error) {
     if (error instanceof DOMException && error.name === "AbortError") return;
@@ -346,20 +328,6 @@ async function downloadReportCard(
     setStatus("PNG downloaded.");
   } catch {
     setStatus("Could not create the PNG in this browser.");
-  }
-}
-
-async function copyReportCardText(
-  text: string,
-  setStatus: (status: string) => void,
-): Promise<void> {
-  try {
-    if (!navigator.clipboard?.writeText) throw new Error("Clipboard unavailable");
-    await navigator.clipboard.writeText(text);
-    setStatus("Share text copied.");
-  } catch {
-    window.prompt("Copy this report-card text:", text);
-    setStatus("Copy the text from the dialog.");
   }
 }
 
