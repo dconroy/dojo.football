@@ -20,12 +20,14 @@ import {
   type ChenScoring,
 } from "@/adapters/chen/boris-chen";
 import {
+  mockDraftResults,
   startMockClock,
   type MockDraftConfig,
   type MockPlayerSeed,
 } from "@/adapters/yahoo/mock-runner";
 import {
   addMockHumanSlot,
+  checkpointId,
   loadMockConfig,
   loadMockSnapshot,
   saveMockConfig,
@@ -307,76 +309,82 @@ async function recycleStaleRooms() {
   });
   const now = Date.now();
   for (const room of rooms) {
-    // Orphaned shell (no mock key) that's past the creation grace window.
-    if (!room.leagueKey && now - room.updatedAt.getTime() > BROKEN_ROOM_TTL_MS) {
-      await deleteRoom(room.id);
-      await forgetDemoRoomStats(room.id).catch(() => undefined);
-      continue;
-    }
-    let picks = 0;
     try {
-      picks = (JSON.parse(room.picksJson) as unknown[]).length;
-    } catch {
-      picks = 0;
-    }
-    const config = room.leagueKey ? await loadMockConfig(room.leagueKey) : null;
-    const exhausted =
-      isDemoClockStarted(config) &&
-      draftBoardExhausted({
-        picks,
-        playerCount: uniquePlayerCount(config?.players ?? []),
-        teamCount: room.teamCount,
-        rounds: room.rounds,
-      });
-    const finished = picks >= room.teamCount * room.rounds || exhausted;
-    const ttl = exhausted ? EXHAUSTED_TTL_MS : COMPLETE_TTL_MS;
-    if (finished && now - room.updatedAt.getTime() > ttl) {
-      const seatRow = await prisma.syncCheckpoint.findUnique({
-        where: { id: seatSeenKey(room.id) },
-        select: { payload: true },
-      });
-      await noteDemoRooms([
-        {
-          roomId: room.id,
-          picks,
-          humans: Math.max(
-            activeSeatSet(
-              undefined,
-              parseSeatLeases(seatRow?.payload),
-              now,
-              isDemoClockStarted(config),
-            ).size,
-            config?.humanSlots?.length ?? 0,
-          ),
-          complete: true,
-        },
-      ]).catch(() => undefined);
-      await deleteRoom(room.id);
-      await forgetDemoRoomStats(room.id).catch(() => undefined);
-      continue;
-    }
-    if (!finished) {
-      const seatRow = await prisma.syncCheckpoint.findUnique({
-        where: { id: seatSeenKey(room.id) },
-        select: { payload: true, syncedAt: true },
-      });
-      const activeSeats = activeSeatSet(
-        undefined,
-        parseSeatLeases(seatRow?.payload),
-        now,
-        isDemoClockStarted(config),
-      );
-      const lastActivity = Math.max(
-        room.updatedAt.getTime(),
-        seatRow?.syncedAt.getTime() ?? 0,
-      );
-      if (
-        activeSeats.size === 0 &&
-        now - lastActivity > IDLE_ROOM_TTL_MS
-      ) {
+      // Orphaned shell (no mock key) that's past the creation grace window.
+      if (!room.leagueKey && now - room.updatedAt.getTime() > BROKEN_ROOM_TTL_MS) {
         await deleteRoom(room.id);
         await forgetDemoRoomStats(room.id).catch(() => undefined);
+        continue;
       }
+      let picks = 0;
+      try {
+        picks = (JSON.parse(room.picksJson) as unknown[]).length;
+      } catch {
+        picks = 0;
+      }
+      const config = room.leagueKey ? await loadMockConfig(room.leagueKey) : null;
+      const exhausted =
+        isDemoClockStarted(config) &&
+        draftBoardExhausted({
+          picks,
+          playerCount: uniquePlayerCount(
+            Array.isArray(config?.players) ? config.players : [],
+          ),
+          teamCount: room.teamCount,
+          rounds: room.rounds,
+        });
+      const finished = picks >= room.teamCount * room.rounds || exhausted;
+      const ttl = exhausted ? EXHAUSTED_TTL_MS : COMPLETE_TTL_MS;
+      if (finished && now - room.updatedAt.getTime() > ttl) {
+        const seatRow = await prisma.syncCheckpoint.findUnique({
+          where: { id: seatSeenKey(room.id) },
+          select: { payload: true },
+        });
+        await noteDemoRooms([
+          {
+            roomId: room.id,
+            picks,
+            humans: Math.max(
+              activeSeatSet(
+                undefined,
+                parseSeatLeases(seatRow?.payload),
+                now,
+                isDemoClockStarted(config),
+              ).size,
+              config?.humanSlots?.length ?? 0,
+            ),
+            complete: true,
+          },
+        ]).catch(() => undefined);
+        await deleteRoom(room.id);
+        await forgetDemoRoomStats(room.id).catch(() => undefined);
+        continue;
+      }
+      if (!finished) {
+        const seatRow = await prisma.syncCheckpoint.findUnique({
+          where: { id: seatSeenKey(room.id) },
+          select: { payload: true, syncedAt: true },
+        });
+        const activeSeats = activeSeatSet(
+          undefined,
+          parseSeatLeases(seatRow?.payload),
+          now,
+          isDemoClockStarted(config),
+        );
+        const lastActivity = Math.max(
+          room.updatedAt.getTime(),
+          seatRow?.syncedAt.getTime() ?? 0,
+        );
+        if (
+          activeSeats.size === 0 &&
+          now - lastActivity > IDLE_ROOM_TTL_MS
+        ) {
+          await deleteRoom(room.id);
+          await forgetDemoRoomStats(room.id).catch(() => undefined);
+        }
+      }
+    } catch (error) {
+      console.error(`recycle stale demo room failed (${room.id})`, error);
     }
   }
 }
@@ -516,12 +524,85 @@ function picksFromJson(picksJson: string): unknown[] {
   }
 }
 
+function parseMockConfigPayload(payload?: string | null): MockDraftConfig | null {
+  if (!payload) return null;
+  try {
+    return JSON.parse(payload) as MockDraftConfig;
+  } catch {
+    return null;
+  }
+}
+
+function listedPickCount(config: MockDraftConfig, picksJson: string): number {
+  const stored = picksFromJson(picksJson).length;
+  if (!Array.isArray(config.players)) return stored;
+  try {
+    return Math.max(stored, mockDraftResults(config).picks.length);
+  } catch {
+    return stored;
+  }
+}
+
+/** Shape one lobby row. Returns null for shells or unreadable configs. */
+export function summarizeListedDemoRoom(
+  row: {
+    readonly id: string;
+    readonly leagueKey: string | null;
+    readonly teamCount: number;
+    readonly rounds: number;
+    readonly source: string;
+    readonly picksJson: string;
+  },
+  config: MockDraftConfig | null,
+  seatPayload?: string | null,
+  now = Date.now(),
+): DemoRoomSummary | null {
+  if (!row.leagueKey || !config) return null;
+  const players = Array.isArray(config.players) ? config.players : [];
+  const active = activeSeatSet(
+    config.humanSlots,
+    parseSeatLeases(seatPayload),
+    now,
+    isDemoClockStarted(config),
+  );
+  const picks = listedPickCount(config, row.picksJson);
+  const capacity = {
+    picks,
+    playerCount: uniquePlayerCount(players),
+    teamCount: row.teamCount,
+    rounds: row.rounds,
+  };
+  const exhausted = draftBoardExhausted(capacity);
+  const complete = draftIsFinished(capacity);
+  const openSeatList = Array.from(
+    { length: Math.max(0, row.teamCount) },
+    (_, index) => index + 1,
+  ).filter((slot) => !active.has(slot));
+  return {
+    id: row.id,
+    totalSeats: row.teamCount,
+    activeSeats: active.size,
+    openSeats: complete ? 0 : Math.max(0, row.teamCount - active.size),
+    openSeatList: complete ? [] : openSeatList,
+    scoring: scoringFromSource(row.source),
+    rounds: row.rounds,
+    picks,
+    totalPicks: config.teamCount * config.rounds,
+    started: isDemoClockStarted(config),
+    complete,
+    exhausted,
+  };
+}
+
 /** Live demo rooms with seat availability, for the landing-page room list. */
 export async function listDemoRooms(): Promise<DemoRoomSummary[]> {
-  await recycleStaleRooms();
+  await recycleStaleRooms().catch((error) => {
+    console.error("recycle stale demo rooms failed", error);
+  });
   const rows = await prisma.leagueDraft.findMany({
     where: { id: { startsWith: DEMO_ROOM_PREFIX } },
     orderBy: { createdAt: "desc" },
+    take: 40,
     select: {
       id: true,
       leagueKey: true,
@@ -531,6 +612,21 @@ export async function listDemoRooms(): Promise<DemoRoomSummary[]> {
       picksJson: true,
     },
   });
+  const checkpointIds = rows.flatMap((row) => {
+    const ids = [seatSeenKey(row.id)];
+    if (row.leagueKey) ids.push(checkpointId(row.leagueKey));
+    return ids;
+  });
+  const checkpoints =
+    checkpointIds.length > 0
+      ? await prisma.syncCheckpoint.findMany({
+          where: { id: { in: checkpointIds } },
+          select: { id: true, payload: true },
+        })
+      : [];
+  const payloadById = new Map(
+    checkpoints.map((row) => [row.id, row.payload] as const),
+  );
   const summaries: DemoRoomSummary[] = [];
   const activities: Array<{
     roomId: string;
@@ -539,53 +635,26 @@ export async function listDemoRooms(): Promise<DemoRoomSummary[]> {
     complete: boolean;
   }> = [];
   for (const row of rows) {
-    if (!row.leagueKey) continue; // orphaned shell
-    const config = await loadMockConfig(row.leagueKey);
-    if (!config) continue;
-    const snapshot = await loadMockSnapshot(row.leagueKey);
-    const active = activeSeatSet(
-      config.humanSlots,
-      await loadSeatSeen(row.id),
-      Date.now(),
-      isDemoClockStarted(config),
-    );
-    const totalPicks = config.teamCount * config.rounds;
-    const picks = Math.max(
-      picksFromJson(row.picksJson).length,
-      snapshot?.draftResults.length ?? 0,
-    );
-    const capacity = {
-      picks,
-      playerCount: uniquePlayerCount(config.players),
-      teamCount: row.teamCount,
-      rounds: row.rounds,
-    };
-    const exhausted = draftBoardExhausted(capacity);
-    const complete = draftIsFinished(capacity);
-    const openSeatList = Array.from(
-      { length: row.teamCount },
-      (_, index) => index + 1,
-    ).filter((slot) => !active.has(slot));
-    summaries.push({
-      id: row.id,
-      totalSeats: row.teamCount,
-      activeSeats: active.size,
-      openSeats: complete ? 0 : Math.max(0, row.teamCount - active.size),
-      openSeatList: complete ? [] : openSeatList,
-      scoring: scoringFromSource(row.source),
-      rounds: row.rounds,
-      picks,
-      totalPicks,
-      started: Boolean(config.startedAtIso) && Number.isFinite(Date.parse(config.startedAtIso)),
-      complete,
-      exhausted,
-    });
-    activities.push({
-      roomId: row.id,
-      picks,
-      humans: Math.max(active.size, config.humanSlots?.length ?? 0),
-      complete,
-    });
+    try {
+      const config = row.leagueKey
+        ? parseMockConfigPayload(payloadById.get(checkpointId(row.leagueKey)))
+        : null;
+      const summary = summarizeListedDemoRoom(
+        row,
+        config,
+        payloadById.get(seatSeenKey(row.id)),
+      );
+      if (!summary) continue;
+      summaries.push(summary);
+      activities.push({
+        roomId: row.id,
+        picks: summary.picks,
+        humans: Math.max(summary.activeSeats, config?.humanSlots?.length ?? 0),
+        complete: summary.complete,
+      });
+    } catch (error) {
+      console.error(`list demo room failed (${row.id})`, error);
+    }
   }
   await noteDemoRooms(activities).catch(() => undefined);
   return summaries;

@@ -37,7 +37,8 @@ export async function GET() {
         exhausted: room.exhausted,
       })),
     });
-  } catch {
+  } catch (error) {
+    console.error("Unable to load public draft rooms", error);
     return NextResponse.json(
       { error: "Unable to load public draft rooms" },
       { status: 503 },
