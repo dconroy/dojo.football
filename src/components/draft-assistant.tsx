@@ -102,8 +102,8 @@ function availabilityLabel(signal: AvailabilitySignal): string {
   return "Odds unknown";
 }
 
-function nextTurnAvailabilityLabel(probability: number): string {
-  return `${Math.round(probability * 100)}% chance available next turn`;
+function nextTurnAvailabilityPercent(probability: number): string {
+  return `${Math.round(probability * 100)}%`;
 }
 
 function createAudioContext(): AudioContext | null {
@@ -2559,10 +2559,23 @@ export function DraftAssistant({
                     <span
                       className={`availability-badge ${availability.signal}`}
                       title={availability.reasons.join(" · ")}
+                      aria-label={
+                        availability.probability == null
+                          ? availabilityLabel(availability.signal)
+                          : `${nextTurnAvailabilityPercent(availability.probability)} chance available next turn. ${availabilityLabel(availability.signal)}`
+                      }
                     >
-                      {availability.probability == null
-                        ? availabilityLabel(availability.signal)
-                        : `${nextTurnAvailabilityLabel(availability.probability)} · ${availabilityLabel(availability.signal)}`}
+                      {availability.probability != null ? (
+                        <>
+                          <span className="availability-window">Next turn</span>
+                          <strong>
+                            {nextTurnAvailabilityPercent(availability.probability)}
+                          </strong>
+                        </>
+                      ) : null}
+                      <span className="availability-action">
+                        {availabilityLabel(availability.signal)}
+                      </span>
                     </span>
                   ) : null}
                 </small>
