@@ -463,7 +463,11 @@ async function createPausedRoom(): Promise<{ shared: SharedDraft; leagueKey: str
     position: player.position,
     team: player.team,
     chenRank: player.chenRank,
+    chenTier: player.chenTier,
     adp: player.adp,
+    byeWeek: player.byeWeek,
+    projectedPoints: player.projectedPoints,
+    estimatedReturnProbability: player.estimatedReturnProbability,
   }));
   await saveMockConfig({
     leagueKey,
@@ -886,7 +890,9 @@ export async function createDemoRoom(
     position: player.position,
     team: player.team,
     chenRank: player.chenRank,
+    chenTier: player.chenTier,
     adp: player.adp,
+    byeWeek: player.byeWeek,
   }));
   const config: MockDraftConfig = {
     leagueKey,

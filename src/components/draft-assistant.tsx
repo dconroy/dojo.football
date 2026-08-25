@@ -1210,7 +1210,11 @@ export function DraftAssistant({
           position: player.position,
           team: player.team,
           chenRank: player.chenRank,
+          chenTier: player.chenTier,
           adp: player.adp,
+          byeWeek: player.byeWeek,
+          projectedPoints: player.projectedPoints,
+          estimatedReturnProbability: player.estimatedReturnProbability,
         })),
       }),
     });

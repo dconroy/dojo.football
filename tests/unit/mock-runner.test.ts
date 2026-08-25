@@ -234,6 +234,40 @@ describe("mock-runner", () => {
     expect(waitingSlot(auto!, 30_000 + base.intervalMs)).toBe(3);
   });
 
+  it("auto-drafts the Dojo recommendation instead of raw best available", () => {
+    const base = config({
+      teamCount: 4,
+      rounds: 4,
+      humanSlots: [1],
+      picksBySlot: {},
+      players: [
+        {
+          id: "raw-one",
+          name: "Raw Rank One",
+          position: "RB",
+          team: "ATL",
+          chenRank: 1,
+          estimatedReturnProbability: 0.99,
+        },
+        {
+          id: "dojo-one",
+          name: "Dojo Rank One",
+          position: "WR",
+          team: "CIN",
+          chenRank: 2,
+          estimatedReturnProbability: 0.01,
+        },
+        ...seeds(20).map((player, index) => ({
+          ...player,
+          id: `depth-${index}`,
+          chenRank: index + 20,
+        })),
+      ],
+    });
+
+    expect(autoPickPlayerId(base)).toBe("dojo-one");
+  });
+
   it("does not replay a player already taken by another seat", () => {
     const base = config({
       humanSlots: [1, 3],

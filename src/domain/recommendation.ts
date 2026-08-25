@@ -428,7 +428,15 @@ export function recommendPlayers(
   players: readonly Player[],
   options: RecommendationOptions = {},
 ): RecommendationResult {
-  const config = options.config ?? DEFAULT_STRATEGY_CONFIG;
+  const baseConfig = options.config ?? DEFAULT_STRATEGY_CONFIG;
+  const specialistOpenRound = Math.max(1, state.rounds - 1);
+  const config: StrategyConfig = {
+    ...baseConfig,
+    specialistRound: {
+      K: Math.min(baseConfig.specialistRound.K, specialistOpenRound),
+      DEF: Math.min(baseConfig.specialistRound.DEF, specialistOpenRound),
+    },
+  };
   const weights: StrategyWeights = { ...config.weights, ...options.weights };
   const drafted = new Set(state.picks.map((pick) => pick.player.id));
   const excluded = new Set(options.excludePlayerIds ?? []);

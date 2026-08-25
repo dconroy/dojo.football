@@ -135,7 +135,11 @@ export async function POST(request: Request) {
       position: player.position as MockPlayerSeed["position"],
       team: String(player.team ?? "FA"),
       chenRank: player.chenRank,
+      chenTier: player.chenTier,
       adp: player.adp,
+      byeWeek: player.byeWeek,
+      projectedPoints: player.projectedPoints,
+      estimatedReturnProbability: player.estimatedReturnProbability,
     }));
 
   if (players.length < teamCount * rounds) {
