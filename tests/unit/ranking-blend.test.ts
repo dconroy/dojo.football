@@ -52,6 +52,17 @@ describe("ranking blend math", () => {
     expect(blended?.players.at(-1)?.overallRank).toBe(MAX_BLEND_PLAYERS);
   });
 
+  it("assigns useful rank-banded tiers instead of marking the board Tier 1", () => {
+    const board = Array.from({ length: 36 }, (_, index) =>
+      record(`Player ${index + 1}`, index % 2 === 0 ? "RB" : "WR", index + 1),
+    );
+    const blended = blendRankingImports({ chen: imported(board) });
+    expect(blended?.players[0]?.tier).toBe(1);
+    expect(blended?.players[11]?.tier).toBe(1);
+    expect(blended?.players[12]?.tier).toBe(2);
+    expect(blended?.players[35]?.tier).toBe(3);
+  });
+
   it("maps rank 1 to percentile 0 and last place to 1", () => {
     expect(rankToPercentile(1, 100)).toBe(0);
     expect(rankToPercentile(100, 100)).toBe(1);

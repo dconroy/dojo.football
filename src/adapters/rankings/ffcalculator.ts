@@ -16,17 +16,11 @@ interface FfPlayer {
   bye?: number;
 }
 
-function synthesizeTier(adp: number, previousAdp: number | null, previousTier: number) {
-  if (previousAdp === null) return 1;
-  if (adp - previousAdp >= 8) return previousTier + 1;
-  return previousTier;
-}
-
 export async function fetchFfCalculatorImport(
   scoring: ChenScoring,
 ): Promise<ChenImport | null> {
   const format = FORMAT[scoring];
-  const cacheSource = `ffcalc-${scoring}`;
+  const cacheSource = `ffcalc-v2-${scoring}`;
   const year = new Date().getUTCFullYear();
   const url =
     `https://fantasyfootballcalculator.com/api/v1/adp/${format}` +
@@ -47,8 +41,6 @@ export async function fetchFfCalculatorImport(
     const body = (await response.json()) as { players?: FfPlayer[] };
     const raw = body.players ?? [];
     const players: ChenPlayerRecord[] = [];
-    let previousAdp: number | null = null;
-    let tier = 1;
     const positionCounts = new Map<string, number>();
     for (const row of raw) {
       const name = row.name?.trim();
@@ -58,18 +50,17 @@ export async function fetchFfCalculatorImport(
       }
       const pos = position === "DST" ? "DEF" : (position as ChenPlayerRecord["position"]);
       const adp = typeof row.adp === "number" ? row.adp : players.length + 1;
-      tier = synthesizeTier(adp, previousAdp, tier);
-      previousAdp = adp;
       const nextRank = (positionCounts.get(pos) ?? 0) + 1;
       positionCounts.set(pos, nextRank);
+      const overallRank = players.length + 1;
       players.push({
         sourceId: `ffcalc:${pos}:${name.toLowerCase()}`,
         name,
         position: pos,
         team: row.team?.toUpperCase(),
-        tier,
+        tier: Math.ceil(overallRank / 12),
         positionRank: nextRank,
-        overallRank: players.length + 1,
+        overallRank,
         byeWeek: row.bye,
         adp,
       });

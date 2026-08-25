@@ -23,7 +23,6 @@ export const DEFAULT_BLEND_WEIGHTS: Record<BlendSourceId, number> = {
 /** Added to blended percentile when a player is missing from some present lists. */
 export const THIN_CONSENSUS_PENALTY = 0.08;
 
-const TIER_GAP = 8;
 const MAX_AGE_MS = 12 * 60 * 60 * 1000;
 export const MAX_BLEND_PLAYERS = 300;
 const SOURCE_ORDER: readonly BlendSourceId[] = [
@@ -79,15 +78,6 @@ export function thinConsensusPenalty(
   return penalty * (1 - listedOn / availableSources);
 }
 
-function synthesizeTier(
-  virtualRank: number,
-  previous: number | null,
-  previousTier: number,
-): number {
-  if (previous === null) return 1;
-  return virtualRank - previous >= TIER_GAP ? previousTier + 1 : previousTier;
-}
-
 function pickCanonical(
   appearances: Partial<Record<BlendSourceId, ChenPlayerRecord>>,
 ): ChenPlayerRecord {
@@ -138,20 +128,11 @@ export function blendRankingImports(
 
   scored.sort((a, b) => a.score - b.score || a.key.localeCompare(b.key));
 
-  const maxList = Math.max(
-    ...present.map((id) => imports[id]!.players.length),
-  );
-  let previousVirtual: number | null = null;
-  let tier = 1;
   const positionCounts = new Map<string, number>();
 
   const players: ChenPlayerRecord[] = scored
     .slice(0, MAX_BLEND_PLAYERS)
     .map((entry, index) => {
-      const virtualRank = entry.score * Math.max(maxList - 1, 1) + 1;
-      tier = synthesizeTier(virtualRank, previousVirtual, tier);
-      previousVirtual = virtualRank;
-
       const canonical = pickCanonical(entry.appearances);
       const positionRank = (positionCounts.get(canonical.position) ?? 0) + 1;
       positionCounts.set(canonical.position, positionRank);
@@ -161,7 +142,7 @@ export function blendRankingImports(
         name: canonical.name,
         position: canonical.position,
         team: canonical.team,
-        tier,
+        tier: Math.ceil((index + 1) / 12),
         positionRank,
         overallRank: index + 1,
         byeWeek: canonical.byeWeek,
@@ -188,7 +169,7 @@ export function blendRankingImports(
 export async function fetchBlendImport(
   scoring: ChenScoring,
 ): Promise<ChenImport | null> {
-  const cacheSource = `dojo-blend-v2-${scoring}`;
+  const cacheSource = `dojo-blend-v3-${scoring}`;
   const cached = await prisma.dataImport.findFirst({
     where: { source: cacheSource },
     orderBy: { fetchedAt: "desc" },

@@ -6,6 +6,7 @@ import {
   positionCountsFromPicks,
   startersFilled,
 } from "./lineup-need";
+import { formatAdp } from "./adp";
 import { rosterPicks } from "./roster";
 import type { DraftState, Pick, Position } from "./types";
 
@@ -122,11 +123,48 @@ function clamp(value: number) {
   return Math.min(1, Math.max(0, value));
 }
 
-/** Positive = drafted later than board rank (value); negative = a reach. */
+function pickReferenceRanks(pick: Pick): number[] {
+  return [pick.player.chenRank, pick.player.adp].filter(
+    (rank): rank is number =>
+      rank !== undefined && Number.isFinite(rank) && rank > 0,
+  );
+}
+
+/** Positive = drafted later than consensus expectation; negative = a reach. */
 function pickValue(pick: Pick): number | null {
-  return pick.player.chenRank === undefined
-    ? null
-    : pick.overall - pick.player.chenRank;
+  const references = pickReferenceRanks(pick);
+  if (references.length === 0) return null;
+  const expected =
+    references.reduce((sum, rank) => sum + rank, 0) / references.length;
+  return pick.overall - expected;
+}
+
+function pickReferenceLabel(pick: Pick): {
+  readonly label: string;
+  readonly rank: number;
+} | null {
+  const references = pickReferenceRanks(pick);
+  if (references.length === 0) return null;
+  return {
+    label:
+      references.length > 1
+        ? "consensus rank"
+        : pick.player.adp !== undefined
+          ? "ADP"
+          : "board rank",
+    rank: references.reduce((sum, rank) => sum + rank, 0) / references.length,
+  };
+}
+
+function allReferencesSupport(
+  pick: Pick,
+  predicate: (value: number) => boolean,
+): boolean {
+  const references = pickReferenceRanks(pick);
+  return (
+    references.length > 0 &&
+    references.every((rank) => predicate(pick.overall - rank))
+  );
 }
 
 interface TeamMetrics {
@@ -203,16 +241,16 @@ function measureTeam(
   const steal = highlight(
     roster,
     (left, right) => left - right,
-    (value) => value >= 6,
-    (name, rank, overall, value) =>
-      `${name} — board rank ${rank} at ${overall} (+${Math.round(value)})`,
+    (pick) => allReferencesSupport(pick, (value) => value >= 6),
+    (name, reference, overall, value) =>
+      `${name} — ${reference.label} ${formatAdp(reference.rank)} at ${overall} (+${Math.round(value)})`,
   );
   const reach = highlight(
     roster,
     (left, right) => right - left,
-    (value) => value <= -12,
-    (name, rank, overall, value) =>
-      `${name} — board rank ${rank} at ${overall} (${Math.round(value)})`,
+    (pick) => allReferencesSupport(pick, (value) => value <= -12),
+    (name, reference, overall, value) =>
+      `${name} — ${reference.label} ${formatAdp(reference.rank)} at ${overall} (${Math.round(value)})`,
   );
 
   const rawScore = clamp(
@@ -248,8 +286,13 @@ function measureTeam(
 function highlight(
   roster: readonly Pick[],
   compare: (left: number, right: number) => number,
-  qualifies: (value: number) => boolean,
-  label: (name: string, rank: number, overall: number, value: number) => string,
+  qualifies: (pick: Pick, value: number) => boolean,
+  label: (
+    name: string,
+    reference: { readonly label: string; readonly rank: number },
+    overall: number,
+    value: number,
+  ) => string,
 ): ReportHighlight | null {
   let best: { pick: Pick; value: number } | null = null;
   for (const pick of roster) {
@@ -257,15 +300,17 @@ function highlight(
     // Their global board ranks are not comparable to skill-position draft capital.
     if (pick.player.position === "K" || pick.player.position === "DEF") continue;
     const value = pickValue(pick);
-    if (value === null) continue;
+    if (value === null || !qualifies(pick, value)) continue;
     if (!best || compare(value, best.value) > 0) best = { pick, value };
   }
-  if (!best || !qualifies(best.value)) return null;
+  if (!best) return null;
+  const reference = pickReferenceLabel(best.pick);
+  if (!reference) return null;
   return {
     name: best.pick.player.name,
     detail: label(
       best.pick.player.name,
-      best.pick.player.chenRank ?? 0,
+      reference,
       best.pick.overall,
       best.value,
     ),
@@ -282,7 +327,7 @@ function buildReasons(
   if (metrics.eliteCount >= 3) {
     reasons.push({
       tone: "good",
-      text: `Loaded core — ${metrics.eliteCount} players inside Chen's top 24.`,
+      text: `Loaded core — ${metrics.eliteCount} players inside the board's top 24.`,
     });
   } else if (metrics.eliteCount >= 1) {
     reasons.push({

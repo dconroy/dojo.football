@@ -158,6 +158,25 @@ describe("transparent recommendations", () => {
     ).toBe(25);
   });
 
+  it("does not score ADP twice when it supplies next-turn survival", () => {
+    const result = recommendPlayers(
+      createDraftState(6),
+      [candidate("market-wr", "WR", 50, 5, { adp: 12 })],
+      { topCount: 1 },
+    );
+    const factors = result.recommendations[0].factors;
+    expect(
+      factors.find((factor) => factor.factor === "turnUrgency")?.value,
+    ).toBeGreaterThan(0);
+    expect(
+      factors.find((factor) => factor.factor === "adpValue"),
+    ).toMatchObject({
+      value: 0,
+      contribution: 0,
+      explanation: "ADP is already reflected in next-turn survival",
+    });
+  });
+
   it("applies NFL-team concentration penalties once two teammates are rostered", () => {
     const concentratedState: DraftState = {
       ...createDraftState(1),

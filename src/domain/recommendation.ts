@@ -302,8 +302,14 @@ function evaluatePlayer(
     weights,
   );
 
+  const adpAlreadyPricedIntoUrgency =
+    probability !== null &&
+    player.adp !== undefined &&
+    player.estimatedReturnProbability === undefined;
   const adpSignal =
-    player.adp === undefined ? 0 : clamp((next.overall - player.adp) / 24);
+    player.adp === undefined || adpAlreadyPricedIntoUrgency
+      ? 0
+      : clamp((next.overall - player.adp) / 24);
   addFactor(
     factors,
     {
@@ -312,6 +318,8 @@ function evaluatePlayer(
       explanation:
         player.adp === undefined
           ? "ADP unavailable"
+          : adpAlreadyPricedIntoUrgency
+            ? "ADP is already reflected in next-turn survival"
           : `ADP ${formatAdp(player.adp)} versus pick ${next.overall}`,
     },
     weights,

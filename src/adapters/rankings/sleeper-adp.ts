@@ -27,15 +27,10 @@ interface SleeperProjection {
   stats?: Record<string, number | undefined>;
 }
 
-function tierFor(adp: number, previousAdp: number | null, previousTier: number) {
-  if (previousAdp === null) return 1;
-  return adp - previousAdp >= 8 ? previousTier + 1 : previousTier;
-}
-
 export async function fetchSleeperAdpImport(
   scoring: ChenScoring,
 ): Promise<ChenImport | null> {
-  const cacheSource = `sleeper-adp-v2-${scoring}`;
+  const cacheSource = `sleeper-adp-v3-${scoring}`;
   const cached = await prisma.dataImport.findFirst({
     where: { source: cacheSource },
     orderBy: { fetchedAt: "desc" },
@@ -79,12 +74,8 @@ export async function fetchSleeperAdpImport(
       .sort((a, b) => a.adp - b.adp)
       .slice(0, MAX_DRAFTABLE_PLAYERS);
 
-    let previousAdp: number | null = null;
-    let tier = 1;
     const positionCounts = new Map<string, number>();
     const players: ChenPlayerRecord[] = ranked.map((entry, index) => {
-      tier = tierFor(entry.adp, previousAdp, tier);
-      previousAdp = entry.adp;
       const positionRank = (positionCounts.get(entry.position) ?? 0) + 1;
       positionCounts.set(entry.position, positionRank);
       return {
@@ -92,7 +83,7 @@ export async function fetchSleeperAdpImport(
         name: entry.name,
         position: entry.position,
         team: entry.row.player?.team?.toUpperCase(),
-        tier,
+        tier: Math.ceil((index + 1) / 12),
         positionRank,
         overallRank: index + 1,
         adp: entry.adp,

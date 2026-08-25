@@ -90,6 +90,39 @@ describe("draft report card", () => {
     expect(slot1?.reach).toBeNull();
   });
 
+  it("does not call a pick a reach when market ADP supports it", () => {
+    const draft: DraftState = {
+      teamCount: 12,
+      rounds: 15,
+      userSlot: 5,
+      picks: [
+        {
+          ...pick(
+            140,
+            player("Theo Wease Jr.", "WR", 189, { adp: 127.4 }),
+            "BENCH",
+          ),
+          slot: 5,
+        },
+      ],
+    };
+    const slot5 = buildDraftReport(draft).teams.find((team) => team.slot === 5);
+    expect(slot5?.reach).toBeNull();
+  });
+
+  it("labels value against consensus when board rank and ADP agree", () => {
+    const draft: DraftState = {
+      teamCount: 12,
+      rounds: 15,
+      userSlot: 1,
+      picks: [
+        pick(1, player("True Reach", "WR", 80, { adp: 70 })),
+      ],
+    };
+    const slot1 = buildDraftReport(draft).teams.find((team) => team.slot === 1);
+    expect(slot1?.reach?.detail).toMatch(/consensus rank 75 at 1 \(-74\)/);
+  });
+
   it("caps an incomplete grade at B+ even when talent would otherwise be A-range", () => {
     expect(limitIncompleteGrade("A-", 1)).toBe("B+");
     expect(limitIncompleteGrade("A+", 2)).toBe("B+");
