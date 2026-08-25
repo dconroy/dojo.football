@@ -83,8 +83,8 @@ export default function LandingPage() {
           <a href="https://github.com/dconroy/dojo.football" target="_blank" rel="noreferrer">
             Source
           </a>
-          <Link className={styles.navCta} href="/login">
-            Sync a league
+          <Link className={styles.navCta} href="/demo#create">
+            Start a draft
           </Link>
         </nav>
       </header>
