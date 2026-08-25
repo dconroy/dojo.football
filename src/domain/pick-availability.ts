@@ -123,7 +123,9 @@ export function estimatePlayerAvailability(
   }
 
   const rounded = Math.round(probability * 100);
-  const reasons = [`${rounded}% chance to last until pick ${targetOverall ?? "—"}`];
+  const reasons = [
+    `${rounded}% chance this player is still available at your next turn (pick ${targetOverall ?? "—"})`,
+  ];
   if (demand.teamsNeeding >= 2) {
     reasons.push(
       `${demand.teamsNeeding} intervening picks fill a ${player.position} need`,

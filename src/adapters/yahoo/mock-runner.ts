@@ -3,6 +3,9 @@ import {
   remainingLineupNeed,
   type PositionCounts,
 } from "@/domain/lineup-need";
+import { recommendPlayers } from "@/domain/recommendation";
+import { rebuildDraftFromPlayers } from "@/domain/reconcile-draft";
+import type { Player } from "@/domain/types";
 import type { YahooDraftResult } from "./yahoo-api";
 
 export interface MockPlayerSeed {
@@ -11,7 +14,11 @@ export interface MockPlayerSeed {
   readonly position: "QB" | "RB" | "WR" | "TE" | "K" | "DEF";
   readonly team: string;
   readonly chenRank?: number;
+  readonly chenTier?: number;
   readonly adp?: number;
+  readonly byeWeek?: number;
+  readonly projectedPoints?: number;
+  readonly estimatedReturnProbability?: number;
 }
 
 function mockPlayerKey(player: Pick<MockPlayerSeed, "name" | "position">): string {
@@ -34,7 +41,12 @@ export function mergeMockRankingSeeds(
     return {
       ...player,
       chenRank: hit.chenRank,
+      chenTier: hit.chenTier,
       adp: hit.adp ?? player.adp,
+      byeWeek: hit.byeWeek ?? player.byeWeek,
+      projectedPoints: hit.projectedPoints ?? player.projectedPoints,
+      estimatedReturnProbability:
+        hit.estimatedReturnProbability ?? player.estimatedReturnProbability,
       team: hit.team || player.team,
     };
   });
@@ -518,11 +530,7 @@ export function autoPickDeadline(config: MockDraftConfig): number | null {
   return started + order.length * config.intervalMs + autoMs;
 }
 
-/**
- * Best-available player id for the human seat that is currently pending, using
- * the same soft position caps and K/DEF gating the robots use. Null when no
- * human is pending or the board is exhausted.
- */
+/** Pick the same #1 player the Dojo recommendation panel shows for this seat. */
 export function autoPickPlayerId(config: MockDraftConfig): string | null {
   const { humanSlots } = normalizeSeats(config);
   const order = projectedDraftOrder(config);
@@ -530,44 +538,19 @@ export function autoPickPlayerId(config: MockDraftConfig): string | null {
   const nextOverall = order.length + 1;
   const slot = slotForOverall(nextOverall, config.teamCount);
   if (!humanSlots.has(slot)) return null;
-  const round = Math.ceil(nextOverall / config.teamCount);
-
-  const sortable = [...config.players].sort((a, b) => {
-    const rank = (a.chenRank ?? 9999) - (b.chenRank ?? 9999);
-    if (rank !== 0) return rank;
-    return (a.adp ?? 9999) - (b.adp ?? 9999);
-  });
-  const drafted = new Set(order.map((player) => player.id));
-  const available = (player: MockPlayerSeed) => !drafted.has(player.id);
-  const roster: Record<MockPlayerSeed["position"], number> = {
-    QB: 0, RB: 0, WR: 0, TE: 0, K: 0, DEF: 0,
-  };
-  let picked = 0;
-  order.forEach((player, index) => {
-    if (slotForOverall(index + 1, config.teamCount) === slot) {
-      roster[player.position] += 1;
-      picked += 1;
-    }
-  });
-
-  // If the seat is running out of picks, prioritize finishing a legal starting
-  // lineup so an AFK manager never ends with a hole (e.g. no TE / one RB).
-  const completion = rosterCompletionPick(
-    sortable,
-    available,
-    roster,
-    config.rounds - picked,
+  const players = config.players as readonly Player[];
+  const state = rebuildDraftFromPlayers(
+    {
+      userSlot: slot,
+      teamCount: config.teamCount,
+      rounds: config.rounds,
+    },
+    order as readonly Player[],
   );
-  if (completion) return completion.id;
-
-  const choice = chooseRobotPlayer(
-    sortable,
-    available,
-    roster,
-    round,
-    config.rounds,
+  return (
+    recommendPlayers(state, players, { topCount: 1 }).recommendations[0]?.player
+      .id ?? null
   );
-  return choice?.id ?? null;
 }
 
 /**

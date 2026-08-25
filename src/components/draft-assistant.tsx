@@ -95,10 +95,14 @@ const POSITIONS: readonly (Position | "ALL")[] = [
 ];
 
 function availabilityLabel(signal: AvailabilitySignal): string {
-  if (signal === "take_now") return "Take now";
+  if (signal === "take_now") return "Draft now";
   if (signal === "safe_to_wait") return "Safe to wait";
   if (signal === "neutral") return "Toss-up";
   return "Odds unknown";
+}
+
+function nextTurnAvailabilityLabel(probability: number): string {
+  return `${Math.round(probability * 100)}% chance available next turn`;
 }
 
 function createAudioContext(): AudioContext | null {
@@ -2229,8 +2233,8 @@ export function DraftAssistant({
                       </strong>
                       <span>
                         {detailAvailability
-                          ? availabilityLabel(detailAvailability.signal)
-                          : "Next-turn odds"}
+                          ? `Available next turn · ${availabilityLabel(detailAvailability.signal)}`
+                          : "Chance available next turn"}
                       </span>
                     </div>
                     <div>
@@ -2541,7 +2545,7 @@ export function DraftAssistant({
                     >
                       {availability.probability == null
                         ? availabilityLabel(availability.signal)
-                        : `${Math.round(availability.probability * 100)}% · ${availabilityLabel(availability.signal)}`}
+                        : `${nextTurnAvailabilityLabel(availability.probability)} · ${availabilityLabel(availability.signal)}`}
                     </span>
                   ) : null}
                 </small>

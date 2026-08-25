@@ -21,6 +21,9 @@ export function sourceFromBoard(
 ): RankingSourceId {
   const text = source ?? "";
   if (/dojo blend|\bblend ·/i.test(text)) return "blend";
+  // Extended Chen boards retain Chen as their primary expert even when
+  // Sleeper/FantasyPros only supplied extra late-round names.
+  if (/^(?:boris\s+)?chen\b/i.test(text)) return "chen";
   if (/fantasypros|ecr/i.test(text)) return "fantasypros";
   if (/sleeper/i.test(text)) return "sleeper";
   if (/calculator|ffcalc|adp/i.test(text)) return "ffcalc";

@@ -1357,16 +1357,18 @@ h2 {
 }
 
 .data-source {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 10px 16px;
   padding: 7px 14px 0;
   color: var(--muted);
   font-size: 11px;
 }
 
 .data-source p {
+  grid-column: 1 / -1;
   margin: 0;
   min-width: 0;
 }
@@ -4364,14 +4366,6 @@ body:has(.landing) {
   display: grid;
   gap: 8px;
   margin-top: 16px;
-}
-
-.data-source {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  align-items: center;
-  justify-content: space-between;
 }
 
 @media (max-width: 860px) {

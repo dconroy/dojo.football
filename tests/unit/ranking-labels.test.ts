@@ -10,6 +10,12 @@ describe("ranking source labels", () => {
     expect(sourceFromBoard("FantasyPros ECR · 0.5 PPR")).toBe("fantasypros");
     expect(sourceFromBoard("Boris Chen - 0.5 PPR + K")).toBe("chen");
     expect(
+      sourceFromBoard("Boris Chen · 0.5 PPR + K + Sleeper ADP"),
+    ).toBe("chen");
+    expect(
+      sourceFromBoard("Boris Chen · PPR + FantasyPros"),
+    ).toBe("chen");
+    expect(
       sourceFromBoard("Dojo blend · Chen + FantasyPros + Sleeper · 0.5 PPR"),
     ).toBe("blend");
   });
