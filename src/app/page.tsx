@@ -157,7 +157,7 @@ export default function LandingPage() {
                 <strong>Why the board moved</strong>
               </div>
               <Image
-                src="/landing/ai-insights.png"
+                src="/landing/top-five-dark.png"
                 width={1098}
                 height={1433}
                 alt="Top Five recommendation list recalculated after every draft pick"
