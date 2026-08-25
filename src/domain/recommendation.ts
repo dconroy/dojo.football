@@ -10,6 +10,7 @@ import {
   buildAvailabilityMap,
   type PlayerAvailability,
 } from "./pick-availability";
+import { formatAdp } from "./adp";
 import { assignRosterSlot, openStarterSlots, rosterPicks } from "./roster";
 import {
   nextSelectionForSlot,
@@ -311,7 +312,7 @@ function evaluatePlayer(
       explanation:
         player.adp === undefined
           ? "ADP unavailable"
-          : `ADP ${player.adp} versus pick ${next.overall}`,
+          : `ADP ${formatAdp(player.adp)} versus pick ${next.overall}`,
     },
     weights,
   );

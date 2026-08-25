@@ -10,6 +10,7 @@ import {
   buildAvailabilityMap,
   createDraftState,
   extendDraftWithRemotePlayers,
+  formatAdp,
   makeManualPick,
   nextSelectionForSlot,
   recommendPlayers,
@@ -270,7 +271,7 @@ function scoreComparison(
     .sort((a, b) => b.delta - a.delta)[0];
   return advantage?.delta > 0
     ? `${first.player.name} leads ${alternative.player.name} by ${(first.score - alternative.score).toFixed(1)} points, primarily because ${advantage.label.toLowerCase()}.`
-    : `${first.player.name} wins the calculated tie-break on Chen rank.`;
+    : `${first.player.name} wins the calculated tie-break on board rank.`;
 }
 
 /** Sleeper hosts free, no-auth team logos keyed by lowercase abbreviation. */
@@ -378,6 +379,7 @@ export function DraftAssistant({
   const [listFilter, setListFilter] = useState<"all" | "avoids" | "pins">("all");
   const [recoTab, setRecoTab] = useState<"top" | "insights">("top");
   const [selected, setSelected] = useState<string | null>(null);
+  const selectionPickCountRef = useRef(0);
   const [syncPaused, setSyncPaused] = useState(false);
   const [previewMember, setPreviewMember] = useState(false);
   const [adminOpen, setAdminOpen] = useState(false);
@@ -769,6 +771,12 @@ export function DraftAssistant({
     () => (draftComplete ? buildDraftReport(state.draft) : null),
     [draftComplete, state.draft],
   );
+  useEffect(() => {
+    if (selectionPickCountRef.current === state.draft.picks.length) return;
+    selectionPickCountRef.current = state.draft.picks.length;
+    setSelected(null);
+    setDetailId(null);
+  }, [state.draft.picks.length]);
   useEffect(() => {
     if (!ready) return;
     const key = `${state.leagueKey ?? "board"}:${state.draft.picks.length}`;
@@ -2219,14 +2227,19 @@ export function DraftAssistant({
                   <div className="detail-stats">
                     <div>
                       <strong>{detailPlayer.chenRank ?? "—"}</strong>
-                      <span>Chen rank</span>
+                      <span>
+                        {expertSliderLabel(
+                          "chenRank",
+                          sourceFromBoard(state.source),
+                        )}
+                      </span>
                     </div>
                     <div>
                       <strong>{detailPlayer.chenTier ? `T${detailPlayer.chenTier}` : "—"}</strong>
                       <span>Tier</span>
                     </div>
                     <div>
-                      <strong>{detailPlayer.adp ?? "—"}</strong>
+                      <strong>{formatAdp(detailPlayer.adp)}</strong>
                       <span>ADP</span>
                     </div>
                     <div>
@@ -2760,7 +2773,7 @@ export function DraftAssistant({
                   </span>
                 </span>
                 <span role="cell"><i className={`tier tier-${Math.min(player.chenTier ?? 8, 8)}`}>T{player.chenTier ?? "—"}</i></span>
-                <span role="cell">{player.adp ?? "—"}</span>
+                <span role="cell">{formatAdp(player.adp)}</span>
                 <span className="row-actions" role="cell">
                   {isMyTurn && !draftedIds.has(player.id) ? (
                     <button

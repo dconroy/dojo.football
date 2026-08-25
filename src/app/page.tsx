@@ -143,10 +143,10 @@ export default function LandingPage() {
               <strong>Every pick in context</strong>
             </div>
             <Image
-              src="/landing/draft-board.png"
-              width={1280}
-              height={720}
-              alt="Completed 14-team snake draft board with player portraits, positions, bye weeks, and every selection by round"
+              src="/landing/in-progress-draft.png"
+              width={2996}
+              height={1354}
+              alt="In-progress draft with a turn countdown, live Top Five recommendations, available-player rankings, and roster status"
               sizes="(max-width: 1200px) 100vw, 1200px"
             />
           </figure>

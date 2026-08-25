@@ -122,7 +122,7 @@ function clamp(value: number) {
   return Math.min(1, Math.max(0, value));
 }
 
-/** Positive = drafted later than Chen rank (value); negative = a reach. */
+/** Positive = drafted later than board rank (value); negative = a reach. */
 function pickValue(pick: Pick): number | null {
   return pick.player.chenRank === undefined
     ? null
@@ -205,14 +205,14 @@ function measureTeam(
     (left, right) => left - right,
     (value) => value >= 6,
     (name, rank, overall, value) =>
-      `${name} — Chen ${rank} at ${overall} (+${Math.round(value)})`,
+      `${name} — board rank ${rank} at ${overall} (+${Math.round(value)})`,
   );
   const reach = highlight(
     roster,
     (left, right) => right - left,
     (value) => value <= -12,
     (name, rank, overall, value) =>
-      `${name} — Chen ${rank} at ${overall} (${Math.round(value)})`,
+      `${name} — board rank ${rank} at ${overall} (${Math.round(value)})`,
   );
 
   const rawScore = clamp(
@@ -253,6 +253,9 @@ function highlight(
 ): ReportHighlight | null {
   let best: { pick: Pick; value: number } | null = null;
   for (const pick of roster) {
+    // K/DEF are intentionally drafted late to fill required lineup slots.
+    // Their global board ranks are not comparable to skill-position draft capital.
+    if (pick.player.position === "K" || pick.player.position === "DEF") continue;
     const value = pickValue(pick);
     if (value === null) continue;
     if (!best || compare(value, best.value) > 0) best = { pick, value };
@@ -322,7 +325,7 @@ function buildReasons(
     tone: "neutral",
     text: `Ranked ${ordinal(rank)} of ${teamCount}${
       metrics.avgChenRank !== null
-        ? ` · avg Chen rank ${metrics.avgChenRank}`
+        ? ` · avg board rank ${metrics.avgChenRank}`
         : ""
     }.`,
   });

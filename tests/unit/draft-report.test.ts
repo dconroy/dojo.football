@@ -76,6 +76,20 @@ describe("draft report card", () => {
     expect(slot1?.holes).toContain("1/2 RB");
   });
 
+  it("does not call required kicker or defense picks reaches", () => {
+    const draft: DraftState = {
+      teamCount: 12,
+      rounds: 15,
+      userSlot: 1,
+      picks: [
+        pick(110, player("Zane Gonzalez", "K", 977)),
+        pick(134, player("Chiefs", "DEF", 250)),
+      ],
+    };
+    const slot1 = buildDraftReport(draft).teams.find((team) => team.slot === 1);
+    expect(slot1?.reach).toBeNull();
+  });
+
   it("caps an incomplete grade at B+ even when talent would otherwise be A-range", () => {
     expect(limitIncompleteGrade("A-", 1)).toBe("B+");
     expect(limitIncompleteGrade("A+", 2)).toBe("B+");

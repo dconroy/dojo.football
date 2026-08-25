@@ -25,6 +25,7 @@ export const THIN_CONSENSUS_PENALTY = 0.08;
 
 const TIER_GAP = 8;
 const MAX_AGE_MS = 12 * 60 * 60 * 1000;
+export const MAX_BLEND_PLAYERS = 300;
 const SOURCE_ORDER: readonly BlendSourceId[] = [
   "chen",
   "fantasypros",
@@ -144,27 +145,29 @@ export function blendRankingImports(
   let tier = 1;
   const positionCounts = new Map<string, number>();
 
-  const players: ChenPlayerRecord[] = scored.map((entry, index) => {
-    const virtualRank = entry.score * Math.max(maxList - 1, 1) + 1;
-    tier = synthesizeTier(virtualRank, previousVirtual, tier);
-    previousVirtual = virtualRank;
+  const players: ChenPlayerRecord[] = scored
+    .slice(0, MAX_BLEND_PLAYERS)
+    .map((entry, index) => {
+      const virtualRank = entry.score * Math.max(maxList - 1, 1) + 1;
+      tier = synthesizeTier(virtualRank, previousVirtual, tier);
+      previousVirtual = virtualRank;
 
-    const canonical = pickCanonical(entry.appearances);
-    const positionRank = (positionCounts.get(canonical.position) ?? 0) + 1;
-    positionCounts.set(canonical.position, positionRank);
+      const canonical = pickCanonical(entry.appearances);
+      const positionRank = (positionCounts.get(canonical.position) ?? 0) + 1;
+      positionCounts.set(canonical.position, positionRank);
 
-    return {
-      sourceId: canonical.sourceId,
-      name: canonical.name,
-      position: canonical.position,
-      team: canonical.team,
-      tier,
-      positionRank,
-      overallRank: index + 1,
-      byeWeek: canonical.byeWeek,
-      adp: entry.appearances.sleeper?.adp ?? entry.appearances.ffcalc?.adp,
-    };
-  });
+      return {
+        sourceId: canonical.sourceId,
+        name: canonical.name,
+        position: canonical.position,
+        team: canonical.team,
+        tier,
+        positionRank,
+        overallRank: index + 1,
+        byeWeek: canonical.byeWeek,
+        adp: entry.appearances.sleeper?.adp ?? entry.appearances.ffcalc?.adp,
+      };
+    });
 
   const scoring =
     present.map((id) => imports[id]!.scoring).find(Boolean) ?? undefined;
@@ -185,7 +188,7 @@ export function blendRankingImports(
 export async function fetchBlendImport(
   scoring: ChenScoring,
 ): Promise<ChenImport | null> {
-  const cacheSource = `dojo-blend-${scoring}`;
+  const cacheSource = `dojo-blend-v2-${scoring}`;
   const cached = await prisma.dataImport.findFirst({
     where: { source: cacheSource },
     orderBy: { fetchedAt: "desc" },

@@ -7,6 +7,8 @@ import type {
 import { CHEN_SCORING } from "@/adapters/chen/boris-chen";
 
 const MAX_AGE_MS = 12 * 60 * 60 * 1000;
+const MAX_DRAFTABLE_ADP = 300;
+const MAX_DRAFTABLE_PLAYERS = 300;
 
 const ADP_FIELD: Record<ChenScoring, string> = {
   "half-ppr": "adp_half_ppr",
@@ -33,7 +35,7 @@ function tierFor(adp: number, previousAdp: number | null, previousTier: number) 
 export async function fetchSleeperAdpImport(
   scoring: ChenScoring,
 ): Promise<ChenImport | null> {
-  const cacheSource = `sleeper-adp-${scoring}`;
+  const cacheSource = `sleeper-adp-v2-${scoring}`;
   const cached = await prisma.dataImport.findFirst({
     where: { source: cacheSource },
     orderBy: { fetchedAt: "desc" },
@@ -67,13 +69,15 @@ export async function fetchSleeperAdpImport(
           adp: number;
         } =>
           Boolean(entry.name) &&
+          Boolean(entry.row.player?.team) &&
           ["QB", "RB", "WR", "TE", "K", "DEF"].includes(entry.position ?? "") &&
           typeof entry.adp === "number" &&
           Number.isFinite(entry.adp) &&
           entry.adp > 0 &&
-          entry.adp < 999,
+          entry.adp <= MAX_DRAFTABLE_ADP,
       )
-      .sort((a, b) => a.adp - b.adp);
+      .sort((a, b) => a.adp - b.adp)
+      .slice(0, MAX_DRAFTABLE_PLAYERS);
 
     let previousAdp: number | null = null;
     let tier = 1;

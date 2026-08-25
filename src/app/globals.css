@@ -3488,7 +3488,7 @@ button.board-pick:hover {
   background: color-mix(in srgb, var(--grade) 6%, var(--panel));
 }
 
-.report-story.loading {
+.report-story.pending {
   color: var(--muted);
   font-size: 12px;
   font-style: italic;

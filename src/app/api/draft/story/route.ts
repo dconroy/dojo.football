@@ -56,9 +56,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ story: null });
     }
 
+    // Demo stories are paid AI calls. Only a real claimed human seat receives
+    // one; robot slots never have a member lease or a signed player session.
+    const demoMember = demo
+      ? (await demoSeatMembers(draftId)).find(
+          (member) => member.draftSlot === slot,
+        )
+      : null;
+    if (demo && !demoMember) {
+      return NextResponse.json({ story: null });
+    }
     const teamName = demo
-      ? (await demoSeatMembers(draftId)).find((member) => member.draftSlot === slot)
-          ?.teamName ?? `Slot ${slot}`
+      ? demoMember!.teamName ?? demoMember!.displayName
       : user
         ? userPrefs(user).teamName
         : `Slot ${slot}`;

@@ -14,7 +14,7 @@ Sleeper or Yahoo, recalculates roster-aware recommendations after every pick, ex
 scoring, and grades the room when the draft ends. You still make the real selection in your
 league app; Draft Dojo never submits a pick on your behalf.
 
-<img src="docs/screenshots/draft-board.png" alt="The shared AI draft board: on-the-clock banner, live Top-five recommendations, Chen-first rankings, and the team-by-team board" width="900" />
+<img src="docs/screenshots/in-progress-draft.png" alt="An in-progress draft with live Top Five recommendations, available-player rankings, and roster status" width="900" />
 
 </div>
 

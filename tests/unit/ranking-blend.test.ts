@@ -4,6 +4,7 @@ import type { ChenImport, ChenPlayerRecord } from "../../src/adapters/chen/boris
 import {
   blendRankingImports,
   DEFAULT_BLEND_WEIGHTS,
+  MAX_BLEND_PLAYERS,
   rankToPercentile,
   renormalizeWeights,
   thinConsensusPenalty,
@@ -42,6 +43,15 @@ function imported(
 }
 
 describe("ranking blend math", () => {
+  it("caps the union at draft-useful depth", () => {
+    const deep = Array.from({ length: MAX_BLEND_PLAYERS + 50 }, (_, index) =>
+      record(`Player ${index + 1}`, index % 2 === 0 ? "RB" : "WR", index + 1),
+    );
+    const blended = blendRankingImports({ sleeper: imported(deep) });
+    expect(blended?.players).toHaveLength(MAX_BLEND_PLAYERS);
+    expect(blended?.players.at(-1)?.overallRank).toBe(MAX_BLEND_PLAYERS);
+  });
+
   it("maps rank 1 to percentile 0 and last place to 1", () => {
     expect(rankToPercentile(1, 100)).toBe(0);
     expect(rankToPercentile(100, 100)).toBe(1);

@@ -10,6 +10,7 @@ import {
 } from "@/domain/report-card-share";
 import { PLAYER_POSITIONS } from "@/domain/types";
 import { useDialogAccessibility } from "@/components/use-dialog-accessibility";
+import { demoFetch as fetch } from "@/lib/demo-tab-session";
 
 export function DraftReportCard({
   report,
@@ -118,7 +119,7 @@ export function DraftReportCard({
               </p>
               <p className="report-hero-summary">{mine.summary}</p>
               {storyStatus === "loading" ? (
-                <p className="report-story loading">Writing your recap…</p>
+                <p className="report-story pending">Writing your recap…</p>
               ) : null}
               {storyStatus === "ready" && story ? (
                 <div className="report-story">
@@ -261,7 +262,7 @@ function TeamRow({
                 <b>{pick.player.name}</b>
                 <small>
                   {pick.player.position}
-                  {pick.player.chenRank ? ` · Chen ${pick.player.chenRank}` : ""}
+                  {pick.player.chenRank ? ` · Rank ${pick.player.chenRank}` : ""}
                   {pick.player.byeWeek ? ` · Bye ${pick.player.byeWeek}` : ""}
                 </small>
               </li>
