@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useRef, useState } from "react";
 
 import styles from "./landing.module.css";
 
@@ -63,6 +63,7 @@ export function LiveRooms() {
   const [data, setData] = useState<RoomsResponse | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [loadError, setLoadError] = useState(false);
+  const snapshotRef = useRef("");
 
   useEffect(() => {
     let cancelled = false;
@@ -74,9 +75,20 @@ export function LiveRooms() {
         })
         .then((body: RoomsResponse | null) => {
           if (cancelled || !body) return;
-          setData(body);
-          setLoadError(false);
-          setLoaded(true);
+          const snapshot = `${body.activePlayers}:${body.rooms
+            .map((room) => `${room.id}:${room.picks}:${room.openSeats}:${room.started}`)
+            .join("|")}`;
+          if (snapshot === snapshotRef.current) {
+            setLoadError(false);
+            setLoaded(true);
+            return;
+          }
+          snapshotRef.current = snapshot;
+          startTransition(() => {
+            setData(body);
+            setLoadError(false);
+            setLoaded(true);
+          });
         })
         .catch(() => {
           if (!cancelled) {
@@ -117,7 +129,11 @@ export function LiveRooms() {
         <ul className={styles.liveRoomsList}>
           {summary.joinable.map((room) => (
             <li key={room.id}>
-              <Link className={styles.liveRoom} href={roomHref(room.id)}>
+              <Link
+                className={styles.liveRoom}
+                href={roomHref(room.id)}
+                prefetch={false}
+              >
                 <span className={styles.liveRoomName}>{room.name}</span>
                 <span className={styles.liveRoomSeats}>
                         {room.scoring === "half-ppr"

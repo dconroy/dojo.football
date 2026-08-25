@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, memo, startTransition, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   analyzeRoomTendencies,
   analyzeDraftRoster,
@@ -278,21 +278,35 @@ function initials(name: string): string {
     .join("");
 }
 
-/** Round headshot with an initials fallback when a player has no photo yet. */
-function PlayerAvatar({
+/**
+ * Round headshot with a gray initials fallback when Sleeper has no photo
+ * (missing files 403 instead of a default image).
+ */
+const PlayerAvatar = memo(function PlayerAvatar({
   name,
   imageUrl,
   size = 34,
+  className = "avatar",
+  alt = "",
 }: {
   name: string;
   imageUrl?: string;
   size?: number;
+  className?: string;
+  alt?: string;
 }) {
-  if (!imageUrl) {
+  const [broken, setBroken] = useState(false);
+  useEffect(() => {
+    setBroken(false);
+  }, [imageUrl]);
+
+  if (!imageUrl || broken) {
     return (
       <span
-        className="avatar placeholder"
-        style={{ width: size, height: size }}
+        className={`${className} placeholder`}
+        style={
+          className === "avatar" ? { width: size, height: size } : undefined
+        }
         aria-hidden
       >
         {initials(name)}
@@ -301,15 +315,16 @@ function PlayerAvatar({
   }
   return (
     <Image
-      className="avatar"
+      className={className}
       src={imageUrl}
-      alt=""
+      alt={alt}
       width={size}
       height={size}
       unoptimized
+      onError={() => setBroken(true)}
     />
   );
-}
+});
 
 /** Small team logo badge; renders nothing for free agents / unknown teams. */
 function TeamLogo({ team, size = 16 }: { team?: string; size?: number }) {
@@ -888,34 +903,51 @@ export function DraftAssistant({
       }),
     [myRoster, current.round, recommendation],
   );
+  const pinSet = useMemo(() => new Set(pins), [pins]);
+  const avoidSet = useMemo(() => new Set(avoids), [avoids]);
   const insightFlags =
     insights.alerts.filter((alert) => alert.severity !== "info").length +
     roomTendencies.alerts.filter((alert) => alert.confidence !== "low").length;
-  const tiers = [...new Set(available.map((player) => player.chenTier))]
-    .filter((value): value is number => value !== undefined)
-    .sort((a, b) => a - b);
-  const filtered = (listFilter === "all" ? available : state.players)
-    .filter((player) => position === "ALL" || player.position === position)
-    .filter((player) => tier === "ALL" || player.chenTier === Number(tier))
-    .filter((player) =>
-      `${player.name} ${player.team}`.toLowerCase().includes(search.toLowerCase()),
-    )
-    .filter((player) =>
-      listFilter === "all"
-        ? true
-        : listFilter === "avoids"
-          ? avoids.includes(player.id)
-          : pins.includes(player.id),
-    )
-    .sort((a, b) => {
-      const pinDelta =
-        Number(pins.includes(b.id)) - Number(pins.includes(a.id));
-      return (
-        pinDelta ||
-        (a.chenRank ?? Number.MAX_SAFE_INTEGER) -
-          (b.chenRank ?? Number.MAX_SAFE_INTEGER)
-      );
-    });
+  const tiers = useMemo(
+    () =>
+      [...new Set(available.map((player) => player.chenTier))]
+        .filter((value): value is number => value !== undefined)
+        .sort((a, b) => a - b),
+    [available],
+  );
+  const filtered = useMemo(() => {
+    const needle = search.toLowerCase();
+    return (listFilter === "all" ? available : state.players)
+      .filter((player) => position === "ALL" || player.position === position)
+      .filter((player) => tier === "ALL" || player.chenTier === Number(tier))
+      .filter((player) =>
+        `${player.name} ${player.team}`.toLowerCase().includes(needle),
+      )
+      .filter((player) =>
+        listFilter === "all"
+          ? true
+          : listFilter === "avoids"
+            ? avoidSet.has(player.id)
+            : pinSet.has(player.id),
+      )
+      .sort((a, b) => {
+        const pinDelta = Number(pinSet.has(b.id)) - Number(pinSet.has(a.id));
+        return (
+          pinDelta ||
+          (a.chenRank ?? Number.MAX_SAFE_INTEGER) -
+            (b.chenRank ?? Number.MAX_SAFE_INTEGER)
+        );
+      });
+  }, [
+    available,
+    avoidSet,
+    listFilter,
+    pinSet,
+    position,
+    search,
+    state.players,
+    tier,
+  ]);
 
   async function mutateDraft(
     path: string,
@@ -1719,12 +1751,33 @@ export function DraftAssistant({
               ? boardExhausted
                 ? `${state.draft.picks.length} picks made · ranked player pool exhausted`
                 : `${state.draft.picks.length} of ${totalPicks} picks made`
-              : `Pick ${current.overall} · Round ${current.round} · Slot ${current.slot}${
+              : `Pick ${current.overall} of ${totalPicks} · Round ${current.round} of ${state.draft.rounds} · Slot ${current.slot}${
                   !isMyTurn && showAutoCountdown
                     ? ` · slot ${current.slot} auto-drafts in ${autoPickSeconds}s`
                     : ""
                 }`}
           </span>
+          <div
+            className="draft-progress"
+            role="progressbar"
+            aria-label="Draft progress"
+            aria-valuemin={0}
+            aria-valuemax={totalPicks}
+            aria-valuenow={Math.min(state.draft.picks.length, totalPicks)}
+          >
+            <i
+              style={{
+                width: `${
+                  totalPicks <= 0
+                    ? 0
+                    : Math.min(
+                        100,
+                        (Math.min(state.draft.picks.length, totalPicks) / totalPicks) * 100,
+                      )
+                }%`,
+              }}
+            />
+          </div>
         </div>
         {isMyTurn && selectedPlayer ? (
           <button
@@ -2120,24 +2173,13 @@ export function DraftAssistant({
                 {detailPlayer.team}
               </span>
               <div className="detail-head">
-                {detailPlayer.imageUrl ? (
-                  <Image
-                    className="detail-headshot"
-                    src={detailPlayer.imageUrl}
-                    alt={detailPlayer.name}
-                    width={220}
-                    height={220}
-                    unoptimized
-                  />
-                ) : (
-                  <div className="detail-headshot placeholder">
-                    {detailPlayer.name
-                      .split(/\s+/)
-                      .slice(0, 2)
-                      .map((part) => part[0])
-                      .join("")}
-                  </div>
-                )}
+                <PlayerAvatar
+                  name={detailPlayer.name}
+                  imageUrl={detailPlayer.imageUrl}
+                  size={220}
+                  className="detail-headshot"
+                  alt={detailPlayer.name}
+                />
                 <div className="detail-identity">
                   <h2 id="player-detail-title">{detailPlayer.name}</h2>
                   <p className="detail-sub">
@@ -2598,7 +2640,10 @@ export function DraftAssistant({
             <input
               placeholder="Search players or teams"
               value={search}
-              onChange={(event) => setSearch(event.target.value)}
+              onChange={(event) => {
+                const value = event.target.value;
+                startTransition(() => setSearch(value));
+              }}
             />
             <label className="filter-label">
               Pos
@@ -2827,13 +2872,28 @@ export function DraftAssistant({
 
       <section className="panel board">
         <div className="panel-heading">
-          <div><p className="eyebrow">All selections</p><h2>Draft board</h2></div>
+          <div>
+            <p className="eyebrow">All selections</p>
+            <h2>
+              Draft board{" "}
+              <span>
+                {draftComplete
+                  ? `${state.draft.rounds} rounds`
+                  : `Round ${current.round} of ${state.draft.rounds}`}
+              </span>
+            </h2>
+          </div>
           <span>Last local update {state.draft.picks.at(-1)?.madeAt ? new Date(state.draft.picks.at(-1)!.madeAt!).toLocaleTimeString() : "—"}</span>
         </div>
         <div
           className="board-grid"
-          style={{ gridTemplateColumns: `repeat(${state.draft.teamCount}, minmax(0, 1fr))` }}
+          style={{
+            gridTemplateColumns: `28px repeat(${state.draft.teamCount}, minmax(0, 1fr))`,
+          }}
         >
+          <div className="board-round board-round-head" aria-hidden="true">
+            Rd
+          </div>
           {Array.from({ length: state.draft.teamCount }, (_, index) => (
             <div
               className={`board-head ${
@@ -2845,59 +2905,75 @@ export function DraftAssistant({
               {teamLabel(index + 1)}
             </div>
           ))}
-          {Array.from(
-            { length: state.draft.picks.reduce((max, pick) => Math.max(max, pick.round), 0) },
-            (_, roundIndex) => {
-              const round = roundIndex + 1;
-              return Array.from({ length: state.draft.teamCount }, (_, index) => {
-                const slot = index + 1;
-                const pick = state.draft.picks.find(
-                  (entry) => entry.round === round && entry.slot === slot,
-                );
-                return (
-                  <div
-                    className={`board-cell ${
-                      hasDraftSeat && slot === state.draft.userSlot ? "mine" : ""
-                    }`}
-                    key={`${round}-${slot}`}
-                  >
-                    {pick ? (
-                      <button
-                        type="button"
-                        className={`board-pick pos-${pick.player.position.toLowerCase()}`}
-                        onClick={() => openDetail(pick.player.id)}
-                      >
-                        <span>
-                          {pick.round}.{pick.slot}
-                          {pick.player.byeWeek ? ` · Bye ${pick.player.byeWeek}` : ""}
-                        </span>
-                        <b>{pick.player.name}</b>
-                        <small>{pick.player.position}</small>
-                        <span
-                          className="board-pick-direction"
-                          aria-hidden="true"
-                          title={`Round ${round} moves ${
-                            round % 2 === 1 ? "left to right" : "right to left"
-                          }`}
+          {Array.from({ length: state.draft.rounds }, (_, roundIndex) => {
+            const round = roundIndex + 1;
+            return (
+              <Fragment key={`round-${round}`}>
+                <div
+                  className={`board-round ${
+                    !draftComplete && round === current.round ? "current-round" : ""
+                  }`}
+                >
+                  {round}
+                </div>
+                {Array.from({ length: state.draft.teamCount }, (_, index) => {
+                  const slot = index + 1;
+                  const pick = state.draft.picks.find(
+                    (entry) => entry.round === round && entry.slot === slot,
+                  );
+                  return (
+                    <div
+                      className={`board-cell ${
+                        hasDraftSeat && slot === state.draft.userSlot ? "mine" : ""
+                      } ${
+                        !draftComplete && round === current.round ? "current-round" : ""
+                      } ${
+                        !draftComplete &&
+                        round === current.round &&
+                        slot === current.slot
+                          ? "on-clock-cell"
+                          : ""
+                      }`}
+                      key={`${round}-${slot}`}
+                    >
+                      {pick ? (
+                        <button
+                          type="button"
+                          className={`board-pick pos-${pick.player.position.toLowerCase()}`}
+                          onClick={() => openDetail(pick.player.id)}
                         >
-                          {round % 2 === 1 ? "→" : "←"}
-                        </span>
-                        <PlayerAvatar
-                          name={pick.player.name}
-                          imageUrl={pick.player.imageUrl}
-                          size={28}
-                        />
-                      </button>
-                    ) : (
-                      <div className="board-pick empty">
-                        <span>{round}.{slot}</span>
-                      </div>
-                    )}
-                  </div>
-                );
-              });
-            },
-          )}
+                          <span>
+                            {pick.round}.{pick.slot}
+                            {pick.player.byeWeek ? ` · Bye ${pick.player.byeWeek}` : ""}
+                          </span>
+                          <b>{pick.player.name}</b>
+                          <small>{pick.player.position}</small>
+                          <span
+                            className="board-pick-direction"
+                            aria-hidden="true"
+                            title={`Round ${round} moves ${
+                              round % 2 === 1 ? "left to right" : "right to left"
+                            }`}
+                          >
+                            {round % 2 === 1 ? "→" : "←"}
+                          </span>
+                          <PlayerAvatar
+                            name={pick.player.name}
+                            imageUrl={pick.player.imageUrl}
+                            size={28}
+                          />
+                        </button>
+                      ) : (
+                        <div className="board-pick empty">
+                          <span>{round}.{slot}</span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </Fragment>
+            );
+          })}
         </div>
       </section>
       {isDemo && draftId ? (

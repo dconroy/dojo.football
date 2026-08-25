@@ -1,7 +1,4 @@
-"use client";
-
 import Image from "next/image";
-import { motion, useReducedMotion } from "motion/react";
 
 import styles from "@/app/landing.module.css";
 
@@ -46,18 +43,8 @@ const recommendations = [
 ] as const;
 
 export function WarRoomHero() {
-  const reduceMotion = useReducedMotion();
-  const transition = reduceMotion
-    ? { duration: 0 }
-    : { type: "spring" as const, stiffness: 90, damping: 18 };
-
   return (
-    <motion.div
-      className={styles.warRoom}
-      initial={reduceMotion ? false : { opacity: 0, y: 28 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: reduceMotion ? 0 : 0.65, ease: [0.22, 1, 0.36, 1] }}
-    >
+    <div className={styles.warRoom}>
       <div className={styles.warRoomTopline}>
         <span className={styles.clockLabel}>RD 1 · PICK 07</span>
         <span className={styles.clockTime}>00:42</span>
@@ -72,26 +59,18 @@ export function WarRoomHero() {
           aria-hidden="true"
         >
           <path d="M 30 35 H 930 Q 970 35 970 65 Q 970 95 930 95 H 30" />
-          <motion.path
-            d="M 30 35 H 625"
-            initial={reduceMotion ? false : { pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: reduceMotion ? 0 : 1.15, delay: 0.25 }}
-          />
+          <path d="M 30 35 H 625" />
         </svg>
         <ol className={styles.draftNodes}>
-          {boardPicks.map((item, index) => (
-            <motion.li
+          {boardPicks.map((item) => (
+            <li
               key={item.pick}
               className={item.active ? styles.activeDraftNode : styles.draftNode}
-              initial={reduceMotion ? false : { opacity: 0, scale: 0.75 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ ...transition, delay: reduceMotion ? 0 : 0.05 * index }}
             >
               <small>{item.pick}</small>
               <strong>{item.initials}</strong>
-              {item.position && <span>{item.position}</span>}
-            </motion.li>
+              {item.position ? <span>{item.position}</span> : null}
+            </li>
           ))}
         </ol>
       </div>
@@ -112,14 +91,8 @@ export function WarRoomHero() {
             <b>LIVE</b>
           </header>
           <ol>
-            {recommendations.map((player, index) => (
-              <motion.li
-                key={player.name}
-                initial={reduceMotion ? false : { opacity: 0, x: 24 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.6 }}
-                transition={{ ...transition, delay: reduceMotion ? 0 : 0.16 + index * 0.12 }}
-              >
+            {recommendations.map((player) => (
+              <li key={player.name}>
                 <span className={styles.shortlistRank}>0{player.rank}</span>
                 <Image
                   src={player.image}
@@ -136,7 +109,7 @@ export function WarRoomHero() {
                 <span className={player.move === "—" ? styles.moveFlat : styles.moveUp}>
                   {player.move}
                 </span>
-              </motion.li>
+              </li>
             ))}
           </ol>
         </section>
@@ -147,6 +120,6 @@ export function WarRoomHero() {
         <span>ROSTER: 0 QB · 0 RB · 0 WR</span>
         <strong>BOARD UPDATED 2s AGO</strong>
       </div>
-    </motion.div>
+    </div>
   );
 }

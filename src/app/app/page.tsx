@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 
-import { DraftAssistant } from "@/components/draft-assistant";
+const DraftAssistant = dynamic(
+  () =>
+    import("@/components/draft-assistant").then((mod) => ({
+      default: mod.DraftAssistant,
+    })),
+  { loading: () => <div className="loading">Opening the board…</div> },
+);
 
 export const metadata: Metadata = {
   title: "Draft board",

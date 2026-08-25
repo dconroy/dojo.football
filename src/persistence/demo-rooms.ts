@@ -43,6 +43,8 @@ const DEMO_AUTO_PICK_MS = 30_000;
 const COMPLETE_TTL_MS = 45 * 60 * 1000;
 const EXHAUSTED_TTL_MS = 15 * 60 * 1000;
 const IDLE_ROOM_TTL_MS = 60 * 60 * 1000;
+/** Started rooms that stop taking picks. Phantom seats used to keep these listed forever. */
+export const STALLED_STARTED_TTL_MS = 10 * 60 * 1000;
 // A room with no mock config is a half-created/orphaned shell (e.g. recreated
 // from a stale cookie). Give creation a grace window, then recycle it.
 const BROKEN_ROOM_TTL_MS = 2 * 60 * 1000;
@@ -284,6 +286,17 @@ export function isDemoRoomId(id: string) {
   return id.startsWith(DEMO_ROOM_PREFIX);
 }
 
+/** True when a started clock has gone quiet long enough to treat as abandoned. */
+export function demoRoomLooksStalled(input: {
+  readonly finished: boolean;
+  readonly clockStarted: boolean;
+  readonly boardUpdatedAtMs: number;
+  readonly now?: number;
+}): boolean {
+  if (input.finished || !input.clockStarted) return false;
+  return (input.now ?? Date.now()) - input.boardUpdatedAtMs > STALLED_STARTED_TTL_MS;
+}
+
 async function deleteRoom(roomId: string) {
   await deleteDemoChatForRoom(roomId).catch(() => undefined);
   await prisma.leagueDraft.delete({ where: { id: roomId } }).catch(() => undefined);
@@ -361,6 +374,18 @@ async function recycleStaleRooms() {
         continue;
       }
       if (!finished) {
+        if (
+          demoRoomLooksStalled({
+            finished,
+            clockStarted: isDemoClockStarted(config),
+            boardUpdatedAtMs: room.updatedAt.getTime(),
+            now,
+          })
+        ) {
+          await deleteRoom(room.id);
+          await forgetDemoRoomStats(room.id).catch(() => undefined);
+          continue;
+        }
         const seatRow = await prisma.syncCheckpoint.findUnique({
           where: { id: seatSeenKey(room.id) },
           select: { payload: true, syncedAt: true },

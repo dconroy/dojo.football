@@ -541,6 +541,32 @@ h2 {
   font-size: 12px;
 }
 
+.draft-progress {
+  width: min(420px, 100%);
+  height: 7px;
+  margin-top: 8px;
+  overflow: hidden;
+  border: 1px solid #3a4d42;
+  border-radius: 99px;
+  background: #21392b;
+}
+
+.draft-progress > i {
+  display: block;
+  height: 100%;
+  background: #b8e986;
+  border-radius: 99px;
+}
+
+.control-strip.on-clock .draft-progress {
+  border-color: #a85a32;
+  background: #2a1810;
+}
+
+.control-strip.on-clock .draft-progress > i {
+  background: #ef702f;
+}
+
 .strip-spacer {
   width: 1px;
   height: 30px;
@@ -1138,8 +1164,16 @@ h2 {
   place-items: center;
   font-size: 10px;
   font-weight: 850;
-  color: var(--muted);
+  color: #8b9690;
+  background: #3a4540;
+  border-color: #4a5550;
   text-transform: uppercase;
+}
+
+.app.dark .avatar.placeholder {
+  color: #9aa89f;
+  background: #2c3932;
+  border-color: #3d4b43;
 }
 
 .team-logo {
@@ -1414,6 +1448,11 @@ h2 {
   padding: 0 13px;
   font-size: 13px;
   cursor: pointer;
+}
+
+.table-row:not(.table-head) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 45px;
 }
 
 .table-head {
@@ -1854,7 +1893,7 @@ h2 {
 
 .board-grid {
   display: grid;
-  grid-template-columns: repeat(var(--board-teams, 12), minmax(0, 1fr));
+  grid-template-columns: 28px repeat(var(--board-teams, 12), minmax(0, 1fr));
   overflow: visible;
   padding: 6px 4px 10px;
 }
@@ -1914,6 +1953,50 @@ h2 {
 
 .board-cell.mine {
   background: var(--green-soft);
+}
+
+.board-round {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 4px 2px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--panel-2);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+
+.board-round-head {
+  padding: 8px 2px;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.board-round.current-round,
+.board-cell.current-round:not(.mine) {
+  background: color-mix(in srgb, var(--green) 10%, transparent);
+}
+
+.board-round.current-round {
+  color: var(--green);
+}
+
+.board-cell.on-clock-cell {
+  box-shadow: inset 0 0 0 2px var(--saffron);
+  z-index: 2;
+}
+
+.app.dark .board-round.current-round,
+.app.dark .board-cell.current-round:not(.mine) {
+  background: color-mix(in srgb, #b8e986 10%, transparent);
+}
+
+.app.dark .board-cell.on-clock-cell {
+  box-shadow: inset 0 0 0 2px #ef702f;
 }
 
 .board-pick {

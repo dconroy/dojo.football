@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { startTransition, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
 import { BrandLockup } from "@/components/brand-lockup";
 import {
@@ -121,6 +121,7 @@ export function DemoLobby() {
   const [openPage, setOpenPage] = useState(1);
   const [closedPage, setClosedPage] = useState(1);
   const teamNameRef = useRef<HTMLInputElement>(null);
+  const roomsSnapshotRef = useRef("");
 
   useEffect(() => {
     const input = teamNameRef.current;
@@ -144,18 +145,28 @@ export function DemoLobby() {
           return;
         }
         if (!cancelled && response.ok) {
-          setRooms(body.rooms);
-          setStats(body.stats ?? EMPTY_STATS);
-          setActivePlayers(body.activePlayers ?? 0);
-          setNotice("");
-          setSeats((previous) => {
-            const next = { ...previous };
-            for (const room of body.rooms) {
-              if (!room.openSeatList.includes(next[room.id])) {
-                next[room.id] = room.openSeatList[0] ?? 1;
+          const snapshot = body.rooms
+            .map(
+              (room) =>
+                `${room.id}:${room.picks}:${room.openSeats}:${room.started}:${room.complete}`,
+            )
+            .join("|");
+          if (snapshot === roomsSnapshotRef.current) return;
+          roomsSnapshotRef.current = snapshot;
+          startTransition(() => {
+            setRooms(body.rooms);
+            setStats(body.stats ?? EMPTY_STATS);
+            setActivePlayers(body.activePlayers ?? 0);
+            setNotice("");
+            setSeats((previous) => {
+              const next = { ...previous };
+              for (const room of body.rooms) {
+                if (!room.openSeatList.includes(next[room.id])) {
+                  next[room.id] = room.openSeatList[0] ?? 1;
+                }
               }
-            }
-            return next;
+              return next;
+            });
           });
         }
       } finally {
