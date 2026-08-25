@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { DEMO_TOKEN_HEADER, NO_DEMO_TOKEN } from "@/lib/demo-token";
 
 export const DEMO_COOKIE_NAME = "dojo_demo";
 
@@ -82,6 +83,10 @@ export function demoCookieOptions() {
   };
 }
 
-export async function getDemoClaims() {
+export async function getDemoClaims(request?: Request) {
+  if (request?.headers.has(DEMO_TOKEN_HEADER)) {
+    const token = request.headers.get(DEMO_TOKEN_HEADER);
+    return readDemoToken(token && token !== NO_DEMO_TOKEN ? token : undefined);
+  }
   return cookies().then((jar) => readDemoToken(jar.get(DEMO_COOKIE_NAME)?.value));
 }

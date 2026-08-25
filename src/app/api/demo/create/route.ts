@@ -59,6 +59,7 @@ export async function POST(request: NextRequest) {
         roomId: shared.id,
         ...(await demoClientState(shared.id)),
       },
+      demoToken: token,
     });
     response.cookies.set(DEMO_COOKIE_NAME, token, demoCookieOptions());
     return response;

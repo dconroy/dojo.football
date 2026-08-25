@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
 
   try {
     displayName = validateDemoTeamName(requestedDisplayName);
-    const existing = await getDemoClaims();
+    const existing = await getDemoClaims(request);
     // Prefer an explicitly requested room, then the cookie's room. Either way,
     // only reuse a room that still exists as a real (mock-config) room.
     let roomId = requestedRoom ?? existing?.roomId;
@@ -117,6 +117,7 @@ export async function POST(request: NextRequest) {
         roomId: shared.id,
         ...(await demoClientState(shared.id)),
       },
+      demoToken: token,
     });
     response.cookies.set(DEMO_COOKIE_NAME, token, demoCookieOptions());
     return response;

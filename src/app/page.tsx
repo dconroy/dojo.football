@@ -144,24 +144,24 @@ export default function LandingPage() {
             </div>
             <Image
               src="/landing/draft-board.png"
-              width={1512}
-              height={982}
-              alt="Live snake draft board with the on-the-clock pick, top-five recommendations, and team-by-team selections"
-              sizes="(max-width: 900px) 100vw, 65vw"
+              width={1280}
+              height={720}
+              alt="Completed 14-team snake draft board with player portraits, positions, bye weeks, and every selection by round"
+              sizes="(max-width: 1200px) 100vw, 1200px"
             />
           </figure>
           <div className={styles.proofStack}>
-            <figure>
+            <figure className={styles.proofRecommendations}>
               <div className={styles.proofLabel}>
                 <span>02 / THE READ</span>
                 <strong>Why the board moved</strong>
               </div>
               <Image
                 src="/landing/ai-insights.png"
-                width={1512}
-                height={982}
-                alt="Insights view with roster red flags, model lean, and bye-week concentration"
-                sizes="(max-width: 900px) 100vw, 35vw"
+                width={760}
+                height={990}
+                alt="Top Five recommendation list recalculated after every draft pick"
+                sizes="(max-width: 700px) 100vw, 50vw"
               />
             </figure>
             <figure>
@@ -171,10 +171,10 @@ export default function LandingPage() {
               </div>
               <Image
                 src="/landing/report-card.png"
-                width={1512}
-                height={982}
-                alt="Post-draft report card with letter grades and a ranked team leaderboard"
-                sizes="(max-width: 900px) 100vw, 35vw"
+                width={1280}
+                height={720}
+                alt="Post-draft leaderboard ranking all teams with letter grades, roster counts, and a concise verdict"
+                sizes="(max-width: 700px) 100vw, 50vw"
               />
             </figure>
           </div>

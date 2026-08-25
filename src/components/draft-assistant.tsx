@@ -55,6 +55,10 @@ import {
 } from "@/domain/demo-labels";
 import { mergePollPlayers, playerRevision } from "@/lib/board-sync";
 import {
+  demoFetch as fetch,
+  saveDemoTabToken,
+} from "@/lib/demo-tab-session";
+import {
   draftBoardExhausted,
   draftIsFinished,
   shortBoardMessage,
@@ -194,6 +198,7 @@ interface DraftPayload {
   me: MeState;
   unchanged?: boolean;
   playersOmitted?: boolean;
+  demoToken?: string;
 }
 
 interface DemoInfo {
@@ -494,6 +499,7 @@ export function DraftAssistant({
   }
 
   function applyPayload(payload: DraftPayload & { demo?: DemoInfo }, message?: string) {
+    if (payload.demoToken) saveDemoTabToken(payload.demoToken);
     if (payload.unchanged) {
       setMembers(payload.members);
       if (payload.me) setMe(payload.me);

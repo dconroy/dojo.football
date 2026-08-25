@@ -10,7 +10,7 @@ export async function GET(request: Request) {
     try {
       await requireActiveUser();
     } catch (error) {
-      if (!(error instanceof AuthError) || !(await getDemoClaims())) throw error;
+      if (!(error instanceof AuthError) || !(await getDemoClaims(request))) throw error;
     }
     const url = new URL(request.url);
     const name = url.searchParams.get("name")?.trim();

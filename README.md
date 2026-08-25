@@ -58,7 +58,7 @@ Flip to the **Insights** tab for a roster read: red-flag checks, the model's lea
 bye-week concentration so you never stack four starters on the same week.
 
 <div align="center">
-<img src="docs/screenshots/ai-insights.png" alt="Insights tab showing red-flag checks, model lean, and bye-week concentration" width="820" />
+<img src="docs/screenshots/ai-insights.png" alt="Top Five recommendations recalculated after every draft pick" width="820" />
 </div>
 
 ### Draft report card

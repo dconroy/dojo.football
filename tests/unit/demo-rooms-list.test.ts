@@ -1,7 +1,13 @@
 import { describe, expect, it } from "vitest";
 
 import type { MockDraftConfig } from "../../src/adapters/yahoo/mock-runner";
-import { summarizeListedDemoRoom, demoRoomLooksStalled, STALLED_STARTED_TTL_MS } from "../../src/persistence/demo-rooms";
+import {
+  catchUpDemoBoardPicks,
+  demoRoomLooksStalled,
+  STALLED_STARTED_TTL_MS,
+  summarizeListedDemoRoom,
+} from "../../src/persistence/demo-rooms";
+import type { Player } from "../../src/domain";
 
 const row = {
   id: "demo:room-1",
@@ -104,5 +110,93 @@ describe("demoRoomLooksStalled", () => {
         now,
       }),
     ).toBe(false);
+  });
+});
+
+describe("catchUpDemoBoardPicks", () => {
+  const pool: Player[] = Array.from({ length: 40 }, (_, index) => ({
+    id: `p${index + 1}`,
+    name: `Player ${index + 1}`,
+    position: (["RB", "WR", "QB", "TE"] as const)[index % 4],
+    team: "KC",
+    chenRank: index + 1,
+  }));
+
+  it("appends published mock picks the seated client never persisted", () => {
+    const started = Date.parse("2026-08-25T00:00:00.000Z");
+    const mock = config({
+      teamCount: 4,
+      rounds: 4,
+      intervalMs: 1000,
+      startedAtIso: new Date(started).toISOString(),
+      humanSlots: [2],
+      picksBySlot: { 2: ["p2"] },
+      players: pool.map((player) => ({
+        id: player.id,
+        name: player.name,
+        position: player.position,
+        team: player.team,
+        chenRank: player.chenRank,
+      })),
+    });
+    const boardPicks = [
+      {
+        overall: 1,
+        round: 1,
+        slot: 1,
+        rosterSlot: "RB" as const,
+        player: pool[0],
+      },
+    ];
+    const caught = catchUpDemoBoardPicks(
+      { teamCount: 4, rounds: 4, picks: boardPicks, players: pool },
+      mock,
+      started + 8_000,
+    );
+    expect(caught).not.toBeNull();
+    expect(caught!.length).toBeGreaterThan(boardPicks.length);
+    expect(caught![0]?.player.id).toBe("p1");
+  });
+
+  it("returns null when the shared board already matches the mock", () => {
+    const started = Date.parse("2026-08-25T00:00:00.000Z");
+    const mock = config({
+      teamCount: 2,
+      rounds: 1,
+      intervalMs: 1000,
+      startedAtIso: new Date(started).toISOString(),
+      humanSlots: [1],
+      picksBySlot: { 1: ["p1"] },
+      players: pool.slice(0, 8).map((player) => ({
+        id: player.id,
+        name: player.name,
+        position: player.position,
+        team: player.team,
+        chenRank: player.chenRank,
+      })),
+    });
+    const boardPicks = [
+      {
+        overall: 1,
+        round: 1,
+        slot: 1,
+        rosterSlot: "RB" as const,
+        player: pool[0],
+      },
+      {
+        overall: 2,
+        round: 1,
+        slot: 2,
+        rosterSlot: "WR" as const,
+        player: pool[1],
+      },
+    ];
+    expect(
+      catchUpDemoBoardPicks(
+        { teamCount: 2, rounds: 1, picks: boardPicks, players: pool },
+        mock,
+        started + 5_000,
+      ),
+    ).toBeNull();
   });
 });

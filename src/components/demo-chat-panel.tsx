@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { demoFetch as fetch } from "@/lib/demo-tab-session";
 
 interface ChatMessage {
   id: string;

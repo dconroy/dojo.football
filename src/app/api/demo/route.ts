@@ -6,12 +6,13 @@ import {
   getDemoClaims,
 } from "@/auth/demo-session";
 import { prisma } from "@/persistence/prisma";
-import { draftStateFor, getOrCreateLeagueDraft } from "@/persistence/league-draft";
+import { draftStateFor } from "@/persistence/league-draft";
 import {
   demoClientState,
   demoSeatMembers,
   findOrCreateOpenDemoRoom,
   releaseDemoSeat,
+  syncDemoBoardFromMock,
   validateDemoSeat,
 } from "@/persistence/demo-rooms";
 import { DEFAULT_STRATEGY_WEIGHTS } from "@/config/strategy";
@@ -52,7 +53,7 @@ export async function GET(request: Request) {
     const searchParams = new URL(request.url).searchParams;
     const requestedRoom = searchParams.get("room")?.trim() || null;
     const joiningFromInvite = searchParams.get("join") === "1";
-    const existing = await getDemoClaims();
+    const existing = await getDemoClaims(request);
     // Resume an existing claim only when no other room was explicitly requested
     // and the claimed room still exists as a real (mock-config) room. An invite
     // always starts at seat selection, even if this browser has a prior claim.
@@ -69,7 +70,13 @@ export async function GET(request: Request) {
           existing.sessionId,
         ));
       if (seatIsValid && (await roomIsReal(existing.roomId))) {
-        const shared = await getOrCreateLeagueDraft(existing.roomId);
+        const token = await createDemoToken({
+          roomId: existing.roomId,
+          slot: existing.slot,
+          role: existing.role,
+          sessionId: existing.sessionId,
+        });
+        const shared = await syncDemoBoardFromMock(existing.roomId);
         const members = await demoSeatMembers(existing.roomId);
         const member = members.find(
           (candidate) => candidate.draftSlot === existing.slot,
@@ -90,6 +97,7 @@ export async function GET(request: Request) {
             roomId: existing.roomId,
             ...(await demoClientState(existing.roomId)),
           },
+          demoToken: token,
         });
       }
     }
@@ -107,7 +115,7 @@ export async function GET(request: Request) {
     // Honor an explicit ?room= target when it's a real room; else matchmake.
     const shared =
       requestedRoom && (await roomIsReal(requestedRoom))
-        ? await getOrCreateLeagueDraft(requestedRoom)
+        ? await syncDemoBoardFromMock(requestedRoom)
         : (await findOrCreateOpenDemoRoom()).shared;
     const token = await createDemoToken({
       roomId: shared.id,
@@ -127,6 +135,7 @@ export async function GET(request: Request) {
         roomId: shared.id,
         ...(await demoClientState(shared.id)),
       },
+      demoToken: token,
     });
     response.cookies.set(DEMO_COOKIE_NAME, token, demoCookieOptions());
     return response;

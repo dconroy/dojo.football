@@ -14,6 +14,8 @@ import {
 import {
   demoClientState,
   demoSeatMembers,
+  isDemoRoomId,
+  syncDemoBoardFromMock,
 } from "@/persistence/demo-rooms";
 
 async function withAudience(
@@ -78,6 +80,9 @@ export async function boardPayload(
   user: User | null,
   demo: DemoClaims | null,
 ) {
+  if (isDemoRoomId(draftId)) {
+    await syncDemoBoardFromMock(draftId);
+  }
   return withAudience(await getOrCreateLeagueDraft(draftId), user, demo);
 }
 
@@ -88,6 +93,9 @@ export async function boardPollPayload(
   demo: DemoClaims | null,
   query: { readonly since?: string | null; readonly playersRev?: string | null },
 ) {
+  if (isDemoRoomId(draftId)) {
+    await syncDemoBoardFromMock(draftId);
+  }
   const meta = await getDraftMeta(draftId);
   if (!meta) return boardPayload(draftId, user, demo);
 

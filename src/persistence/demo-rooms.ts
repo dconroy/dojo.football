@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { prisma } from "@/persistence/prisma";
 import {
+  ConflictError,
   getOrCreateLeagueDraft,
   readDraftStories,
   saveSharedDraft,
@@ -8,7 +9,11 @@ import {
   type MemberSeat,
   type SharedDraft,
 } from "@/persistence/league-draft";
-import { cachedInviteLine } from "@/domain";
+import {
+  cachedInviteLine,
+  extendDraftWithRemotePlayers,
+  type Player,
+} from "@/domain";
 import {
   draftBoardExhausted,
   draftIsFinished,
@@ -374,11 +379,21 @@ async function recycleStaleRooms() {
         continue;
       }
       if (!finished) {
+        const mockRow = room.leagueKey
+          ? await prisma.syncCheckpoint.findUnique({
+              where: { id: checkpointId(room.leagueKey) },
+              select: { syncedAt: true },
+            })
+          : null;
+        const lastDraftActivity = Math.max(
+          room.updatedAt.getTime(),
+          mockRow?.syncedAt.getTime() ?? 0,
+        );
         if (
           demoRoomLooksStalled({
             finished,
             clockStarted: isDemoClockStarted(config),
-            boardUpdatedAtMs: room.updatedAt.getTime(),
+            boardUpdatedAtMs: lastDraftActivity,
             now,
           })
         ) {
@@ -399,6 +414,7 @@ async function recycleStaleRooms() {
         const lastActivity = Math.max(
           room.updatedAt.getTime(),
           seatRow?.syncedAt.getTime() ?? 0,
+          mockRow?.syncedAt.getTime() ?? 0,
         );
         if (
           activeSeats.size === 0 &&
@@ -916,6 +932,85 @@ export async function demoRoomStarted(roomId: string): Promise<boolean> {
   const shared = await getOrCreateLeagueDraft(roomId);
   if (!shared.leagueKey) return false;
   return isDemoClockStarted(await loadMockConfig(shared.leagueKey));
+}
+
+function playerFromMockSeed(
+  seed: MockPlayerSeed,
+  pool: readonly Player[],
+): Player {
+  return (
+    pool.find((player) => player.id === seed.id) ?? {
+      id: seed.id,
+      name: seed.name,
+      position: seed.position,
+      team: seed.team,
+      chenRank: seed.chenRank,
+      adp: seed.adp,
+    }
+  );
+}
+
+/**
+ * Apply published mock picks onto a shared board. The mock clock is the source
+ * of truth — auto-drafts and robot picks must land here even if the seated
+ * client is gone and cannot PUT. Returns null when the board is already caught up.
+ */
+export function catchUpDemoBoardPicks(
+  shared: Pick<SharedDraft, "teamCount" | "rounds" | "picks" | "players">,
+  config: MockDraftConfig,
+  now: number = Date.now(),
+): SharedDraft["picks"] | null {
+  const results = mockDraftResults(config, now);
+  const remote = results.order
+    .slice(0, results.picks.length)
+    .map((seed) => playerFromMockSeed(seed, shared.players));
+  const current = {
+    teamCount: shared.teamCount,
+    rounds: shared.rounds,
+    userSlot: 1,
+    picks: shared.picks,
+  };
+  const next = extendDraftWithRemotePlayers(
+    current,
+    remote,
+    new Date(now).toISOString(),
+    true,
+  );
+  if (next.applied === 0 && !next.rebuilt) return null;
+  if (
+    !next.rebuilt &&
+    next.draft.picks.length === shared.picks.length
+  ) {
+    return null;
+  }
+  return next.draft.picks;
+}
+
+/**
+ * Auto-pick overdue human seats, then persist the published mock order onto
+ * LeagueDraft so every client (including spectators) sees the same board.
+ */
+export async function syncDemoBoardFromMock(roomId: string): Promise<SharedDraft> {
+  const shared = await getOrCreateLeagueDraft(roomId);
+  if (!shared.leagueKey) return shared;
+  const snapshot = await loadMockSnapshot(shared.leagueKey);
+  if (!snapshot) return shared;
+  const config = await loadMockConfig(shared.leagueKey);
+  if (!config) return shared;
+  const picks = catchUpDemoBoardPicks(shared, config);
+  if (!picks) return shared;
+  try {
+    return await saveSharedDraft({
+      draftId: roomId,
+      picks,
+      expectedUpdatedAt: shared.updatedAt,
+    });
+  } catch (error) {
+    if (error instanceof ConflictError) {
+      return getOrCreateLeagueDraft(roomId);
+    }
+    throw error;
+  }
 }
 
 export async function demoClientState(roomId: string): Promise<{

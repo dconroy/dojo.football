@@ -11,6 +11,7 @@ import {
   partitionDemoRooms,
 } from "@/domain/demo-lobby";
 import { draftSizeNote } from "@/domain/draft-capacity";
+import { demoFetch, saveDemoTabToken } from "@/lib/demo-tab-session";
 import { paginate } from "@/lib/paginate";
 
 type Scoring = "standard" | "half-ppr" | "ppr";
@@ -185,7 +186,7 @@ export function DemoLobby() {
     if (!created) return;
     const path = `/api/draft?draftId=${encodeURIComponent(created.roomId)}`;
     const heartbeat = () => {
-      void fetch(path, { cache: "no-store" });
+      void demoFetch(path, { cache: "no-store" });
     };
     heartbeat();
     const timer = window.setInterval(heartbeat, 20_000);
@@ -224,7 +225,7 @@ export function DemoLobby() {
     setBusy(true);
     setNotice("");
     try {
-      const response = await fetch("/api/demo/join", {
+      const response = await demoFetch("/api/demo/join", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -236,11 +237,13 @@ export function DemoLobby() {
       const body = (await response.json()) as {
         error?: string;
         demo?: { roomId: string };
+        demoToken?: string;
       };
       if (!response.ok || !body.demo?.roomId) {
         setNotice(body.error ?? "That seat is no longer available.");
         return;
       }
+      saveDemoTabToken(body.demoToken);
       router.push(roomPath(body.demo.roomId));
     } catch {
       setNotice("Could not join that draft. Try again.");
@@ -254,7 +257,7 @@ export function DemoLobby() {
     setBusy(true);
     setNotice("");
     try {
-      const response = await fetch("/api/demo/create", {
+      const response = await demoFetch("/api/demo/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -268,11 +271,13 @@ export function DemoLobby() {
       const body = (await response.json()) as {
         error?: string;
         demo?: { roomId: string; slot: number };
+        demoToken?: string;
       };
       if (!response.ok || !body.demo?.roomId) {
         setNotice(body.error ?? "Could not create the draft.");
         return;
       }
+      saveDemoTabToken(body.demoToken);
       setCreated({
         roomId: body.demo.roomId,
         slot: body.demo.slot,

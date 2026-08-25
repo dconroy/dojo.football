@@ -1,7 +1,6 @@
-import { cookies } from "next/headers";
 import type { User } from "@prisma/client";
 import { AuthError, getCurrentUser, requireActiveUser } from "@/auth/current-user";
-import { DEMO_COOKIE_NAME, readDemoToken, type DemoClaims } from "@/auth/demo-session";
+import { getDemoClaims, type DemoClaims } from "@/auth/demo-session";
 import { LEAGUE_DRAFT_ID } from "@/persistence/league-draft";
 import { validateDemoSeat } from "@/persistence/demo-rooms";
 
@@ -53,8 +52,7 @@ export async function requireBoardAccess(
   const previewId = requestedDraftId(request) ?? LEAGUE_DRAFT_ID;
   if (isDemoDraft(previewId)) {
     const draftId = previewId;
-    const jar = await cookies();
-    const demo = await readDemoToken(jar.get(DEMO_COOKIE_NAME)?.value);
+    const demo = await getDemoClaims(request);
     if (!demo || demo.roomId !== draftId) {
       throw new AuthError("Join the demo room first", 401);
     }
@@ -94,8 +92,7 @@ export async function optionalBoardAccess(request: Request): Promise<{
   const requested = requestedDraftId(request);
   if (requested && isDemoDraft(requested)) {
     const draftId = requested;
-    const jar = await cookies();
-    const demo = await readDemoToken(jar.get(DEMO_COOKIE_NAME)?.value);
+    const demo = await getDemoClaims(request);
     return { draftId, user: null, demo };
   }
   const user = await getCurrentUser();

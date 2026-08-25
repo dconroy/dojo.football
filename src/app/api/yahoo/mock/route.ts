@@ -55,7 +55,7 @@ export async function POST(request: Request) {
   const demoMock = leagueKey.startsWith("mock.demo.");
   let actorSlot = body.slot;
   if (demoMock) {
-    const demo = await getDemoClaims();
+    const demo = await getDemoClaims(request);
     const expectedLeagueKey = demo
       ? `mock.${demo.roomId.replace(/:/g, ".")}`
       : null;
