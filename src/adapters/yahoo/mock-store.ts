@@ -217,7 +217,7 @@ export async function loadMockSnapshot(
       teamKey: `mock.t.${index + 1}`,
       name: humanSlots.has(index + 1)
         ? humanTeamFallback()
-        : rpBotTeamName(index + 1),
+        : rpBotTeamName(index + 1, config.leagueKey),
       draftSlot: index + 1,
     })),
     draftResults: picks,

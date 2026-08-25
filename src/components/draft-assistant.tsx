@@ -994,7 +994,9 @@ export function DraftAssistant({
     }
     const occupant = members.find((member) => member.draftSlot === slot);
     if (occupant) return occupant.teamName || occupant.displayName;
-    return isDemo ? rpBotTeamName(slot) : `T${slot}`;
+    return isDemo
+      ? rpBotTeamName(slot, draftId ?? state.leagueKey ?? "")
+      : `T${slot}`;
   }
 
   function isHumanDemoSlot(slot: number) {
