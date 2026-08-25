@@ -775,8 +775,8 @@ export function DraftAssistant({
     if (selectionPickCountRef.current === state.draft.picks.length) return;
     selectionPickCountRef.current = state.draft.picks.length;
     setSelected(null);
-    setDetailId(null);
-  }, [state.draft.picks.length]);
+    if (isMyTurn) setDetailId(null);
+  }, [isMyTurn, state.draft.picks.length]);
   useEffect(() => {
     if (!ready) return;
     const key = `${state.leagueKey ?? "board"}:${state.draft.picks.length}`;

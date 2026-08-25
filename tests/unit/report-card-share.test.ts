@@ -56,7 +56,12 @@ describe("report-card sharing", () => {
     expect(model.reasons).toHaveLength(3);
     expect(model.reasons[0]).toBe("Strong running back value");
     expect(model.picks).toHaveLength(5);
-    expect(model.picks[0]).toBe("R1 · Player 1 · RB");
+    expect(model.picks[0]).toEqual({
+      round: "R1",
+      name: "Player 1",
+      position: "RB",
+    });
+    expect(model.url).toBe("DOJO.FOOTBALL");
   });
 
   it("includes the draft story in the image model", () => {

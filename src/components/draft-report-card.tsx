@@ -340,80 +340,120 @@ function renderReportCardPng(model: ReportCardShareModel): Promise<Blob> {
   if (!context) return Promise.reject(new Error("Canvas is unavailable"));
 
   const gradient = context.createLinearGradient(0, 0, canvas.width, canvas.height);
-  gradient.addColorStop(0, "#071a2d");
-  gradient.addColorStop(0.58, "#102a43");
-  gradient.addColorStop(1, "#124559");
+  gradient.addColorStop(0, "#06131f");
+  gradient.addColorStop(0.62, "#0b2234");
+  gradient.addColorStop(1, "#123b4d");
   context.fillStyle = gradient;
   context.fillRect(0, 0, canvas.width, canvas.height);
 
-  context.fillStyle = "rgba(255, 255, 255, 0.055)";
+  context.strokeStyle = "rgba(148, 210, 197, 0.055)";
+  context.lineWidth = 1;
+  for (let x = 0; x <= canvas.width; x += 60) {
+    context.beginPath();
+    context.moveTo(x, 0);
+    context.lineTo(x, canvas.height);
+    context.stroke();
+  }
+  for (let y = 0; y <= canvas.height; y += 60) {
+    context.beginPath();
+    context.moveTo(0, y);
+    context.lineTo(canvas.width, y);
+    context.stroke();
+  }
+
+  context.fillStyle = "rgba(94, 234, 212, 0.055)";
   context.beginPath();
-  context.arc(1080, 60, 260, 0, Math.PI * 2);
+  context.arc(1115, 10, 245, 0, Math.PI * 2);
   context.fill();
   context.beginPath();
-  context.arc(90, 660, 310, 0, Math.PI * 2);
+  context.arc(10, 650, 230, 0, Math.PI * 2);
   context.fill();
 
   context.fillStyle = "#5eead4";
-  context.font = "700 25px system-ui, -apple-system, sans-serif";
-  context.fillText("DRAFT DOJO", 72, 62);
+  context.fillRect(60, 42, 7, 30);
+  context.fillStyle = "#5eead4";
+  context.font = "800 24px system-ui, -apple-system, sans-serif";
+  context.fillText("DRAFT DOJO", 82, 66);
   context.fillStyle = "#9fb4c8";
-  context.font = "600 18px system-ui, -apple-system, sans-serif";
-  context.fillText("POST-DRAFT REPORT CARD", 72, 94);
+  context.font = "650 15px system-ui, -apple-system, sans-serif";
+  context.fillText("POST-DRAFT REPORT CARD", 82, 91);
+  context.textAlign = "right";
+  context.fillStyle = "#d8fff8";
+  context.font = "800 20px system-ui, -apple-system, sans-serif";
+  context.fillText(model.url, 1140, 61);
+  context.fillStyle = "#8fa8b8";
+  context.font = "650 12px system-ui, -apple-system, sans-serif";
+  context.fillText("FREE MOCK DRAFTS · LIVE RECOMMENDATIONS", 1140, 84);
+  context.textAlign = "left";
+  context.fillStyle = "rgba(159, 180, 200, 0.24)";
+  context.fillRect(60, 112, 1080, 1);
 
-  roundedRect(context, 68, 126, 315, 322, 28);
-  context.fillStyle = "rgba(4, 13, 25, 0.58)";
+  roundedRect(context, 60, 140, 278, 302, 24);
+  context.fillStyle = "rgba(3, 12, 22, 0.72)";
   context.fill();
-  context.strokeStyle = "rgba(94, 234, 212, 0.38)";
+  context.strokeStyle = "rgba(94, 234, 212, 0.42)";
   context.lineWidth = 2;
   context.stroke();
 
   context.fillStyle = "#d8fff8";
-  context.font = "800 32px system-ui, -apple-system, sans-serif";
-  drawLines(context, model.teamName, 98, 177, 255, 38, 2);
+  context.font = "800 28px system-ui, -apple-system, sans-serif";
+  drawLines(context, model.teamName, 88, 187, 222, 33, 2);
   context.fillStyle = "#ffffff";
-  context.font = "900 174px system-ui, -apple-system, sans-serif";
-  context.fillText(model.grade, 92, 355);
+  context.font = "900 150px system-ui, -apple-system, sans-serif";
+  context.textAlign = "center";
+  context.fillText(model.grade, 199, 352);
   context.fillStyle = "#5eead4";
-  context.font = "800 29px system-ui, -apple-system, sans-serif";
-  context.fillText(model.rankLabel.toUpperCase(), 100, 408);
-
-  context.fillStyle = "#ffffff";
-  context.font = "800 36px system-ui, -apple-system, sans-serif";
-  context.fillText("THE VERDICT", 432, 164);
-  context.fillStyle = "#dbe8f4";
-  context.font = "650 28px system-ui, -apple-system, sans-serif";
-  drawLines(context, model.story || model.summary, 432, 207, 690, 38, 3);
-
-  context.fillStyle = "#9fb4c8";
-  context.font = "700 18px system-ui, -apple-system, sans-serif";
-  context.fillText("WHY THE GRADE", 432, 340);
-  context.font = "600 21px system-ui, -apple-system, sans-serif";
-  context.fillStyle = "#edf7ff";
-  model.reasons.forEach((reason, index) => {
-    context.fillStyle = "#5eead4";
-    context.fillText("•", 432, 379 + index * 42);
-    context.fillStyle = "#edf7ff";
-    drawLines(context, reason, 456, 379 + index * 42, 650, 28, 1);
-  });
-
-  context.fillStyle = "rgba(3, 11, 20, 0.52)";
-  context.fillRect(0, 490, canvas.width, 140);
-  context.fillStyle = "#9fb4c8";
-  context.font = "700 17px system-ui, -apple-system, sans-serif";
-  context.fillText("FOUNDATION PICKS", 72, 530);
-  context.fillStyle = "#ffffff";
-  context.font = "650 19px system-ui, -apple-system, sans-serif";
-  const pickWidth = 205;
-  model.picks.forEach((pick, index) => {
-    const x = 72 + index * 218;
-    drawLines(context, pick, x, 568, pickWidth, 25, 2);
-  });
-  context.fillStyle = "#5eead4";
-  context.font = "700 17px system-ui, -apple-system, sans-serif";
-  context.textAlign = "right";
-  context.fillText("BUILT IN DRAFT DOJO", 1128, 606);
+  context.font = "850 25px system-ui, -apple-system, sans-serif";
+  context.fillText(model.rankLabel.toUpperCase(), 199, 405);
   context.textAlign = "left";
+
+  context.fillStyle = "#5eead4";
+  context.font = "750 14px system-ui, -apple-system, sans-serif";
+  context.fillText("THE VERDICT", 382, 159);
+  context.fillStyle = "#ffffff";
+  context.font = "850 34px system-ui, -apple-system, sans-serif";
+  drawLines(context, model.summary, 382, 200, 744, 39, 2);
+  if (model.story) {
+    context.fillStyle = "#b8cbd8";
+    context.font = "550 18px system-ui, -apple-system, sans-serif";
+    drawLines(context, model.story, 382, 263, 744, 27, 2);
+  }
+
+  context.fillStyle = "#9fb4c8";
+  context.font = "750 14px system-ui, -apple-system, sans-serif";
+  context.fillText("WHY THE GRADE", 382, 332);
+  context.font = "650 19px system-ui, -apple-system, sans-serif";
+  model.reasons.forEach((reason, index) => {
+    const y = 369 + index * 34;
+    context.fillStyle = "#5eead4";
+    context.beginPath();
+    context.arc(389, y - 6, 4, 0, Math.PI * 2);
+    context.fill();
+    context.fillStyle = "#edf7ff";
+    drawLines(context, reason, 407, y, 715, 25, 1);
+  });
+
+  context.fillStyle = "rgba(2, 10, 18, 0.68)";
+  context.fillRect(0, 470, canvas.width, 160);
+  context.fillStyle = "#9fb4c8";
+  context.font = "750 14px system-ui, -apple-system, sans-serif";
+  context.fillText("FOUNDATION PICKS", 60, 504);
+  const pickWidth = 206;
+  model.picks.forEach((pick, index) => {
+    const x = 60 + index * 218;
+    roundedRect(context, x, 520, pickWidth, 83, 12);
+    context.fillStyle = "rgba(255, 255, 255, 0.045)";
+    context.fill();
+    context.strokeStyle = "rgba(159, 180, 200, 0.18)";
+    context.lineWidth = 1;
+    context.stroke();
+    context.fillStyle = "#5eead4";
+    context.font = "800 13px system-ui, -apple-system, sans-serif";
+    context.fillText(`${pick.round}  ·  ${pick.position}`, x + 14, 546);
+    context.fillStyle = "#ffffff";
+    context.font = "700 17px system-ui, -apple-system, sans-serif";
+    drawLines(context, pick.name, x + 14, 575, pickWidth - 28, 20, 2);
+  });
 
   return new Promise((resolve, reject) => {
     canvas.toBlob(

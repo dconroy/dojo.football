@@ -13,7 +13,12 @@ export interface ReportCardShareModel {
   readonly summary: string;
   readonly story?: string;
   readonly reasons: readonly string[];
-  readonly picks: readonly string[];
+  readonly picks: readonly {
+    readonly round: string;
+    readonly name: string;
+    readonly position: string;
+  }[];
+  readonly url: string;
 }
 
 export function buildReportCardShareModel(
@@ -33,9 +38,12 @@ export function buildReportCardShareModel(
       .map((reason) => reason.text.trim())
       .filter(Boolean)
       .slice(0, MAX_IMAGE_REASONS),
-    picks: team.picks.slice(0, MAX_IMAGE_PICKS).map(
-      (pick) => `R${pick.round} · ${pick.player.name} · ${pick.player.position}`,
-    ),
+    picks: team.picks.slice(0, MAX_IMAGE_PICKS).map((pick) => ({
+      round: `R${pick.round}`,
+      name: pick.player.name,
+      position: pick.player.position,
+    })),
+    url: "DOJO.FOOTBALL",
   };
 }
 
