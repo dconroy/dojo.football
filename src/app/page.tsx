@@ -158,8 +158,8 @@ export default function LandingPage() {
               </div>
               <Image
                 src="/landing/ai-insights.png"
-                width={760}
-                height={990}
+                width={1098}
+                height={1433}
                 alt="Top Five recommendation list recalculated after every draft pick"
                 sizes="(max-width: 700px) 100vw, 50vw"
               />
