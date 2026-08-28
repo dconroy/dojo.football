@@ -146,18 +146,28 @@ export function DemoLobby() {
           return;
         }
         if (!cancelled && response.ok) {
-          const snapshot = body.rooms
-            .map(
-              (room) =>
-                `${room.id}:${room.picks}:${room.openSeats}:${room.started}:${room.complete}`,
-            )
-            .join("|");
+          const nextStats = body.stats ?? EMPTY_STATS;
+          const nextActive = body.activePlayers ?? 0;
+          // Include stats/activePlayers so an empty room list still hydrates
+          // lifetime totals (rooms-only snapshot is "" and matches the initial ref).
+          const snapshot = [
+            nextActive,
+            nextStats.boardsRun,
+            nextStats.insightsGiven,
+            nextStats.playersHelped,
+            body.rooms
+              .map(
+                (room) =>
+                  `${room.id}:${room.picks}:${room.openSeats}:${room.started}:${room.complete}`,
+              )
+              .join("|"),
+          ].join(":");
           if (snapshot === roomsSnapshotRef.current) return;
           roomsSnapshotRef.current = snapshot;
           startTransition(() => {
             setRooms(body.rooms);
-            setStats(body.stats ?? EMPTY_STATS);
-            setActivePlayers(body.activePlayers ?? 0);
+            setStats(nextStats);
+            setActivePlayers(nextActive);
             setNotice("");
             setSeats((previous) => {
               const next = { ...previous };
