@@ -209,7 +209,8 @@ for friends; they enter their team name and choose any remaining seat. Robots fi
 seats, idle humans auto-draft after about
 30 seconds. Completed rooms are recycled after ~45 minutes, and unfinished rooms disappear
 from the lobby after one hour without an active manager. “Back to lobby” leaves the shared
-room intact instead of resetting everyone’s draft.
+room intact. Whoever starts the clock can reset an in-progress mock; after it finishes,
+any seated player can start a new one.
 
 Demo rooms include a floating chat for seated managers; spectators can read it. Messages
 expire after one hour. Set `GIPHY_API_KEY` locally and in Vercel to enable unrestricted GIF

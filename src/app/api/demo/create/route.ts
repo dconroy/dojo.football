@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
         role: "play",
         slot,
         roomId: shared.id,
-        ...(await demoClientState(shared.id)),
+        ...(await demoClientState(shared.id, sessionId)),
       },
       demoToken: token,
     });

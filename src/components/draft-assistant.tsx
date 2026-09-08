@@ -212,6 +212,8 @@ interface DemoInfo {
   roomId: string;
   takenSlots?: number[];
   started?: boolean;
+  canReset?: boolean;
+  isStarter?: boolean;
 }
 
 interface YahooLeagueChoice {
@@ -365,6 +367,7 @@ export function DraftAssistant({
   const [takenSlots, setTakenSlots] = useState<number[]>([]);
   const [chosenSeat, setChosenSeat] = useState<number | null>(null);
   const [demoStarted, setDemoStarted] = useState(!isDemo);
+  const [demoCanReset, setDemoCanReset] = useState(false);
   const [demoTeamName, setDemoTeamName] = useState("");
   const [inviteCopied, setInviteCopied] = useState(false);
   const inviteCopiedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -517,6 +520,7 @@ export function DraftAssistant({
         }
         if (payload.demo.takenSlots) setTakenSlots(payload.demo.takenSlots);
         setDemoStarted(payload.demo.started !== false);
+        setDemoCanReset(payload.demo.canReset === true);
       }
       if (payload.updatedAt) {
         setState((prev) =>
@@ -562,6 +566,7 @@ export function DraftAssistant({
       if (payload.demo.role === "play") setDemoTeamName(payload.me.teamName);
       if (payload.demo.takenSlots) setTakenSlots(payload.demo.takenSlots);
       setDemoStarted(payload.demo.started !== false);
+      setDemoCanReset(payload.demo.canReset === true);
     }
     if (message) setNotice(message);
   }
@@ -1532,6 +1537,7 @@ export function DraftAssistant({
 
   async function startDemoDraft() {
     if (!draftId) return;
+    if (draftComplete && !confirmClearBoard()) return;
     const response = await fetch(
       `/api/demo/start?draftId=${encodeURIComponent(draftId)}`,
       { method: "POST" },
@@ -1544,7 +1550,29 @@ export function DraftAssistant({
       setNotice(payload.error ?? "Could not start the draft.");
       return;
     }
-    applyPayload(payload, "Draft started — robots will fill empty seats.");
+    applyPayload(
+      payload,
+      draftComplete
+        ? "New draft started — robots will fill empty seats."
+        : "Draft started — robots will fill empty seats.",
+    );
+  }
+
+  async function resetDemoDraft() {
+    if (!draftId || !confirmClearBoard()) return;
+    const response = await fetch(
+      `/api/demo/reset?draftId=${encodeURIComponent(draftId)}`,
+      { method: "POST" },
+    );
+    const payload = (await response.json()) as DraftPayload & {
+      error?: string;
+      demo?: DemoInfo;
+    };
+    if (!response.ok || !payload.draft) {
+      setNotice(payload.error ?? "Could not reset the draft.");
+      return;
+    }
+    applyPayload(payload, "Draft reset — start again when you're ready.");
   }
 
   async function copyDemoInvite() {
@@ -1887,6 +1915,26 @@ export function DraftAssistant({
                     Start draft
                   </button>
                 ) : null}
+                {demoRole === "play" && demoStarted && !draftComplete && demoCanReset ? (
+                  <button
+                    className="secondary"
+                    type="button"
+                    onClick={() => void resetDemoDraft()}
+                    title="Clear this mock and wait to start again. Only you can do this because you started it."
+                  >
+                    Reset draft
+                  </button>
+                ) : null}
+                {demoRole === "play" && draftComplete ? (
+                  <button
+                    className="live-button"
+                    type="button"
+                    onClick={() => void startDemoDraft()}
+                    title="Clear the board and start a new mock with the same seats"
+                  >
+                    Start new draft
+                  </button>
+                ) : null}
               </>
             ) : (
               restartMockButton
@@ -1894,7 +1942,11 @@ export function DraftAssistant({
             {(!isDemo || demoStarted) && (
               <span className="strip-hint">
                 {isDemo
-                  ? "This room is public — invite others to choose an open seat, or return to the lobby for another draft."
+                  ? draftComplete
+                    ? "Draft is over. Anyone seated can start a new one with the same seats."
+                    : demoCanReset
+                      ? "You started this draft — reset it if you need a do-over."
+                      : "This room is public. Only whoever started the draft can reset it."
                   : "The board is shared. Only the admin runs live sync and resets; you pick players, pins, and avoids."}
               </span>
             )}

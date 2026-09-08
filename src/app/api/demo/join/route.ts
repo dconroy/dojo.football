@@ -115,7 +115,7 @@ export async function POST(request: NextRequest) {
         role: "play",
         slot: claimed.slot,
         roomId: shared.id,
-        ...(await demoClientState(shared.id)),
+        ...(await demoClientState(shared.id, claimed.sessionId)),
       },
       demoToken: token,
     });

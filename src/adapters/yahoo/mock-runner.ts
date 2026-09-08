@@ -89,6 +89,11 @@ export interface MockDraftConfig {
    * projected order would reshuffle between polls.
    */
   readonly varietySeed?: string;
+  /**
+   * Demo rooms only: session that started the clock. Mid-draft reset is limited
+   * to this session. Cleared when the room is wiped for a new round.
+   */
+  readonly startedBySessionId?: string;
 }
 
 interface NormalizedSeats {

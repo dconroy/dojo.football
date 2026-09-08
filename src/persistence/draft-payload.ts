@@ -54,7 +54,7 @@ async function withAudience(
         role: demo.role,
         slot: demo.slot,
         roomId: demo.roomId,
-        ...(await demoClientState(shared.id)),
+        ...(await demoClientState(shared.id, demo.sessionId)),
       },
     };
   }

@@ -37,6 +37,7 @@ import {
   loadMockSnapshot,
   saveMockConfig,
 } from "@/adapters/yahoo/mock-store";
+import { AuthError } from "@/auth/current-user";
 import { deleteDemoChatForRoom } from "@/persistence/demo-chat";
 import {
   forgetDemoRoomStats,
@@ -1019,32 +1020,175 @@ export async function syncDemoBoardFromMock(roomId: string): Promise<SharedDraft
   }
 }
 
-export async function demoClientState(roomId: string): Promise<{
+export function demoBoardIsComplete(
+  shared: Pick<SharedDraft, "picks" | "players" | "teamCount" | "rounds">,
+  config?: MockDraftConfig | null,
+): boolean {
+  const players = shared.players.length
+    ? shared.players
+    : (config?.players ?? []);
+  return draftIsFinished({
+    picks: shared.picks.length,
+    playerCount: uniquePlayerCount(players),
+    teamCount: shared.teamCount,
+    rounds: shared.rounds,
+  });
+}
+
+/** Mid-draft reset is starter-only. After the mock finishes, any seated player can wipe it. */
+export function demoResetAllowed(input: {
+  readonly started: boolean;
+  readonly complete: boolean;
+  readonly startedBySessionId?: string | null;
+  readonly callerSessionId: string;
+}): boolean {
+  if (!input.callerSessionId) return false;
+  if (!input.started && !input.complete) return false;
+  if (input.complete) return true;
+  return (
+    Boolean(input.startedBySessionId) &&
+    input.startedBySessionId === input.callerSessionId
+  );
+}
+
+export function buildResetDemoConfig(
+  existing: MockDraftConfig,
+  shared: Pick<SharedDraft, "teamCount" | "rounds" | "players">,
+  humanSlots: readonly number[],
+): MockDraftConfig {
+  const players: MockPlayerSeed[] = shared.players.map((player) => ({
+    id: player.id,
+    name: player.name,
+    position: player.position,
+    team: player.team,
+    chenRank: player.chenRank,
+    chenTier: player.chenTier,
+    adp: player.adp,
+    byeWeek: player.byeWeek,
+    projectedPoints: player.projectedPoints,
+  }));
+  return {
+    leagueKey: existing.leagueKey,
+    teamCount: shared.teamCount,
+    rounds: shared.rounds,
+    intervalMs: existing.intervalMs,
+    startedAtIso: "",
+    humanSlots: [...humanSlots].sort((a, b) => a - b),
+    picksBySlot: {},
+    autoPickMs: existing.autoPickMs ?? DEMO_AUTO_PICK_MS,
+    varietySeed: randomUUID(),
+    players: players.length ? players : existing.players,
+  };
+}
+
+async function wipeDemoRoom(roomId: string): Promise<MockDraftConfig> {
+  const shared = await getOrCreateLeagueDraft(roomId);
+  if (!shared.leagueKey) throw new Error("Demo room is missing a mock key");
+  const existing = await loadMockConfig(shared.leagueKey);
+  if (!existing) throw new Error("Demo room is not ready");
+  const keep = activeSeatSet(
+    existing.humanSlots,
+    await loadSeatSeen(roomId),
+    Date.now(),
+    isDemoClockStarted(existing),
+  );
+  const config = buildResetDemoConfig(existing, shared, [...keep]);
+  await saveMockConfig(config);
+  await saveSharedDraft({
+    draftId: roomId,
+    mode: "live",
+    leagueKey: shared.leagueKey,
+    picks: [],
+  });
+  return config;
+}
+
+export async function demoClientState(
+  roomId: string,
+  sessionId?: string | null,
+): Promise<{
   takenSlots: number[];
   started: boolean;
   inviteLine: string | null;
+  canReset: boolean;
+  isStarter: boolean;
 }> {
-  const [takenSlots, started, stories] = await Promise.all([
+  const shared = await getOrCreateLeagueDraft(roomId);
+  const config = shared.leagueKey
+    ? await loadMockConfig(shared.leagueKey)
+    : null;
+  const [takenSlots, stories] = await Promise.all([
     takenSeatsFor(roomId),
-    demoRoomStarted(roomId),
     readDraftStories(roomId),
   ]);
+  const started = isDemoClockStarted(config);
+  const complete = demoBoardIsComplete(shared, config);
+  const isStarter = Boolean(
+    sessionId &&
+      config?.startedBySessionId &&
+      config.startedBySessionId === sessionId,
+  );
   return {
     takenSlots,
     started,
     inviteLine: cachedInviteLine(stories),
+    isStarter,
+    canReset: demoResetAllowed({
+      started,
+      complete,
+      startedBySessionId: config?.startedBySessionId,
+      callerSessionId: sessionId ?? "",
+    }),
   };
 }
 
-/** Begin the mock clock. Safe to call again if the room is already running. */
-export async function startDemoDraft(roomId: string): Promise<MockDraftConfig> {
+/** Begin the mock clock. After a finished mock, wipe first so anyone can start a new round. */
+export async function startDemoDraft(
+  roomId: string,
+  sessionId: string,
+): Promise<MockDraftConfig> {
+  const shared = await getOrCreateLeagueDraft(roomId);
+  if (!shared.leagueKey) throw new Error("Demo room is missing a mock key");
+  let loaded = await loadMockConfig(shared.leagueKey);
+  if (!loaded) throw new Error("Demo room is not ready");
+  if (isDemoClockStarted(loaded)) {
+    if (!demoBoardIsComplete(shared, loaded)) return loaded;
+    loaded = await wipeDemoRoom(roomId);
+  }
+  const started = {
+    ...startMockClock(loaded),
+    startedBySessionId: sessionId,
+  };
+  await saveMockConfig(started);
+  return started;
+}
+
+/**
+ * Clear picks and pause the clock. Mid-draft this is starter-only; after the
+ * mock finishes any seated player can wipe it for the next start.
+ */
+export async function resetDemoDraft(
+  roomId: string,
+  sessionId: string,
+): Promise<MockDraftConfig> {
   const shared = await getOrCreateLeagueDraft(roomId);
   if (!shared.leagueKey) throw new Error("Demo room is missing a mock key");
   const loaded = await loadMockConfig(shared.leagueKey);
   if (!loaded) throw new Error("Demo room is not ready");
-  const started = startMockClock(loaded);
-  if (started.startedAtIso !== loaded.startedAtIso) {
-    await saveMockConfig(started);
+  const started = isDemoClockStarted(loaded);
+  const complete = demoBoardIsComplete(shared, loaded);
+  if (!started && !complete) {
+    throw new Error("This draft has not started");
   }
-  return started;
+  if (
+    !demoResetAllowed({
+      started,
+      complete,
+      startedBySessionId: loaded.startedBySessionId,
+      callerSessionId: sessionId,
+    })
+  ) {
+    throw new AuthError("Only whoever started this draft can reset it", 403);
+  }
+  return wipeDemoRoom(roomId);
 }

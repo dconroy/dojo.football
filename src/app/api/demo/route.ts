@@ -95,7 +95,7 @@ export async function GET(request: Request) {
             role: existing.role,
             slot: existing.slot,
             roomId: existing.roomId,
-            ...(await demoClientState(existing.roomId)),
+            ...(await demoClientState(existing.roomId, existing.sessionId)),
           },
           demoToken: token,
         });

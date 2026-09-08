@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { AuthError } from "@/auth/current-user";
 import { requireBoardAccess, requireDemoPlayer } from "@/auth/board-access";
 import { boardPayload } from "@/persistence/draft-payload";
-import { startDemoDraft } from "@/persistence/demo-rooms";
+import { resetDemoDraft } from "@/persistence/demo-rooms";
 
 export const runtime = "nodejs";
 
@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     if (!player.sessionId) {
       throw new AuthError("Choose an open demo seat first", 403);
     }
-    await startDemoDraft(draftId, player.sessionId);
+    await resetDemoDraft(draftId, player.sessionId);
     return NextResponse.json(await boardPayload(draftId, user, demo));
   } catch (error) {
     if (error instanceof AuthError) {
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         error:
-          error instanceof Error ? error.message : "Unable to start the demo draft",
+          error instanceof Error ? error.message : "Unable to reset the demo draft",
       },
       { status: 400 },
     );
