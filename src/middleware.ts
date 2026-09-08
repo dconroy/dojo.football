@@ -6,6 +6,7 @@ const PUBLIC_EXACT = new Set([
   "/dojo-mark.png",
   "/login",
   "/demo",
+  "/scribe",
   "/robots.txt",
   "/sitemap.xml",
   "/manifest.webmanifest",

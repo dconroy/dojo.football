@@ -5182,6 +5182,147 @@ body:has(.landing) {
   text-align: right;
 }
 
+.scribe-meta {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.scribe-clock span {
+  font-weight: 750;
+}
+
+.scribe-search {
+  position: relative;
+  min-width: min(420px, 100%);
+}
+
+.scribe-search input {
+  display: block;
+  width: 100%;
+  min-height: 42px;
+  margin-top: 4px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--panel-2);
+  color: var(--text);
+  padding: 8px 12px;
+}
+
+.scribe-suggest {
+  position: absolute;
+  z-index: 8;
+  top: calc(100% + 4px);
+  right: 0;
+  left: 0;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.scribe-suggest button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  font-weight: 650;
+  text-align: left;
+}
+
+.scribe-suggest button span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 550;
+}
+
+.scribe-suggest button.active,
+.scribe-suggest button:hover {
+  background: var(--green-soft);
+}
+
+.scribe-notice {
+  max-width: 1800px;
+  margin: 0 auto 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.scribe-paste {
+  max-width: 1800px;
+  margin: 0 auto 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.scribe-paste textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--panel);
+  color: var(--text);
+  padding: 10px 12px;
+  resize: vertical;
+}
+
+.scribe-paste-actions,
+.scribe-pending {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.workspace.scribe-workspace {
+  grid-template-columns: minmax(320px, 1.1fr) minmax(280px, .9fr);
+}
+
+.recommendation.scribe-reco {
+  grid-template-columns: 29px 1fr;
+}
+
+.scribe-lists {
+  padding: 8px 0 12px;
+}
+
+.scribe-row {
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  gap: 10px;
+  align-items: baseline;
+  border-bottom: 1px solid var(--line);
+  padding: 8px 14px;
+  font-size: 13px;
+}
+
+.scribe-row b,
+.scribe-row span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.scribe-row.mine {
+  background: var(--green-soft);
+}
+
+@media (max-width: 900px) {
+  .workspace.scribe-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .scribe-search {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
 @media (max-width: 640px) {
   .demo-chat,
   .demo-chat.open {
