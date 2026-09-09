@@ -1,0 +1,5770 @@
+{
+  "league": "Full Contact Fantasy Football",
+  "leagueId": "68609",
+  "scoring": "0.5 PPR",
+  "source": "Boris Chen · 0.5 PPR",
+  "importedAt": "2026-09-09T12:58:21.790Z",
+  "teamCount": 12,
+  "rounds": 15,
+  "totalPicks": 180,
+  "complete": true,
+  "unmatched": [
+    {
+      "overall": 127,
+      "name": "Kaelon Black",
+      "position": "RB"
+    },
+    {
+      "overall": 137,
+      "name": "Texans",
+      "position": "DEF"
+    },
+    {
+      "overall": 142,
+      "name": "Rams",
+      "position": "DEF"
+    },
+    {
+      "overall": 145,
+      "name": "Seahawks",
+      "position": "DEF"
+    },
+    {
+      "overall": 146,
+      "name": "Broncos",
+      "position": "DEF"
+    },
+    {
+      "overall": 149,
+      "name": "Brandon Aubrey",
+      "position": "K"
+    },
+    {
+      "overall": 150,
+      "name": "Eagles",
+      "position": "DEF"
+    },
+    {
+      "overall": 151,
+      "name": "Ravens",
+      "position": "DEF"
+    },
+    {
+      "overall": 153,
+      "name": "Jason Myers",
+      "position": "K"
+    },
+    {
+      "overall": 154,
+      "name": "Patriots",
+      "position": "DEF"
+    },
+    {
+      "overall": 156,
+      "name": "Jaguars",
+      "position": "DEF"
+    },
+    {
+      "overall": 158,
+      "name": "Chargers",
+      "position": "DEF"
+    },
+    {
+      "overall": 160,
+      "name": "Bills",
+      "position": "DEF"
+    },
+    {
+      "overall": 161,
+      "name": "Ka'imi Fairbairn",
+      "position": "K"
+    },
+    {
+      "overall": 162,
+      "name": "Caleb Douglas",
+      "position": "WR"
+    },
+    {
+      "overall": 163,
+      "name": "Cam Little",
+      "position": "K"
+    },
+    {
+      "overall": 165,
+      "name": "Cameron Dicker",
+      "position": "K"
+    },
+    {
+      "overall": 167,
+      "name": "Tyler Loop",
+      "position": "K"
+    },
+    {
+      "overall": 169,
+      "name": "Harrison Butker",
+      "position": "K"
+    },
+    {
+      "overall": 171,
+      "name": "Harrison Mevis",
+      "position": "K"
+    },
+    {
+      "overall": 172,
+      "name": "Steelers",
+      "position": "DEF"
+    },
+    {
+      "overall": 173,
+      "name": "Vikings",
+      "position": "DEF"
+    },
+    {
+      "overall": 175,
+      "name": "Will Reichard",
+      "position": "K"
+    },
+    {
+      "overall": 178,
+      "name": "Eddy Pineiro",
+      "position": "K"
+    },
+    {
+      "overall": 179,
+      "name": "Jake Bates",
+      "position": "K"
+    },
+    {
+      "overall": 180,
+      "name": "Trey Smack",
+      "position": "K"
+    }
+  ],
+  "slotOrder": [
+    "Sutton My Face",
+    "Blowing Lines of $crimmage",
+    "Biscokid",
+    "Puka in the LaPorta Potty",
+    "Strange Walker on the Fields",
+    "Cobra Kai",
+    "Maye Bijan Cook",
+    "Amon Drugs",
+    "Hailee's New Muse",
+    "Smoke 'em if you got 'em",
+    "Touchdown Palace",
+    "The Allen Parsons(RIP) Project"
+  ],
+  "teams": [
+    {
+      "slot": 7,
+      "rank": 1,
+      "grade": "A",
+      "score": 0.87,
+      "avgChenRank": 64.8,
+      "eliteCount": 2,
+      "startersFilled": 8,
+      "positionCounts": {
+        "QB": 1,
+        "RB": 6,
+        "WR": 5,
+        "TE": 1,
+        "K": 1,
+        "DEF": 1
+      },
+      "holes": [],
+      "strengths": [
+        "Deep at RB (6)",
+        "Deep at WR (5)"
+      ],
+      "reasons": [
+        {
+          "tone": "good",
+          "text": "2 top-24 anchors, 6 inside the top 60."
+        },
+        {
+          "tone": "good",
+          "text": "Best value: Caleb Williams — consensus rank 66.59 at 114 (+47)."
+        },
+        {
+          "tone": "bad",
+          "text": "Reached: Emmett Johnson — consensus rank 167.42 at 138 (-29)."
+        },
+        {
+          "tone": "good",
+          "text": "Every starting slot is covered."
+        },
+        {
+          "tone": "good",
+          "text": "Deep at RB (6) · Deep at WR (5)."
+        },
+        {
+          "tone": "neutral",
+          "text": "Ranked 1st of 12 · avg board rank 64.8."
+        }
+      ],
+      "steal": {
+        "name": "Caleb Williams",
+        "detail": "Caleb Williams — consensus rank 66.59 at 114 (+47)"
+      },
+      "reach": {
+        "name": "Emmett Johnson",
+        "detail": "Emmett Johnson — consensus rank 167.42 at 138 (-29)"
+      },
+      "byeAlert": null,
+      "summary": "Value board — Caleb Williams was a steal",
+      "picks": [
+        {
+          "overall": 7,
+          "round": 1,
+          "slot": 7,
+          "player": {
+            "id": "chen:RB:christian mccaffrey",
+            "name": "Christian McCaffrey",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 7,
+            "chenTier": 2,
+            "adp": 8.2
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 18,
+          "round": 2,
+          "slot": 7,
+          "player": {
+            "id": "chen:RB:omarion hampton",
+            "name": "Omarion Hampton",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 19,
+            "chenTier": 3,
+            "adp": 19.13
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 31,
+          "round": 3,
+          "slot": 7,
+          "player": {
+            "id": "chen:RB:jeremiyah love",
+            "name": "Jeremiyah Love",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 39,
+            "chenTier": 6,
+            "adp": 39.11
+          },
+          "rosterSlot": "FLEX"
+        },
+        {
+          "overall": 42,
+          "round": 4,
+          "slot": 7,
+          "player": {
+            "id": "chen:WR:garrett wilson",
+            "name": "Garrett Wilson",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 38,
+            "chenTier": 6,
+            "adp": 38.88
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 55,
+          "round": 5,
+          "slot": 7,
+          "player": {
+            "id": "chen:WR:jameson williams",
+            "name": "Jameson Williams",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 51,
+            "chenTier": 8,
+            "adp": 51.84
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 66,
+          "round": 6,
+          "slot": 7,
+          "player": {
+            "id": "chen:WR:rome odunze",
+            "name": "Rome Odunze",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 58,
+            "chenTier": 9,
+            "adp": 58.57
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 79,
+          "round": 7,
+          "slot": 7,
+          "player": {
+            "id": "chen:TE:tucker kraft",
+            "name": "Tucker Kraft",
+            "position": "TE",
+            "team": "FA",
+            "chenRank": 68,
+            "chenTier": 10,
+            "adp": 71.43
+          },
+          "rosterSlot": "TE"
+        },
+        {
+          "overall": 90,
+          "round": 8,
+          "slot": 7,
+          "player": {
+            "id": "chen:RB:blake corum",
+            "name": "Blake Corum",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 90,
+            "chenTier": 12,
+            "adp": 94.13
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 103,
+          "round": 9,
+          "slot": 7,
+          "player": {
+            "id": "chen:WR:de'zhaun stribling",
+            "name": "De'Zhaun Stribling",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 116,
+            "chenTier": 14,
+            "adp": 116.57
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 114,
+          "round": 10,
+          "slot": 7,
+          "player": {
+            "id": "chen:QB:caleb williams",
+            "name": "Caleb Williams",
+            "position": "QB",
+            "team": "FA",
+            "chenRank": 66,
+            "chenTier": 10,
+            "adp": 67.19
+          },
+          "rosterSlot": "QB"
+        },
+        {
+          "overall": 127,
+          "round": 11,
+          "slot": 7,
+          "player": {
+            "id": "scribe:RB:kaelon black",
+            "name": "Kaelon Black",
+            "position": "RB",
+            "team": "SF"
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 138,
+          "round": 12,
+          "slot": 7,
+          "player": {
+            "id": "chen:RB:emmett johnson",
+            "name": "Emmett Johnson",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 161,
+            "chenTier": 20,
+            "adp": 173.84
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 151,
+          "round": 13,
+          "slot": 7,
+          "player": {
+            "id": "scribe:DEF:ravens",
+            "name": "Ravens",
+            "position": "DEF",
+            "team": "BAL"
+          },
+          "rosterSlot": "DEF"
+        },
+        {
+          "overall": 162,
+          "round": 14,
+          "slot": 7,
+          "player": {
+            "id": "scribe:WR:caleb douglas",
+            "name": "Caleb Douglas",
+            "position": "WR",
+            "team": "MIA"
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 175,
+          "round": 15,
+          "slot": 7,
+          "player": {
+            "id": "scribe:K:will reichard",
+            "name": "Will Reichard",
+            "position": "K",
+            "team": "MIN"
+          },
+          "rosterSlot": "K"
+        }
+      ],
+      "teamName": "Maye Bijan Cook",
+      "facts": {
+        "teamName": "Maye Bijan Cook",
+        "slot": 7,
+        "grade": "A",
+        "rank": 1,
+        "field": 12,
+        "summary": "Value board — Caleb Williams was a steal",
+        "reasons": [
+          "2 top-24 anchors, 6 inside the top 60.",
+          "Best value: Caleb Williams — consensus rank 66.59 at 114 (+47).",
+          "Reached: Emmett Johnson — consensus rank 167.42 at 138 (-29).",
+          "Every starting slot is covered.",
+          "Deep at RB (6) · Deep at WR (5).",
+          "Ranked 1st of 12 · avg board rank 64.8."
+        ],
+        "steal": "Caleb Williams — consensus rank 66.59 at 114 (+47)",
+        "reach": "Emmett Johnson — consensus rank 167.42 at 138 (-29)",
+        "bye": null,
+        "picks": [
+          "R1 Christian McCaffrey (RB)",
+          "R2 Omarion Hampton (RB)",
+          "R3 Jeremiyah Love (RB)",
+          "R4 Garrett Wilson (WR)",
+          "R5 Jameson Williams (WR)",
+          "R6 Rome Odunze (WR)",
+          "R7 Tucker Kraft (TE)",
+          "R8 Blake Corum (RB)",
+          "R9 De'Zhaun Stribling (WR)",
+          "R10 Caleb Williams (QB)",
+          "R11 Kaelon Black (RB)",
+          "R12 Emmett Johnson (RB)",
+          "R13 Ravens (DEF)",
+          "R14 Caleb Douglas (WR)",
+          "R15 Will Reichard (K)"
+        ]
+      },
+      "roster": [
+        {
+          "overall": 7,
+          "round": 1,
+          "slot": 7,
+          "name": "Christian McCaffrey",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 7,
+          "chenTier": 2
+        },
+        {
+          "overall": 18,
+          "round": 2,
+          "slot": 7,
+          "name": "Omarion Hampton",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 19,
+          "chenTier": 3
+        },
+        {
+          "overall": 31,
+          "round": 3,
+          "slot": 7,
+          "name": "Jeremiyah Love",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 39,
+          "chenTier": 6
+        },
+        {
+          "overall": 42,
+          "round": 4,
+          "slot": 7,
+          "name": "Garrett Wilson",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 38,
+          "chenTier": 6
+        },
+        {
+          "overall": 55,
+          "round": 5,
+          "slot": 7,
+          "name": "Jameson Williams",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 51,
+          "chenTier": 8
+        },
+        {
+          "overall": 66,
+          "round": 6,
+          "slot": 7,
+          "name": "Rome Odunze",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 58,
+          "chenTier": 9
+        },
+        {
+          "overall": 79,
+          "round": 7,
+          "slot": 7,
+          "name": "Tucker Kraft",
+          "position": "TE",
+          "team": "FA",
+          "chenRank": 68,
+          "chenTier": 10
+        },
+        {
+          "overall": 90,
+          "round": 8,
+          "slot": 7,
+          "name": "Blake Corum",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 90,
+          "chenTier": 12
+        },
+        {
+          "overall": 103,
+          "round": 9,
+          "slot": 7,
+          "name": "De'Zhaun Stribling",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 116,
+          "chenTier": 14
+        },
+        {
+          "overall": 114,
+          "round": 10,
+          "slot": 7,
+          "name": "Caleb Williams",
+          "position": "QB",
+          "team": "FA",
+          "chenRank": 66,
+          "chenTier": 10
+        },
+        {
+          "overall": 127,
+          "round": 11,
+          "slot": 7,
+          "name": "Kaelon Black",
+          "position": "RB",
+          "team": "SF",
+          "chenRank": null,
+          "chenTier": null
+        },
+        {
+          "overall": 138,
+          "round": 12,
+          "slot": 7,
+          "name": "Emmett Johnson",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 161,
+          "chenTier": 20
+        },
+        {
+          "overall": 151,
+          "round": 13,
+          "slot": 7,
+          "name": "Ravens",
+          "position": "DEF",
+          "team": "BAL",
+          "chenRank": null,
+          "chenTier": null
+        },
+        {
+          "overall": 162,
+          "round": 14,
+          "slot": 7,
+          "name": "Caleb Douglas",
+          "position": "WR",
+          "team": "MIA",
+          "chenRank": null,
+          "chenTier": null
+        },
+        {
+          "overall": 175,
+          "round": 15,
+          "slot": 7,
+          "name": "Will Reichard",
+          "position": "K",
+          "team": "MIN",
+          "chenRank": null,
+          "chenTier": null
+        }
+      ]
+    },
+    {
+      "slot": 8,
+      "rank": 2,
+      "grade": "A-",
+      "score": 0.82,
+      "avgChenRank": 79.7,
+      "eliteCount": 2,
+      "startersFilled": 8,
+      "positionCounts": {
+        "QB": 1,
+        "RB": 6,
+        "WR": 5,
+        "TE": 1,
+        "K": 1,
+        "DEF": 1
+      },
+      "holes": [],
+      "strengths": [
+        "Deep at RB (6)",
+        "Deep at WR (5)"
+      ],
+      "reasons": [
+        {
+          "tone": "good",
+          "text": "2 top-24 anchors, 5 inside the top 60."
+        },
+        {
+          "tone": "good",
+          "text": "Best value: Michael Pittman Jr. — consensus rank 90.47 at 113 (+23)."
+        },
+        {
+          "tone": "bad",
+          "text": "Reached: Matthew Golden — consensus rank 123.4 at 104 (-19)."
+        },
+        {
+          "tone": "good",
+          "text": "Every starting slot is covered."
+        },
+        {
+          "tone": "good",
+          "text": "Deep at RB (6) · Deep at WR (5)."
+        },
+        {
+          "tone": "neutral",
+          "text": "Ranked 2nd of 12 · avg board rank 79.7."
+        }
+      ],
+      "steal": {
+        "name": "Michael Pittman Jr.",
+        "detail": "Michael Pittman Jr. — consensus rank 90.47 at 113 (+23)"
+      },
+      "reach": {
+        "name": "Matthew Golden",
+        "detail": "Matthew Golden — consensus rank 123.4 at 104 (-19)"
+      },
+      "byeAlert": null,
+      "summary": "Value board — Michael Pittman Jr. was a steal",
+      "picks": [
+        {
+          "overall": 8,
+          "round": 1,
+          "slot": 8,
+          "player": {
+            "id": "chen:RB:james cook iii",
+            "name": "James Cook III",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 9,
+            "chenTier": 2,
+            "adp": 9.99
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 17,
+          "round": 2,
+          "slot": 8,
+          "player": {
+            "id": "chen:RB:de'von achane",
+            "name": "De'Von Achane",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 16,
+            "chenTier": 3,
+            "adp": 18.39
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 32,
+          "round": 3,
+          "slot": 8,
+          "player": {
+            "id": "chen:WR:malik nabers",
+            "name": "Malik Nabers",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 26,
+            "chenTier": 5,
+            "adp": 28.5
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 41,
+          "round": 4,
+          "slot": 8,
+          "player": {
+            "id": "chen:WR:tee higgins",
+            "name": "Tee Higgins",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 33,
+            "chenTier": 6,
+            "adp": 36.8
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 56,
+          "round": 5,
+          "slot": 8,
+          "player": {
+            "id": "chen:TE:tyler warren",
+            "name": "Tyler Warren",
+            "position": "TE",
+            "team": "FA",
+            "chenRank": 54,
+            "chenTier": 8,
+            "adp": 53.98
+          },
+          "rosterSlot": "TE"
+        },
+        {
+          "overall": 65,
+          "round": 6,
+          "slot": 8,
+          "player": {
+            "id": "chen:WR:mike evans",
+            "name": "Mike Evans",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 64,
+            "chenTier": 9,
+            "adp": 62.37
+          },
+          "rosterSlot": "FLEX"
+        },
+        {
+          "overall": 80,
+          "round": 7,
+          "slot": 8,
+          "player": {
+            "id": "chen:RB:jonathon brooks",
+            "name": "Jonathon Brooks",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 83,
+            "chenTier": 11,
+            "adp": 83.2
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 89,
+          "round": 8,
+          "slot": 8,
+          "player": {
+            "id": "chen:QB:dak prescott",
+            "name": "Dak Prescott",
+            "position": "QB",
+            "team": "FA",
+            "chenRank": 75,
+            "chenTier": 11,
+            "adp": 79.35
+          },
+          "rosterSlot": "QB"
+        },
+        {
+          "overall": 104,
+          "round": 9,
+          "slot": 8,
+          "player": {
+            "id": "chen:WR:matthew golden",
+            "name": "Matthew Golden",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 122,
+            "chenTier": 15,
+            "adp": 124.79
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 113,
+          "round": 10,
+          "slot": 8,
+          "player": {
+            "id": "chen:WR:michael pittman jr.",
+            "name": "Michael Pittman Jr.",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 88,
+            "chenTier": 12,
+            "adp": 92.93
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 128,
+          "round": 11,
+          "slot": 8,
+          "player": {
+            "id": "chen:RB:josh jacobs",
+            "name": "Josh Jacobs",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 157,
+            "chenTier": 17,
+            "adp": 134.5
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 137,
+          "round": 12,
+          "slot": 8,
+          "player": {
+            "id": "scribe:DEF:texans",
+            "name": "Texans",
+            "position": "DEF",
+            "team": "HOU"
+          },
+          "rosterSlot": "DEF"
+        },
+        {
+          "overall": 152,
+          "round": 13,
+          "slot": 8,
+          "player": {
+            "id": "chen:RB:keaton mitchell",
+            "name": "Keaton Mitchell",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 145,
+            "chenTier": 17,
+            "adp": 144.9
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 161,
+          "round": 14,
+          "slot": 8,
+          "player": {
+            "id": "scribe:K:kaimi fairbairn",
+            "name": "Ka'imi Fairbairn",
+            "position": "K",
+            "team": "HOU"
+          },
+          "rosterSlot": "K"
+        },
+        {
+          "overall": 176,
+          "round": 15,
+          "slot": 8,
+          "player": {
+            "id": "chen:RB:brian robinson jr.",
+            "name": "Brian Robinson Jr.",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 164,
+            "chenTier": 18,
+            "adp": 163.37
+          },
+          "rosterSlot": "BENCH"
+        }
+      ],
+      "teamName": "Amon Drugs",
+      "facts": {
+        "teamName": "Amon Drugs",
+        "slot": 8,
+        "grade": "A-",
+        "rank": 2,
+        "field": 12,
+        "summary": "Value board — Michael Pittman Jr. was a steal",
+        "reasons": [
+          "2 top-24 anchors, 5 inside the top 60.",
+          "Best value: Michael Pittman Jr. — consensus rank 90.47 at 113 (+23).",
+          "Reached: Matthew Golden — consensus rank 123.4 at 104 (-19).",
+          "Every starting slot is covered.",
+          "Deep at RB (6) · Deep at WR (5).",
+          "Ranked 2nd of 12 · avg board rank 79.7."
+        ],
+        "steal": "Michael Pittman Jr. — consensus rank 90.47 at 113 (+23)",
+        "reach": "Matthew Golden — consensus rank 123.4 at 104 (-19)",
+        "bye": null,
+        "picks": [
+          "R1 James Cook III (RB)",
+          "R2 De'Von Achane (RB)",
+          "R3 Malik Nabers (WR)",
+          "R4 Tee Higgins (WR)",
+          "R5 Tyler Warren (TE)",
+          "R6 Mike Evans (WR)",
+          "R7 Jonathon Brooks (RB)",
+          "R8 Dak Prescott (QB)",
+          "R9 Matthew Golden (WR)",
+          "R10 Michael Pittman Jr. (WR)",
+          "R11 Josh Jacobs (RB)",
+          "R12 Texans (DEF)",
+          "R13 Keaton Mitchell (RB)",
+          "R14 Ka'imi Fairbairn (K)",
+          "R15 Brian Robinson Jr. (RB)"
+        ]
+      },
+      "roster": [
+        {
+          "overall": 8,
+          "round": 1,
+          "slot": 8,
+          "name": "James Cook III",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 9,
+          "chenTier": 2
+        },
+        {
+          "overall": 17,
+          "round": 2,
+          "slot": 8,
+          "name": "De'Von Achane",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 16,
+          "chenTier": 3
+        },
+        {
+          "overall": 32,
+          "round": 3,
+          "slot": 8,
+          "name": "Malik Nabers",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 26,
+          "chenTier": 5
+        },
+        {
+          "overall": 41,
+          "round": 4,
+          "slot": 8,
+          "name": "Tee Higgins",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 33,
+          "chenTier": 6
+        },
+        {
+          "overall": 56,
+          "round": 5,
+          "slot": 8,
+          "name": "Tyler Warren",
+          "position": "TE",
+          "team": "FA",
+          "chenRank": 54,
+          "chenTier": 8
+        },
+        {
+          "overall": 65,
+          "round": 6,
+          "slot": 8,
+          "name": "Mike Evans",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 64,
+          "chenTier": 9
+        },
+        {
+          "overall": 80,
+          "round": 7,
+          "slot": 8,
+          "name": "Jonathon Brooks",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 83,
+          "chenTier": 11
+        },
+        {
+          "overall": 89,
+          "round": 8,
+          "slot": 8,
+          "name": "Dak Prescott",
+          "position": "QB",
+          "team": "FA",
+          "chenRank": 75,
+          "chenTier": 11
+        },
+        {
+          "overall": 104,
+          "round": 9,
+          "slot": 8,
+          "name": "Matthew Golden",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 122,
+          "chenTier": 15
+        },
+        {
+          "overall": 113,
+          "round": 10,
+          "slot": 8,
+          "name": "Michael Pittman Jr.",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 88,
+          "chenTier": 12
+        },
+        {
+          "overall": 128,
+          "round": 11,
+          "slot": 8,
+          "name": "Josh Jacobs",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 157,
+          "chenTier": 17
+        },
+        {
+          "overall": 137,
+          "round": 12,
+          "slot": 8,
+          "name": "Texans",
+          "position": "DEF",
+          "team": "HOU",
+          "chenRank": null,
+          "chenTier": null
+        },
+        {
+          "overall": 152,
+          "round": 13,
+          "slot": 8,
+          "name": "Keaton Mitchell",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 145,
+          "chenTier": 17
+        },
+        {
+          "overall": 161,
+          "round": 14,
+          "slot": 8,
+          "name": "Ka'imi Fairbairn",
+          "position": "K",
+          "team": "HOU",
+          "chenRank": null,
+          "chenTier": null
+        },
+        {
+          "overall": 176,
+          "round": 15,
+          "slot": 8,
+          "name": "Brian Robinson Jr.",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 164,
+          "chenTier": 18
+        }
+      ]
+    },
+    {
+      "slot": 6,
+      "rank": 3,
+      "grade": "B+",
+      "score": 0.77,
+      "avgChenRank": 75.5,
+      "eliteCount": 2,
+      "startersFilled": 8,
+      "positionCounts": {
+        "QB": 2,
+        "RB": 4,
+        "WR": 6,
+        "TE": 1,
+        "K": 1,
+        "DEF": 1
+      },
+      "holes": [],
+      "strengths": [
+        "Deep at RB (4)",
+        "Deep at WR (6)"
+      ],
+      "reasons": [
+        {
+          "tone": "good",
+          "text": "2 top-24 anchors, 4 inside the top 60."
+        },
+        {
+          "tone": "good",
+          "text": "Best value: Patrick Mahomes II — consensus rank 104.19 at 174 (+70)."
+        },
+        {
+          "tone": "bad",
+          "text": "Reached: Jordyn Tyson — consensus rank 141.75 at 126 (-16)."
+        },
+        {
+          "tone": "good",
+          "text": "Every starting slot is covered."
+        },
+        {
+          "tone": "good",
+          "text": "Deep at RB (4) · Deep at WR (6)."
+        },
+        {
+          "tone": "neutral",
+          "text": "Ranked 3rd of 12 · avg board rank 75.5."
+        }
+      ],
+      "steal": {
+        "name": "Patrick Mahomes II",
+        "detail": "Patrick Mahomes II — consensus rank 104.19 at 174 (+70)"
+      },
+      "reach": {
+        "name": "Jordyn Tyson",
+        "detail": "Jordyn Tyson — consensus rank 141.75 at 126 (-16)"
+      },
+      "byeAlert": null,
+      "summary": "Value board — Patrick Mahomes II was a steal",
+      "picks": [
+        {
+          "overall": 6,
+          "round": 1,
+          "slot": 6,
+          "player": {
+            "id": "chen:WR:jaxon smith-njigba",
+            "name": "Jaxon Smith-Njigba",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 5,
+            "chenTier": 1,
+            "adp": 5.84
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 19,
+          "round": 2,
+          "slot": 6,
+          "player": {
+            "id": "chen:WR:nico collins",
+            "name": "Nico Collins",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 20,
+            "chenTier": 3,
+            "adp": 19.17
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 30,
+          "round": 3,
+          "slot": 6,
+          "player": {
+            "id": "chen:TE:colston loveland",
+            "name": "Colston Loveland",
+            "position": "TE",
+            "team": "FA",
+            "chenRank": 40,
+            "chenTier": 6,
+            "adp": 39.27
+          },
+          "rosterSlot": "TE"
+        },
+        {
+          "overall": 43,
+          "round": 4,
+          "slot": 6,
+          "player": {
+            "id": "chen:RB:d'andre swift",
+            "name": "D'Andre Swift",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 45,
+            "chenTier": 7,
+            "adp": 47.02
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 54,
+          "round": 5,
+          "slot": 6,
+          "player": {
+            "id": "chen:RB:jadarian price",
+            "name": "Jadarian Price",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 61,
+            "chenTier": 9,
+            "adp": 59.91
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 67,
+          "round": 6,
+          "slot": 6,
+          "player": {
+            "id": "chen:QB:jayden daniels",
+            "name": "Jayden Daniels",
+            "position": "QB",
+            "team": "FA",
+            "chenRank": 63,
+            "chenTier": 9,
+            "adp": 62.35
+          },
+          "rosterSlot": "QB"
+        },
+        {
+          "overall": 78,
+          "round": 7,
+          "slot": 6,
+          "player": {
+            "id": "chen:WR:dk metcalf",
+            "name": "DK Metcalf",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 76,
+            "chenTier": 11,
+            "adp": 79.96
+          },
+          "rosterSlot": "FLEX"
+        },
+        {
+          "overall": 91,
+          "round": 8,
+          "slot": 6,
+          "player": {
+            "id": "chen:WR:courtland sutton",
+            "name": "Courtland Sutton",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 84,
+            "chenTier": 11,
+            "adp": 87.19
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 102,
+          "round": 9,
+          "slot": 6,
+          "player": {
+            "id": "chen:WR:stefon diggs",
+            "name": "Stefon Diggs",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 94,
+            "chenTier": 12,
+            "adp": 97.66
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 115,
+          "round": 10,
+          "slot": 6,
+          "player": {
+            "id": "chen:RB:rachaad white",
+            "name": "Rachaad White",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 112,
+            "chenTier": 14,
+            "adp": 112.97
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 126,
+          "round": 11,
+          "slot": 6,
+          "player": {
+            "id": "chen:WR:jordyn tyson",
+            "name": "Jordyn Tyson",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 141,
+            "chenTier": 16,
+            "adp": 142.49
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 139,
+          "round": 12,
+          "slot": 6,
+          "player": {
+            "id": "chen:RB:tyjae spears",
+            "name": "Tyjae Spears",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 137,
+            "chenTier": 16,
+            "adp": 142.98
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 150,
+          "round": 13,
+          "slot": 6,
+          "player": {
+            "id": "scribe:DEF:eagles",
+            "name": "Eagles",
+            "position": "DEF",
+            "team": "PHI"
+          },
+          "rosterSlot": "DEF"
+        },
+        {
+          "overall": 163,
+          "round": 14,
+          "slot": 6,
+          "player": {
+            "id": "scribe:K:cam little",
+            "name": "Cam Little",
+            "position": "K",
+            "team": "JAX"
+          },
+          "rosterSlot": "K"
+        },
+        {
+          "overall": 174,
+          "round": 15,
+          "slot": 6,
+          "player": {
+            "id": "chen:QB:patrick mahomes ii",
+            "name": "Patrick Mahomes II",
+            "position": "QB",
+            "team": "FA",
+            "chenRank": 104,
+            "chenTier": 13,
+            "adp": 104.39
+          },
+          "rosterSlot": "BENCH"
+        }
+      ],
+      "teamName": "Cobra Kai",
+      "facts": {
+        "teamName": "Cobra Kai",
+        "slot": 6,
+        "grade": "B+",
+        "rank": 3,
+        "field": 12,
+        "summary": "Value board — Patrick Mahomes II was a steal",
+        "reasons": [
+          "2 top-24 anchors, 4 inside the top 60.",
+          "Best value: Patrick Mahomes II — consensus rank 104.19 at 174 (+70).",
+          "Reached: Jordyn Tyson — consensus rank 141.75 at 126 (-16).",
+          "Every starting slot is covered.",
+          "Deep at RB (4) · Deep at WR (6).",
+          "Ranked 3rd of 12 · avg board rank 75.5."
+        ],
+        "steal": "Patrick Mahomes II — consensus rank 104.19 at 174 (+70)",
+        "reach": "Jordyn Tyson — consensus rank 141.75 at 126 (-16)",
+        "bye": null,
+        "picks": [
+          "R1 Jaxon Smith-Njigba (WR)",
+          "R2 Nico Collins (WR)",
+          "R3 Colston Loveland (TE)",
+          "R4 D'Andre Swift (RB)",
+          "R5 Jadarian Price (RB)",
+          "R6 Jayden Daniels (QB)",
+          "R7 DK Metcalf (WR)",
+          "R8 Courtland Sutton (WR)",
+          "R9 Stefon Diggs (WR)",
+          "R10 Rachaad White (RB)",
+          "R11 Jordyn Tyson (WR)",
+          "R12 Tyjae Spears (RB)",
+          "R13 Eagles (DEF)",
+          "R14 Cam Little (K)",
+          "R15 Patrick Mahomes II (QB)"
+        ]
+      },
+      "roster": [
+        {
+          "overall": 6,
+          "round": 1,
+          "slot": 6,
+          "name": "Jaxon Smith-Njigba",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 5,
+          "chenTier": 1
+        },
+        {
+          "overall": 19,
+          "round": 2,
+          "slot": 6,
+          "name": "Nico Collins",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 20,
+          "chenTier": 3
+        },
+        {
+          "overall": 30,
+          "round": 3,
+          "slot": 6,
+          "name": "Colston Loveland",
+          "position": "TE",
+          "team": "FA",
+          "chenRank": 40,
+          "chenTier": 6
+        },
+        {
+          "overall": 43,
+          "round": 4,
+          "slot": 6,
+          "name": "D'Andre Swift",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 45,
+          "chenTier": 7
+        },
+        {
+          "overall": 54,
+          "round": 5,
+          "slot": 6,
+          "name": "Jadarian Price",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 61,
+          "chenTier": 9
+        },
+        {
+          "overall": 67,
+          "round": 6,
+          "slot": 6,
+          "name": "Jayden Daniels",
+          "position": "QB",
+          "team": "FA",
+          "chenRank": 63,
+          "chenTier": 9
+        },
+        {
+          "overall": 78,
+          "round": 7,
+          "slot": 6,
+          "name": "DK Metcalf",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 76,
+          "chenTier": 11
+        },
+        {
+          "overall": 91,
+          "round": 8,
+          "slot": 6,
+          "name": "Courtland Sutton",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 84,
+          "chenTier": 11
+        },
+        {
+          "overall": 102,
+          "round": 9,
+          "slot": 6,
+          "name": "Stefon Diggs",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 94,
+          "chenTier": 12
+        },
+        {
+          "overall": 115,
+          "round": 10,
+          "slot": 6,
+          "name": "Rachaad White",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 112,
+          "chenTier": 14
+        },
+        {
+          "overall": 126,
+          "round": 11,
+          "slot": 6,
+          "name": "Jordyn Tyson",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 141,
+          "chenTier": 16
+        },
+        {
+          "overall": 139,
+          "round": 12,
+          "slot": 6,
+          "name": "Tyjae Spears",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 137,
+          "chenTier": 16
+        },
+        {
+          "overall": 150,
+          "round": 13,
+          "slot": 6,
+          "name": "Eagles",
+          "position": "DEF",
+          "team": "PHI",
+          "chenRank": null,
+          "chenTier": null
+        },
+        {
+          "overall": 163,
+          "round": 14,
+          "slot": 6,
+          "name": "Cam Little",
+          "position": "K",
+          "team": "JAX",
+          "chenRank": null,
+          "chenTier": null
+        },
+        {
+          "overall": 174,
+          "round": 15,
+          "slot": 6,
+          "name": "Patrick Mahomes II",
+          "position": "QB",
+          "team": "FA",
+          "chenRank": 104,
+          "chenTier": 13
+        }
+      ]
+    },
+    {
+      "slot": 2,
+      "rank": 4,
+      "grade": "B",
+      "score": 0.7,
+      "avgChenRank": 80.6,
+      "eliteCount": 3,
+      "startersFilled": 8,
+      "positionCounts": {
+        "QB": 1,
+        "RB": 4,
+        "WR": 7,
+        "TE": 1,
+        "K": 1,
+        "DEF": 1
+      },
+      "holes": [],
+      "strengths": [
+        "Deep at RB (4)",
+        "Deep at WR (7)"
+      ],
+      "reasons": [
+        {
+          "tone": "good",
+          "text": "Loaded core — 3 players inside the board's top 24."
+        },
+        {
+          "tone": "good",
+          "text": "Best value: Denzel Boston — consensus rank 153.15 at 170 (+17)."
+        },
+        {
+          "tone": "bad",
+          "text": "Reached: Pat Bryant — consensus rank 184.15 at 143 (-41)."
+        },
+        {
+          "tone": "good",
+          "text": "Every starting slot is covered."
+        },
+        {
+          "tone": "good",
+          "text": "Deep at RB (4) · Deep at WR (7)."
+        },
+        {
+          "tone": "neutral",
+          "text": "Ranked 4th of 12 · avg board rank 80.6."
+        }
+      ],
+      "steal": {
+        "name": "Denzel Boston",
+        "detail": "Denzel Boston — consensus rank 153.15 at 170 (+17)"
+      },
+      "reach": {
+        "name": "Pat Bryant",
+        "detail": "Pat Bryant — consensus rank 184.15 at 143 (-41)"
+      },
+      "byeAlert": null,
+      "summary": "Elite top-heavy roster",
+      "picks": [
+        {
+          "overall": 2,
+          "round": 1,
+          "slot": 2,
+          "player": {
+            "id": "chen:RB:bijan robinson",
+            "name": "Bijan Robinson",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 2,
+            "chenTier": 1,
+            "adp": 2.25
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 23,
+          "round": 2,
+          "slot": 2,
+          "player": {
+            "id": "chen:WR:george pickens",
+            "name": "George Pickens",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 22,
+            "chenTier": 4,
+            "adp": 22.83
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 26,
+          "round": 3,
+          "slot": 2,
+          "player": {
+            "id": "chen:TE:brock bowers",
+            "name": "Brock Bowers",
+            "position": "TE",
+            "team": "FA",
+            "chenRank": 17,
+            "chenTier": 3,
+            "adp": 18.43
+          },
+          "rosterSlot": "TE"
+        },
+        {
+          "overall": 47,
+          "round": 4,
+          "slot": 2,
+          "player": {
+            "id": "chen:WR:rashee rice",
+            "name": "Rashee Rice",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 30,
+            "chenTier": 5,
+            "adp": 32.45
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 50,
+          "round": 5,
+          "slot": 2,
+          "player": {
+            "id": "chen:RB:bhayshul tuten",
+            "name": "Bhayshul Tuten",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 59,
+            "chenTier": 9,
+            "adp": 59.6
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 71,
+          "round": 6,
+          "slot": 2,
+          "player": {
+            "id": "chen:QB:jalen hurts",
+            "name": "Jalen Hurts",
+            "position": "QB",
+            "team": "FA",
+            "chenRank": 60,
+            "chenTier": 9,
+            "adp": 59.78
+          },
+          "rosterSlot": "QB"
+        },
+        {
+          "overall": 74,
+          "round": 7,
+          "slot": 2,
+          "player": {
+            "id": "chen:WR:brian thomas jr.",
+            "name": "Brian Thomas Jr.",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 78,
+            "chenTier": 11,
+            "adp": 81.64
+          },
+          "rosterSlot": "FLEX"
+        },
+        {
+          "overall": 95,
+          "round": 8,
+          "slot": 2,
+          "player": {
+            "id": "chen:WR:jordan addison",
+            "name": "Jordan Addison",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 107,
+            "chenTier": 13,
+            "adp": 106
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 98,
+          "round": 9,
+          "slot": 2,
+          "player": {
+            "id": "chen:WR:josh downs",
+            "name": "Josh Downs",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 95,
+            "chenTier": 13,
+            "adp": 98.56
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 119,
+          "round": 10,
+          "slot": 2,
+          "player": {
+            "id": "chen:RB:tyler allgeier",
+            "name": "Tyler Allgeier",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 130,
+            "chenTier": 15,
+            "adp": 130.66
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 122,
+          "round": 11,
+          "slot": 2,
+          "player": {
+            "id": "chen:RB:chris rodriguez jr.",
+            "name": "Chris Rodriguez Jr.",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 123,
+            "chenTier": 15,
+            "adp": 125.07
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 143,
+          "round": 12,
+          "slot": 2,
+          "player": {
+            "id": "chen:WR:pat bryant",
+            "name": "Pat Bryant",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 178,
+            "chenTier": 22,
+            "adp": 190.3
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 146,
+          "round": 13,
+          "slot": 2,
+          "player": {
+            "id": "scribe:DEF:broncos",
+            "name": "Broncos",
+            "position": "DEF",
+            "team": "DEN"
+          },
+          "rosterSlot": "DEF"
+        },
+        {
+          "overall": 167,
+          "round": 14,
+          "slot": 2,
+          "player": {
+            "id": "scribe:K:tyler loop",
+            "name": "Tyler Loop",
+            "position": "K",
+            "team": "BAL"
+          },
+          "rosterSlot": "K"
+        },
+        {
+          "overall": 170,
+          "round": 15,
+          "slot": 2,
+          "player": {
+            "id": "chen:WR:denzel boston",
+            "name": "Denzel Boston",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 147,
+            "chenTier": 18,
+            "adp": 159.3
+          },
+          "rosterSlot": "BENCH"
+        }
+      ],
+      "teamName": "Blowing Lines of $crimmage",
+      "facts": {
+        "teamName": "Blowing Lines of $crimmage",
+        "slot": 2,
+        "grade": "B",
+        "rank": 4,
+        "field": 12,
+        "summary": "Elite top-heavy roster",
+        "reasons": [
+          "Loaded core — 3 players inside the board's top 24.",
+          "Best value: Denzel Boston — consensus rank 153.15 at 170 (+17).",
+          "Reached: Pat Bryant — consensus rank 184.15 at 143 (-41).",
+          "Every starting slot is covered.",
+          "Deep at RB (4) · Deep at WR (7).",
+          "Ranked 4th of 12 · avg board rank 80.6."
+        ],
+        "steal": "Denzel Boston — consensus rank 153.15 at 170 (+17)",
+        "reach": "Pat Bryant — consensus rank 184.15 at 143 (-41)",
+        "bye": null,
+        "picks": [
+          "R1 Bijan Robinson (RB)",
+          "R2 George Pickens (WR)",
+          "R3 Brock Bowers (TE)",
+          "R4 Rashee Rice (WR)",
+          "R5 Bhayshul Tuten (RB)",
+          "R6 Jalen Hurts (QB)",
+          "R7 Brian Thomas Jr. (WR)",
+          "R8 Jordan Addison (WR)",
+          "R9 Josh Downs (WR)",
+          "R10 Tyler Allgeier (RB)",
+          "R11 Chris Rodriguez Jr. (RB)",
+          "R12 Pat Bryant (WR)",
+          "R13 Broncos (DEF)",
+          "R14 Tyler Loop (K)",
+          "R15 Denzel Boston (WR)"
+        ]
+      },
+      "roster": [
+        {
+          "overall": 2,
+          "round": 1,
+          "slot": 2,
+          "name": "Bijan Robinson",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 2,
+          "chenTier": 1
+        },
+        {
+          "overall": 23,
+          "round": 2,
+          "slot": 2,
+          "name": "George Pickens",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 22,
+          "chenTier": 4
+        },
+        {
+          "overall": 26,
+          "round": 3,
+          "slot": 2,
+          "name": "Brock Bowers",
+          "position": "TE",
+          "team": "FA",
+          "chenRank": 17,
+          "chenTier": 3
+        },
+        {
+          "overall": 47,
+          "round": 4,
+          "slot": 2,
+          "name": "Rashee Rice",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 30,
+          "chenTier": 5
+        },
+        {
+          "overall": 50,
+          "round": 5,
+          "slot": 2,
+          "name": "Bhayshul Tuten",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 59,
+          "chenTier": 9
+        },
+        {
+          "overall": 71,
+          "round": 6,
+          "slot": 2,
+          "name": "Jalen Hurts",
+          "position": "QB",
+          "team": "FA",
+          "chenRank": 60,
+          "chenTier": 9
+        },
+        {
+          "overall": 74,
+          "round": 7,
+          "slot": 2,
+          "name": "Brian Thomas Jr.",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 78,
+          "chenTier": 11
+        },
+        {
+          "overall": 95,
+          "round": 8,
+          "slot": 2,
+          "name": "Jordan Addison",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 107,
+          "chenTier": 13
+        },
+        {
+          "overall": 98,
+          "round": 9,
+          "slot": 2,
+          "name": "Josh Downs",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 95,
+          "chenTier": 13
+        },
+        {
+          "overall": 119,
+          "round": 10,
+          "slot": 2,
+          "name": "Tyler Allgeier",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 130,
+          "chenTier": 15
+        },
+        {
+          "overall": 122,
+          "round": 11,
+          "slot": 2,
+          "name": "Chris Rodriguez Jr.",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 123,
+          "chenTier": 15
+        },
+        {
+          "overall": 143,
+          "round": 12,
+          "slot": 2,
+          "name": "Pat Bryant",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 178,
+          "chenTier": 22
+        },
+        {
+          "overall": 146,
+          "round": 13,
+          "slot": 2,
+          "name": "Broncos",
+          "position": "DEF",
+          "team": "DEN",
+          "chenRank": null,
+          "chenTier": null
+        },
+        {
+          "overall": 167,
+          "round": 14,
+          "slot": 2,
+          "name": "Tyler Loop",
+          "position": "K",
+          "team": "BAL",
+          "chenRank": null,
+          "chenTier": null
+        },
+        {
+          "overall": 170,
+          "round": 15,
+          "slot": 2,
+          "name": "Denzel Boston",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 147,
+          "chenTier": 18
+        }
+      ]
+    },
+    {
+      "slot": 5,
+      "rank": 5,
+      "grade": "B",
+      "score": 0.65,
+      "avgChenRank": 80.2,
+      "eliteCount": 2,
+      "startersFilled": 8,
+      "positionCounts": {
+        "QB": 2,
+        "RB": 4,
+        "WR": 6,
+        "TE": 1,
+        "K": 1,
+        "DEF": 1
+      },
+      "holes": [],
+      "strengths": [
+        "Deep at RB (4)",
+        "Deep at WR (6)"
+      ],
+      "reasons": [
+        {
+          "tone": "good",
+          "text": "2 top-24 anchors, 5 inside the top 60."
+        },
+        {
+          "tone": "good",
+          "text": "Best value: Trevor Lawrence — consensus rank 75.13 at 101 (+26)."
+        },
+        {
+          "tone": "bad",
+          "text": "Reached: Jalen Coker — consensus rank 131.12 at 116 (-15)."
+        },
+        {
+          "tone": "good",
+          "text": "Every starting slot is covered."
+        },
+        {
+          "tone": "good",
+          "text": "Deep at RB (4) · Deep at WR (6)."
+        },
+        {
+          "tone": "neutral",
+          "text": "Ranked 5th of 12 · avg board rank 80.2."
+        }
+      ],
+      "steal": {
+        "name": "Trevor Lawrence",
+        "detail": "Trevor Lawrence — consensus rank 75.13 at 101 (+26)"
+      },
+      "reach": {
+        "name": "Jalen Coker",
+        "detail": "Jalen Coker — consensus rank 131.12 at 116 (-15)"
+      },
+      "byeAlert": null,
+      "summary": "Value board — Trevor Lawrence was a steal",
+      "picks": [
+        {
+          "overall": 5,
+          "round": 1,
+          "slot": 5,
+          "player": {
+            "id": "chen:RB:jonathan taylor",
+            "name": "Jonathan Taylor",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 8,
+            "chenTier": 2,
+            "adp": 8.46
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 20,
+          "round": 2,
+          "slot": 5,
+          "player": {
+            "id": "chen:WR:a.j. brown",
+            "name": "A.J. Brown",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 13,
+            "chenTier": 3,
+            "adp": 15.62
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 29,
+          "round": 3,
+          "slot": 5,
+          "player": {
+            "id": "chen:RB:javonte williams",
+            "name": "Javonte Williams",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 32,
+            "chenTier": 5,
+            "adp": 33.94
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 44,
+          "round": 4,
+          "slot": 5,
+          "player": {
+            "id": "chen:QB:lamar jackson",
+            "name": "Lamar Jackson",
+            "position": "QB",
+            "team": "FA",
+            "chenRank": 35,
+            "chenTier": 6,
+            "adp": 38.37
+          },
+          "rosterSlot": "QB"
+        },
+        {
+          "overall": 53,
+          "round": 5,
+          "slot": 5,
+          "player": {
+            "id": "chen:WR:terry mclaurin",
+            "name": "Terry McLaurin",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 48,
+            "chenTier": 8,
+            "adp": 50.36
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 68,
+          "round": 6,
+          "slot": 5,
+          "player": {
+            "id": "chen:WR:marvin harrison jr.",
+            "name": "Marvin Harrison Jr.",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 70,
+            "chenTier": 11,
+            "adp": 73.12
+          },
+          "rosterSlot": "FLEX"
+        },
+        {
+          "overall": 77,
+          "round": 7,
+          "slot": 5,
+          "player": {
+            "id": "chen:WR:chris godwin jr.",
+            "name": "Chris Godwin Jr.",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 80,
+            "chenTier": 11,
+            "adp": 81.78
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 92,
+          "round": 8,
+          "slot": 5,
+          "player": {
+            "id": "chen:RB:rj harvey",
+            "name": "RJ Harvey",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 99,
+            "chenTier": 13,
+            "adp": 101.31
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 101,
+          "round": 9,
+          "slot": 5,
+          "player": {
+            "id": "chen:QB:trevor lawrence",
+            "name": "Trevor Lawrence",
+            "position": "QB",
+            "team": "FA",
+            "chenRank": 73,
+            "chenTier": 11,
+            "adp": 77.25
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 116,
+          "round": 10,
+          "slot": 5,
+          "player": {
+            "id": "chen:WR:jalen coker",
+            "name": "Jalen Coker",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 131,
+            "chenTier": 15,
+            "adp": 131.24
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 125,
+          "round": 11,
+          "slot": 5,
+          "player": {
+            "id": "chen:RB:woody marks",
+            "name": "Woody Marks",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 133,
+            "chenTier": 15,
+            "adp": 131.85
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 140,
+          "round": 12,
+          "slot": 5,
+          "player": {
+            "id": "chen:TE:brenton strange",
+            "name": "Brenton Strange",
+            "position": "TE",
+            "team": "FA",
+            "chenRank": 154,
+            "chenTier": 18,
+            "adp": 155.6
+          },
+          "rosterSlot": "TE"
+        },
+        {
+          "overall": 149,
+          "round": 13,
+          "slot": 5,
+          "player": {
+            "id": "scribe:K:brandon aubrey",
+            "name": "Brandon Aubrey",
+            "position": "K",
+            "team": "DAL"
+          },
+          "rosterSlot": "K"
+        },
+        {
+          "overall": 164,
+          "round": 14,
+          "slot": 5,
+          "player": {
+            "id": "chen:WR:jalen nailor",
+            "name": "Jalen Nailor",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 167,
+            "chenTier": 22,
+            "adp": 189.37
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 173,
+          "round": 15,
+          "slot": 5,
+          "player": {
+            "id": "scribe:DEF:vikings",
+            "name": "Vikings",
+            "position": "DEF",
+            "team": "MIN"
+          },
+          "rosterSlot": "DEF"
+        }
+      ],
+      "teamName": "Strange Walker on the Fields",
+      "facts": {
+        "teamName": "Strange Walker on the Fields",
+        "slot": 5,
+        "grade": "B",
+        "rank": 5,
+        "field": 12,
+        "summary": "Value board — Trevor Lawrence was a steal",
+        "reasons": [
+          "2 top-24 anchors, 5 inside the top 60.",
+          "Best value: Trevor Lawrence — consensus rank 75.13 at 101 (+26).",
+          "Reached: Jalen Coker — consensus rank 131.12 at 116 (-15).",
+          "Every starting slot is covered.",
+          "Deep at RB (4) · Deep at WR (6).",
+          "Ranked 5th of 12 · avg board rank 80.2."
+        ],
+        "steal": "Trevor Lawrence — consensus rank 75.13 at 101 (+26)",
+        "reach": "Jalen Coker — consensus rank 131.12 at 116 (-15)",
+        "bye": null,
+        "picks": [
+          "R1 Jonathan Taylor (RB)",
+          "R2 A.J. Brown (WR)",
+          "R3 Javonte Williams (RB)",
+          "R4 Lamar Jackson (QB)",
+          "R5 Terry McLaurin (WR)",
+          "R6 Marvin Harrison Jr. (WR)",
+          "R7 Chris Godwin Jr. (WR)",
+          "R8 RJ Harvey (RB)",
+          "R9 Trevor Lawrence (QB)",
+          "R10 Jalen Coker (WR)",
+          "R11 Woody Marks (RB)",
+          "R12 Brenton Strange (TE)",
+          "R13 Brandon Aubrey (K)",
+          "R14 Jalen Nailor (WR)",
+          "R15 Vikings (DEF)"
+        ]
+      },
+      "roster": [
+        {
+          "overall": 5,
+          "round": 1,
+          "slot": 5,
+          "name": "Jonathan Taylor",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 8,
+          "chenTier": 2
+        },
+        {
+          "overall": 20,
+          "round": 2,
+          "slot": 5,
+          "name": "A.J. Brown",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 13,
+          "chenTier": 3
+        },
+        {
+          "overall": 29,
+          "round": 3,
+          "slot": 5,
+          "name": "Javonte Williams",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 32,
+          "chenTier": 5
+        },
+        {
+          "overall": 44,
+          "round": 4,
+          "slot": 5,
+          "name": "Lamar Jackson",
+          "position": "QB",
+          "team": "FA",
+          "chenRank": 35,
+          "chenTier": 6
+        },
+        {
+          "overall": 53,
+          "round": 5,
+          "slot": 5,
+          "name": "Terry McLaurin",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 48,
+          "chenTier": 8
+        },
+        {
+          "overall": 68,
+          "round": 6,
+          "slot": 5,
+          "name": "Marvin Harrison Jr.",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 70,
+          "chenTier": 11
+        },
+        {
+          "overall": 77,
+          "round": 7,
+          "slot": 5,
+          "name": "Chris Godwin Jr.",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 80,
+          "chenTier": 11
+        },
+        {
+          "overall": 92,
+          "round": 8,
+          "slot": 5,
+          "name": "RJ Harvey",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 99,
+          "chenTier": 13
+        },
+        {
+          "overall": 101,
+          "round": 9,
+          "slot": 5,
+          "name": "Trevor Lawrence",
+          "position": "QB",
+          "team": "FA",
+          "chenRank": 73,
+          "chenTier": 11
+        },
+        {
+          "overall": 116,
+          "round": 10,
+          "slot": 5,
+          "name": "Jalen Coker",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 131,
+          "chenTier": 15
+        },
+        {
+          "overall": 125,
+          "round": 11,
+          "slot": 5,
+          "name": "Woody Marks",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 133,
+          "chenTier": 15
+        },
+        {
+          "overall": 140,
+          "round": 12,
+          "slot": 5,
+          "name": "Brenton Strange",
+          "position": "TE",
+          "team": "FA",
+          "chenRank": 154,
+          "chenTier": 18
+        },
+        {
+          "overall": 149,
+          "round": 13,
+          "slot": 5,
+          "name": "Brandon Aubrey",
+          "position": "K",
+          "team": "DAL",
+          "chenRank": null,
+          "chenTier": null
+        },
+        {
+          "overall": 164,
+          "round": 14,
+          "slot": 5,
+          "name": "Jalen Nailor",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 167,
+          "chenTier": 22
+        },
+        {
+          "overall": 173,
+          "round": 15,
+          "slot": 5,
+          "name": "Vikings",
+          "position": "DEF",
+          "team": "MIN",
+          "chenRank": null,
+          "chenTier": null
+        }
+      ]
+    },
+    {
+      "slot": 11,
+      "rank": 6,
+      "grade": "B-",
+      "score": 0.6,
+      "avgChenRank": 79,
+      "eliteCount": 2,
+      "startersFilled": 8,
+      "positionCounts": {
+        "QB": 2,
+        "RB": 5,
+        "WR": 5,
+        "TE": 1,
+        "K": 1,
+        "DEF": 1
+      },
+      "holes": [],
+      "strengths": [
+        "Deep at RB (5)",
+        "Deep at WR (5)"
+      ],
+      "reasons": [
+        {
+          "tone": "good",
+          "text": "2 top-24 anchors, 5 inside the top 60."
+        },
+        {
+          "tone": "good",
+          "text": "Best value: Bo Nix — consensus rank 98.18 at 134 (+36)."
+        },
+        {
+          "tone": "bad",
+          "text": "Reached: Chris Bell — consensus rank 208.38 at 155 (-53)."
+        },
+        {
+          "tone": "good",
+          "text": "Every starting slot is covered."
+        },
+        {
+          "tone": "good",
+          "text": "Deep at RB (5) · Deep at WR (5)."
+        },
+        {
+          "tone": "neutral",
+          "text": "Ranked 6th of 12 · avg board rank 79."
+        }
+      ],
+      "steal": {
+        "name": "Bo Nix",
+        "detail": "Bo Nix — consensus rank 98.18 at 134 (+36)"
+      },
+      "reach": {
+        "name": "Chris Bell",
+        "detail": "Chris Bell — consensus rank 208.38 at 155 (-53)"
+      },
+      "byeAlert": null,
+      "summary": "Value board — Bo Nix was a steal",
+      "picks": [
+        {
+          "overall": 11,
+          "round": 1,
+          "slot": 11,
+          "player": {
+            "id": "chen:RB:kenneth walker iii",
+            "name": "Kenneth Walker III",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 18,
+            "chenTier": 3,
+            "adp": 18.57
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 14,
+          "round": 2,
+          "slot": 11,
+          "player": {
+            "id": "chen:RB:chase brown",
+            "name": "Chase Brown",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 12,
+            "chenTier": 3,
+            "adp": 15.19
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 35,
+          "round": 3,
+          "slot": 11,
+          "player": {
+            "id": "chen:WR:zay flowers",
+            "name": "Zay Flowers",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 29,
+            "chenTier": 5,
+            "adp": 32.2
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 38,
+          "round": 4,
+          "slot": 11,
+          "player": {
+            "id": "chen:WR:ladd mcconkey",
+            "name": "Ladd McConkey",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 37,
+            "chenTier": 6,
+            "adp": 38.82
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 59,
+          "round": 5,
+          "slot": 11,
+          "player": {
+            "id": "chen:WR:christian watson",
+            "name": "Christian Watson",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 57,
+            "chenTier": 8,
+            "adp": 55.24
+          },
+          "rosterSlot": "FLEX"
+        },
+        {
+          "overall": 62,
+          "round": 6,
+          "slot": 11,
+          "player": {
+            "id": "chen:WR:parker washington",
+            "name": "Parker Washington",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 62,
+            "chenTier": 9,
+            "adp": 61.54
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 83,
+          "round": 7,
+          "slot": 11,
+          "player": {
+            "id": "chen:RB:treveyon henderson",
+            "name": "TreVeyon Henderson",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 65,
+            "chenTier": 10,
+            "adp": 66.87
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 86,
+          "round": 8,
+          "slot": 11,
+          "player": {
+            "id": "chen:RB:jordan mason",
+            "name": "Jordan Mason",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 100,
+            "chenTier": 13,
+            "adp": 101.32
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 107,
+          "round": 9,
+          "slot": 11,
+          "player": {
+            "id": "chen:QB:jaxson dart",
+            "name": "Jaxson Dart",
+            "position": "QB",
+            "team": "FA",
+            "chenRank": 98,
+            "chenTier": 13,
+            "adp": 100.87
+          },
+          "rosterSlot": "QB"
+        },
+        {
+          "overall": 110,
+          "round": 10,
+          "slot": 11,
+          "player": {
+            "id": "chen:TE:isaiah likely",
+            "name": "Isaiah Likely",
+            "position": "TE",
+            "team": "FA",
+            "chenRank": 117,
+            "chenTier": 14,
+            "adp": 116.61
+          },
+          "rosterSlot": "TE"
+        },
+        {
+          "overall": 131,
+          "round": 11,
+          "slot": 11,
+          "player": {
+            "id": "chen:RB:jonah coleman",
+            "name": "Jonah Coleman",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 136,
+            "chenTier": 16,
+            "adp": 140.46
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 134,
+          "round": 12,
+          "slot": 11,
+          "player": {
+            "id": "chen:QB:bo nix",
+            "name": "Bo Nix",
+            "position": "QB",
+            "team": "FA",
+            "chenRank": 97,
+            "chenTier": 13,
+            "adp": 99.36
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 155,
+          "round": 13,
+          "slot": 11,
+          "player": {
+            "id": "chen:WR:chris bell",
+            "name": "Chris Bell",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 199,
+            "chenTier": 24,
+            "adp": 217.77
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 158,
+          "round": 14,
+          "slot": 11,
+          "player": {
+            "id": "scribe:DEF:chargers",
+            "name": "Chargers",
+            "position": "DEF",
+            "team": "LAC"
+          },
+          "rosterSlot": "DEF"
+        },
+        {
+          "overall": 179,
+          "round": 15,
+          "slot": 11,
+          "player": {
+            "id": "scribe:K:jake bates",
+            "name": "Jake Bates",
+            "position": "K",
+            "team": "DET"
+          },
+          "rosterSlot": "K"
+        }
+      ],
+      "teamName": "Touchdown Palace",
+      "facts": {
+        "teamName": "Touchdown Palace",
+        "slot": 11,
+        "grade": "B-",
+        "rank": 6,
+        "field": 12,
+        "summary": "Value board — Bo Nix was a steal",
+        "reasons": [
+          "2 top-24 anchors, 5 inside the top 60.",
+          "Best value: Bo Nix — consensus rank 98.18 at 134 (+36).",
+          "Reached: Chris Bell — consensus rank 208.38 at 155 (-53).",
+          "Every starting slot is covered.",
+          "Deep at RB (5) · Deep at WR (5).",
+          "Ranked 6th of 12 · avg board rank 79."
+        ],
+        "steal": "Bo Nix — consensus rank 98.18 at 134 (+36)",
+        "reach": "Chris Bell — consensus rank 208.38 at 155 (-53)",
+        "bye": null,
+        "picks": [
+          "R1 Kenneth Walker III (RB)",
+          "R2 Chase Brown (RB)",
+          "R3 Zay Flowers (WR)",
+          "R4 Ladd McConkey (WR)",
+          "R5 Christian Watson (WR)",
+          "R6 Parker Washington (WR)",
+          "R7 TreVeyon Henderson (RB)",
+          "R8 Jordan Mason (RB)",
+          "R9 Jaxson Dart (QB)",
+          "R10 Isaiah Likely (TE)",
+          "R11 Jonah Coleman (RB)",
+          "R12 Bo Nix (QB)",
+          "R13 Chris Bell (WR)",
+          "R14 Chargers (DEF)",
+          "R15 Jake Bates (K)"
+        ]
+      },
+      "roster": [
+        {
+          "overall": 11,
+          "round": 1,
+          "slot": 11,
+          "name": "Kenneth Walker III",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 18,
+          "chenTier": 3
+        },
+        {
+          "overall": 14,
+          "round": 2,
+          "slot": 11,
+          "name": "Chase Brown",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 12,
+          "chenTier": 3
+        },
+        {
+          "overall": 35,
+          "round": 3,
+          "slot": 11,
+          "name": "Zay Flowers",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 29,
+          "chenTier": 5
+        },
+        {
+          "overall": 38,
+          "round": 4,
+          "slot": 11,
+          "name": "Ladd McConkey",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 37,
+          "chenTier": 6
+        },
+        {
+          "overall": 59,
+          "round": 5,
+          "slot": 11,
+          "name": "Christian Watson",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 57,
+          "chenTier": 8
+        },
+        {
+          "overall": 62,
+          "round": 6,
+          "slot": 11,
+          "name": "Parker Washington",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 62,
+          "chenTier": 9
+        },
+        {
+          "overall": 83,
+          "round": 7,
+          "slot": 11,
+          "name": "TreVeyon Henderson",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 65,
+          "chenTier": 10
+        },
+        {
+          "overall": 86,
+          "round": 8,
+          "slot": 11,
+          "name": "Jordan Mason",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 100,
+          "chenTier": 13
+        },
+        {
+          "overall": 107,
+          "round": 9,
+          "slot": 11,
+          "name": "Jaxson Dart",
+          "position": "QB",
+          "team": "FA",
+          "chenRank": 98,
+          "chenTier": 13
+        },
+        {
+          "overall": 110,
+          "round": 10,
+          "slot": 11,
+          "name": "Isaiah Likely",
+          "position": "TE",
+          "team": "FA",
+          "chenRank": 117,
+          "chenTier": 14
+        },
+        {
+          "overall": 131,
+          "round": 11,
+          "slot": 11,
+          "name": "Jonah Coleman",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 136,
+          "chenTier": 16
+        },
+        {
+          "overall": 134,
+          "round": 12,
+          "slot": 11,
+          "name": "Bo Nix",
+          "position": "QB",
+          "team": "FA",
+          "chenRank": 97,
+          "chenTier": 13
+        },
+        {
+          "overall": 155,
+          "round": 13,
+          "slot": 11,
+          "name": "Chris Bell",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 199,
+          "chenTier": 24
+        },
+        {
+          "overall": 158,
+          "round": 14,
+          "slot": 11,
+          "name": "Chargers",
+          "position": "DEF",
+          "team": "LAC",
+          "chenRank": null,
+          "chenTier": null
+        },
+        {
+          "overall": 179,
+          "round": 15,
+          "slot": 11,
+          "name": "Jake Bates",
+          "position": "K",
+          "team": "DET",
+          "chenRank": null,
+          "chenTier": null
+        }
+      ]
+    },
+    {
+      "slot": 10,
+      "rank": 7,
+      "grade": "C+",
+      "score": 0.54,
+      "avgChenRank": 80.7,
+      "eliteCount": 3,
+      "startersFilled": 8,
+      "positionCounts": {
+        "QB": 1,
+        "RB": 4,
+        "WR": 4,
+        "TE": 4,
+        "K": 1,
+        "DEF": 1
+      },
+      "holes": [],
+      "strengths": [
+        "Deep at RB (4)",
+        "Deep at WR (4)",
+        "Deep at TE (4)"
+      ],
+      "reasons": [
+        {
+          "tone": "good",
+          "text": "Loaded core — 3 players inside the board's top 24."
+        },
+        {
+          "tone": "good",
+          "text": "Best value: Drake London — consensus rank 15.96 at 34 (+18)."
+        },
+        {
+          "tone": "bad",
+          "text": "Reached: Dalton Kincaid — consensus rank 110.09 at 63 (-47)."
+        },
+        {
+          "tone": "good",
+          "text": "Every starting slot is covered."
+        },
+        {
+          "tone": "good",
+          "text": "Deep at RB (4) · Deep at WR (4) · Deep at TE (4)."
+        },
+        {
+          "tone": "neutral",
+          "text": "Ranked 7th of 12 · avg board rank 80.7."
+        }
+      ],
+      "steal": {
+        "name": "Drake London",
+        "detail": "Drake London — consensus rank 15.96 at 34 (+18)"
+      },
+      "reach": {
+        "name": "Dalton Kincaid",
+        "detail": "Dalton Kincaid — consensus rank 110.09 at 63 (-47)"
+      },
+      "byeAlert": null,
+      "summary": "Elite top-heavy roster",
+      "picks": [
+        {
+          "overall": 10,
+          "round": 1,
+          "slot": 10,
+          "player": {
+            "id": "chen:RB:saquon barkley",
+            "name": "Saquon Barkley",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 14,
+            "chenTier": 3,
+            "adp": 15.96
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 15,
+          "round": 2,
+          "slot": 10,
+          "player": {
+            "id": "chen:WR:justin jefferson",
+            "name": "Justin Jefferson",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 11,
+            "chenTier": 2,
+            "adp": 11.7
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 34,
+          "round": 3,
+          "slot": 10,
+          "player": {
+            "id": "chen:WR:drake london",
+            "name": "Drake London",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 15,
+            "chenTier": 3,
+            "adp": 16.91
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 39,
+          "round": 4,
+          "slot": 10,
+          "player": {
+            "id": "chen:QB:drake maye",
+            "name": "Drake Maye",
+            "position": "QB",
+            "team": "FA",
+            "chenRank": 43,
+            "chenTier": 6,
+            "adp": 42.15
+          },
+          "rosterSlot": "QB"
+        },
+        {
+          "overall": 58,
+          "round": 5,
+          "slot": 10,
+          "player": {
+            "id": "chen:RB:rhamondre stevenson",
+            "name": "Rhamondre Stevenson",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 67,
+            "chenTier": 10,
+            "adp": 68.87
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 63,
+          "round": 6,
+          "slot": 10,
+          "player": {
+            "id": "chen:TE:dalton kincaid",
+            "name": "Dalton Kincaid",
+            "position": "TE",
+            "team": "FA",
+            "chenRank": 110,
+            "chenTier": 14,
+            "adp": 110.19
+          },
+          "rosterSlot": "TE"
+        },
+        {
+          "overall": 82,
+          "round": 7,
+          "slot": 10,
+          "player": {
+            "id": "chen:RB:rico dowdle",
+            "name": "Rico Dowdle",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 77,
+            "chenTier": 11,
+            "adp": 80.61
+          },
+          "rosterSlot": "FLEX"
+        },
+        {
+          "overall": 87,
+          "round": 8,
+          "slot": 10,
+          "player": {
+            "id": "chen:WR:quentin johnston",
+            "name": "Quentin Johnston",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 85,
+            "chenTier": 12,
+            "adp": 90.39
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 106,
+          "round": 9,
+          "slot": 10,
+          "player": {
+            "id": "chen:RB:kenny gainwell",
+            "name": "Kenny Gainwell",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 105,
+            "chenTier": 13,
+            "adp": 105.22
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 111,
+          "round": 10,
+          "slot": 10,
+          "player": {
+            "id": "chen:TE:juwan johnson",
+            "name": "Juwan Johnson",
+            "position": "TE",
+            "team": "FA",
+            "chenRank": 128,
+            "chenTier": 15,
+            "adp": 129.11
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 130,
+          "round": 11,
+          "slot": 10,
+          "player": {
+            "id": "chen:TE:dallas goedert",
+            "name": "Dallas Goedert",
+            "position": "TE",
+            "team": "FA",
+            "chenRank": 118,
+            "chenTier": 14,
+            "adp": 117.89
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 135,
+          "round": 12,
+          "slot": 10,
+          "player": {
+            "id": "chen:TE:mark andrews",
+            "name": "Mark Andrews",
+            "position": "TE",
+            "team": "FA",
+            "chenRank": 125,
+            "chenTier": 15,
+            "adp": 127.46
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 154,
+          "round": 13,
+          "slot": 10,
+          "player": {
+            "id": "scribe:DEF:patriots",
+            "name": "Patriots",
+            "position": "DEF",
+            "team": "NE"
+          },
+          "rosterSlot": "DEF"
+        },
+        {
+          "overall": 159,
+          "round": 14,
+          "slot": 10,
+          "player": {
+            "id": "chen:WR:tre tucker",
+            "name": "Tre Tucker",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 151,
+            "chenTier": 18,
+            "adp": 161.99
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 178,
+          "round": 15,
+          "slot": 10,
+          "player": {
+            "id": "scribe:K:eddy pineiro",
+            "name": "Eddy Pineiro",
+            "position": "K",
+            "team": "SF"
+          },
+          "rosterSlot": "K"
+        }
+      ],
+      "teamName": "Smoke 'em if you got 'em",
+      "facts": {
+        "teamName": "Smoke 'em if you got 'em",
+        "slot": 10,
+        "grade": "C+",
+        "rank": 7,
+        "field": 12,
+        "summary": "Elite top-heavy roster",
+        "reasons": [
+          "Loaded core — 3 players inside the board's top 24.",
+          "Best value: Drake London — consensus rank 15.96 at 34 (+18).",
+          "Reached: Dalton Kincaid — consensus rank 110.09 at 63 (-47).",
+          "Every starting slot is covered.",
+          "Deep at RB (4) · Deep at WR (4) · Deep at TE (4).",
+          "Ranked 7th of 12 · avg board rank 80.7."
+        ],
+        "steal": "Drake London — consensus rank 15.96 at 34 (+18)",
+        "reach": "Dalton Kincaid — consensus rank 110.09 at 63 (-47)",
+        "bye": null,
+        "picks": [
+          "R1 Saquon Barkley (RB)",
+          "R2 Justin Jefferson (WR)",
+          "R3 Drake London (WR)",
+          "R4 Drake Maye (QB)",
+          "R5 Rhamondre Stevenson (RB)",
+          "R6 Dalton Kincaid (TE)",
+          "R7 Rico Dowdle (RB)",
+          "R8 Quentin Johnston (WR)",
+          "R9 Kenny Gainwell (RB)",
+          "R10 Juwan Johnson (TE)",
+          "R11 Dallas Goedert (TE)",
+          "R12 Mark Andrews (TE)",
+          "R13 Patriots (DEF)",
+          "R14 Tre Tucker (WR)",
+          "R15 Eddy Pineiro (K)"
+        ]
+      },
+      "roster": [
+        {
+          "overall": 10,
+          "round": 1,
+          "slot": 10,
+          "name": "Saquon Barkley",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 14,
+          "chenTier": 3
+        },
+        {
+          "overall": 15,
+          "round": 2,
+          "slot": 10,
+          "name": "Justin Jefferson",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 11,
+          "chenTier": 2
+        },
+        {
+          "overall": 34,
+          "round": 3,
+          "slot": 10,
+          "name": "Drake London",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 15,
+          "chenTier": 3
+        },
+        {
+          "overall": 39,
+          "round": 4,
+          "slot": 10,
+          "name": "Drake Maye",
+          "position": "QB",
+          "team": "FA",
+          "chenRank": 43,
+          "chenTier": 6
+        },
+        {
+          "overall": 58,
+          "round": 5,
+          "slot": 10,
+          "name": "Rhamondre Stevenson",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 67,
+          "chenTier": 10
+        },
+        {
+          "overall": 63,
+          "round": 6,
+          "slot": 10,
+          "name": "Dalton Kincaid",
+          "position": "TE",
+          "team": "FA",
+          "chenRank": 110,
+          "chenTier": 14
+        },
+        {
+          "overall": 82,
+          "round": 7,
+          "slot": 10,
+          "name": "Rico Dowdle",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 77,
+          "chenTier": 11
+        },
+        {
+          "overall": 87,
+          "round": 8,
+          "slot": 10,
+          "name": "Quentin Johnston",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 85,
+          "chenTier": 12
+        },
+        {
+          "overall": 106,
+          "round": 9,
+          "slot": 10,
+          "name": "Kenny Gainwell",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 105,
+          "chenTier": 13
+        },
+        {
+          "overall": 111,
+          "round": 10,
+          "slot": 10,
+          "name": "Juwan Johnson",
+          "position": "TE",
+          "team": "FA",
+          "chenRank": 128,
+          "chenTier": 15
+        },
+        {
+          "overall": 130,
+          "round": 11,
+          "slot": 10,
+          "name": "Dallas Goedert",
+          "position": "TE",
+          "team": "FA",
+          "chenRank": 118,
+          "chenTier": 14
+        },
+        {
+          "overall": 135,
+          "round": 12,
+          "slot": 10,
+          "name": "Mark Andrews",
+          "position": "TE",
+          "team": "FA",
+          "chenRank": 125,
+          "chenTier": 15
+        },
+        {
+          "overall": 154,
+          "round": 13,
+          "slot": 10,
+          "name": "Patriots",
+          "position": "DEF",
+          "team": "NE",
+          "chenRank": null,
+          "chenTier": null
+        },
+        {
+          "overall": 159,
+          "round": 14,
+          "slot": 10,
+          "name": "Tre Tucker",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 151,
+          "chenTier": 18
+        },
+        {
+          "overall": 178,
+          "round": 15,
+          "slot": 10,
+          "name": "Eddy Pineiro",
+          "position": "K",
+          "team": "SF",
+          "chenRank": null,
+          "chenTier": null
+        }
+      ]
+    },
+    {
+      "slot": 9,
+      "rank": 8,
+      "grade": "C",
+      "score": 0.48,
+      "avgChenRank": 86.1,
+      "eliteCount": 3,
+      "startersFilled": 8,
+      "positionCounts": {
+        "QB": 1,
+        "RB": 4,
+        "WR": 7,
+        "TE": 1,
+        "K": 1,
+        "DEF": 1
+      },
+      "holes": [],
+      "strengths": [
+        "Deep at RB (4)",
+        "Deep at WR (7)"
+      ],
+      "reasons": [
+        {
+          "tone": "good",
+          "text": "Loaded core — 3 players inside the board's top 24."
+        },
+        {
+          "tone": "good",
+          "text": "Best value: Joe Burrow — consensus rank 49.92 at 64 (+14)."
+        },
+        {
+          "tone": "bad",
+          "text": "Reached: Keenan Allen — consensus rank 181.57 at 112 (-70)."
+        },
+        {
+          "tone": "good",
+          "text": "Every starting slot is covered."
+        },
+        {
+          "tone": "good",
+          "text": "Deep at RB (4) · Deep at WR (7)."
+        },
+        {
+          "tone": "neutral",
+          "text": "Ranked 8th of 12 · avg board rank 86.1."
+        }
+      ],
+      "steal": {
+        "name": "Joe Burrow",
+        "detail": "Joe Burrow — consensus rank 49.92 at 64 (+14)"
+      },
+      "reach": {
+        "name": "Keenan Allen",
+        "detail": "Keenan Allen — consensus rank 181.57 at 112 (-70)"
+      },
+      "byeAlert": null,
+      "summary": "Elite top-heavy roster",
+      "picks": [
+        {
+          "overall": 9,
+          "round": 1,
+          "slot": 9,
+          "player": {
+            "id": "chen:WR:amon-ra st. brown",
+            "name": "Amon-Ra St. Brown",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 6,
+            "chenTier": 2,
+            "adp": 6.54
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 16,
+          "round": 2,
+          "slot": 9,
+          "player": {
+            "id": "chen:RB:derrick henry",
+            "name": "Derrick Henry",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 21,
+            "chenTier": 3,
+            "adp": 20.45
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 33,
+          "round": 3,
+          "slot": 9,
+          "player": {
+            "id": "chen:WR:chris olave",
+            "name": "Chris Olave",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 23,
+            "chenTier": 4,
+            "adp": 23.24
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 40,
+          "round": 4,
+          "slot": 9,
+          "player": {
+            "id": "chen:RB:cam skattebo",
+            "name": "Cam Skattebo",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 52,
+            "chenTier": 8,
+            "adp": 52.91
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 57,
+          "round": 5,
+          "slot": 9,
+          "player": {
+            "id": "chen:WR:luther burden iii",
+            "name": "Luther Burden III",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 47,
+            "chenTier": 8,
+            "adp": 50.34
+          },
+          "rosterSlot": "FLEX"
+        },
+        {
+          "overall": 64,
+          "round": 6,
+          "slot": 9,
+          "player": {
+            "id": "chen:QB:joe burrow",
+            "name": "Joe Burrow",
+            "position": "QB",
+            "team": "FA",
+            "chenRank": 49,
+            "chenTier": 8,
+            "adp": 50.84
+          },
+          "rosterSlot": "QB"
+        },
+        {
+          "overall": 81,
+          "round": 7,
+          "slot": 9,
+          "player": {
+            "id": "chen:TE:harold fannin jr.",
+            "name": "Harold Fannin Jr.",
+            "position": "TE",
+            "team": "FA",
+            "chenRank": 79,
+            "chenTier": 11,
+            "adp": 81.69
+          },
+          "rosterSlot": "TE"
+        },
+        {
+          "overall": 88,
+          "round": 8,
+          "slot": 9,
+          "player": {
+            "id": "chen:RB:chuba hubbard",
+            "name": "Chuba Hubbard",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 93,
+            "chenTier": 12,
+            "adp": 95.98
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 105,
+          "round": 9,
+          "slot": 9,
+          "player": {
+            "id": "chen:RB:kyle monangai",
+            "name": "Kyle Monangai",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 111,
+            "chenTier": 14,
+            "adp": 112.76
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 112,
+          "round": 10,
+          "slot": 9,
+          "player": {
+            "id": "chen:WR:keenan allen",
+            "name": "Keenan Allen",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 174,
+            "chenTier": 21,
+            "adp": 189.14
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 129,
+          "round": 11,
+          "slot": 9,
+          "player": {
+            "id": "chen:WR:xavier worthy",
+            "name": "Xavier Worthy",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 129,
+            "chenTier": 15,
+            "adp": 129.97
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 136,
+          "round": 12,
+          "slot": 9,
+          "player": {
+            "id": "chen:WR:deebo samuel sr.",
+            "name": "Deebo Samuel Sr.",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 139,
+            "chenTier": 16,
+            "adp": 140.02
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 153,
+          "round": 13,
+          "slot": 9,
+          "player": {
+            "id": "scribe:K:jason myers",
+            "name": "Jason Myers",
+            "position": "K",
+            "team": "SEA"
+          },
+          "rosterSlot": "K"
+        },
+        {
+          "overall": 160,
+          "round": 14,
+          "slot": 9,
+          "player": {
+            "id": "scribe:DEF:bills",
+            "name": "Bills",
+            "position": "DEF",
+            "team": "BUF"
+          },
+          "rosterSlot": "DEF"
+        },
+        {
+          "overall": 177,
+          "round": 15,
+          "slot": 9,
+          "player": {
+            "id": "chen:WR:travis hunter",
+            "name": "Travis Hunter",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 196,
+            "chenTier": 23,
+            "adp": 202.43
+          },
+          "rosterSlot": "BENCH"
+        }
+      ],
+      "teamName": "Hailee's New Muse",
+      "facts": {
+        "teamName": "Hailee's New Muse",
+        "slot": 9,
+        "grade": "C",
+        "rank": 8,
+        "field": 12,
+        "summary": "Elite top-heavy roster",
+        "reasons": [
+          "Loaded core — 3 players inside the board's top 24.",
+          "Best value: Joe Burrow — consensus rank 49.92 at 64 (+14).",
+          "Reached: Keenan Allen — consensus rank 181.57 at 112 (-70).",
+          "Every starting slot is covered.",
+          "Deep at RB (4) · Deep at WR (7).",
+          "Ranked 8th of 12 · avg board rank 86.1."
+        ],
+        "steal": "Joe Burrow — consensus rank 49.92 at 64 (+14)",
+        "reach": "Keenan Allen — consensus rank 181.57 at 112 (-70)",
+        "bye": null,
+        "picks": [
+          "R1 Amon-Ra St. Brown (WR)",
+          "R2 Derrick Henry (RB)",
+          "R3 Chris Olave (WR)",
+          "R4 Cam Skattebo (RB)",
+          "R5 Luther Burden III (WR)",
+          "R6 Joe Burrow (QB)",
+          "R7 Harold Fannin Jr. (TE)",
+          "R8 Chuba Hubbard (RB)",
+          "R9 Kyle Monangai (RB)",
+          "R10 Keenan Allen (WR)",
+          "R11 Xavier Worthy (WR)",
+          "R12 Deebo Samuel Sr. (WR)",
+          "R13 Jason Myers (K)",
+          "R14 Bills (DEF)",
+          "R15 Travis Hunter (WR)"
+        ]
+      },
+      "roster": [
+        {
+          "overall": 9,
+          "round": 1,
+          "slot": 9,
+          "name": "Amon-Ra St. Brown",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 6,
+          "chenTier": 2
+        },
+        {
+          "overall": 16,
+          "round": 2,
+          "slot": 9,
+          "name": "Derrick Henry",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 21,
+          "chenTier": 3
+        },
+        {
+          "overall": 33,
+          "round": 3,
+          "slot": 9,
+          "name": "Chris Olave",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 23,
+          "chenTier": 4
+        },
+        {
+          "overall": 40,
+          "round": 4,
+          "slot": 9,
+          "name": "Cam Skattebo",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 52,
+          "chenTier": 8
+        },
+        {
+          "overall": 57,
+          "round": 5,
+          "slot": 9,
+          "name": "Luther Burden III",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 47,
+          "chenTier": 8
+        },
+        {
+          "overall": 64,
+          "round": 6,
+          "slot": 9,
+          "name": "Joe Burrow",
+          "position": "QB",
+          "team": "FA",
+          "chenRank": 49,
+          "chenTier": 8
+        },
+        {
+          "overall": 81,
+          "round": 7,
+          "slot": 9,
+          "name": "Harold Fannin Jr.",
+          "position": "TE",
+          "team": "FA",
+          "chenRank": 79,
+          "chenTier": 11
+        },
+        {
+          "overall": 88,
+          "round": 8,
+          "slot": 9,
+          "name": "Chuba Hubbard",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 93,
+          "chenTier": 12
+        },
+        {
+          "overall": 105,
+          "round": 9,
+          "slot": 9,
+          "name": "Kyle Monangai",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 111,
+          "chenTier": 14
+        },
+        {
+          "overall": 112,
+          "round": 10,
+          "slot": 9,
+          "name": "Keenan Allen",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 174,
+          "chenTier": 21
+        },
+        {
+          "overall": 129,
+          "round": 11,
+          "slot": 9,
+          "name": "Xavier Worthy",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 129,
+          "chenTier": 15
+        },
+        {
+          "overall": 136,
+          "round": 12,
+          "slot": 9,
+          "name": "Deebo Samuel Sr.",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 139,
+          "chenTier": 16
+        },
+        {
+          "overall": 153,
+          "round": 13,
+          "slot": 9,
+          "name": "Jason Myers",
+          "position": "K",
+          "team": "SEA",
+          "chenRank": null,
+          "chenTier": null
+        },
+        {
+          "overall": 160,
+          "round": 14,
+          "slot": 9,
+          "name": "Bills",
+          "position": "DEF",
+          "team": "BUF",
+          "chenRank": null,
+          "chenTier": null
+        },
+        {
+          "overall": 177,
+          "round": 15,
+          "slot": 9,
+          "name": "Travis Hunter",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 196,
+          "chenTier": 23
+        }
+      ]
+    },
+    {
+      "slot": 3,
+      "rank": 9,
+      "grade": "C",
+      "score": 0.43,
+      "avgChenRank": 81,
+      "eliteCount": 1,
+      "startersFilled": 8,
+      "positionCounts": {
+        "QB": 2,
+        "RB": 5,
+        "WR": 4,
+        "TE": 2,
+        "K": 1,
+        "DEF": 1
+      },
+      "holes": [],
+      "strengths": [
+        "Deep at RB (5)",
+        "Deep at WR (4)"
+      ],
+      "reasons": [
+        {
+          "tone": "good",
+          "text": "1 top-24 anchor, 4 inside the top 60."
+        },
+        {
+          "tone": "good",
+          "text": "Best value: Jared Goff — consensus rank 107.92 at 147 (+39)."
+        },
+        {
+          "tone": "bad",
+          "text": "Reached: Aaron Jones Sr. — consensus rank 119.46 at 99 (-20)."
+        },
+        {
+          "tone": "good",
+          "text": "Every starting slot is covered."
+        },
+        {
+          "tone": "good",
+          "text": "Deep at RB (5) · Deep at WR (4)."
+        },
+        {
+          "tone": "neutral",
+          "text": "Ranked 9th of 12 · avg board rank 81."
+        }
+      ],
+      "steal": {
+        "name": "Jared Goff",
+        "detail": "Jared Goff — consensus rank 107.92 at 147 (+39)"
+      },
+      "reach": {
+        "name": "Aaron Jones Sr.",
+        "detail": "Aaron Jones Sr. — consensus rank 119.46 at 99 (-20)"
+      },
+      "byeAlert": null,
+      "summary": "Value board — Jared Goff was a steal",
+      "picks": [
+        {
+          "overall": 3,
+          "round": 1,
+          "slot": 3,
+          "player": {
+            "id": "chen:WR:ja'marr chase",
+            "name": "Ja'Marr Chase",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 3,
+            "chenTier": 1,
+            "adp": 2.58
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 22,
+          "round": 2,
+          "slot": 3,
+          "player": {
+            "id": "chen:RB:breece hall",
+            "name": "Breece Hall",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 34,
+            "chenTier": 6,
+            "adp": 36.94
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 27,
+          "round": 3,
+          "slot": 3,
+          "player": {
+            "id": "chen:TE:trey mcbride",
+            "name": "Trey McBride",
+            "position": "TE",
+            "team": "FA",
+            "chenRank": 25,
+            "chenTier": 4,
+            "adp": 23.81
+          },
+          "rosterSlot": "TE"
+        },
+        {
+          "overall": 46,
+          "round": 4,
+          "slot": 3,
+          "player": {
+            "id": "chen:RB:david montgomery",
+            "name": "David Montgomery",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 55,
+            "chenTier": 8,
+            "adp": 54.11
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 51,
+          "round": 5,
+          "slot": 3,
+          "player": {
+            "id": "chen:RB:jaylen warren",
+            "name": "Jaylen Warren",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 69,
+            "chenTier": 10,
+            "adp": 72.16
+          },
+          "rosterSlot": "FLEX"
+        },
+        {
+          "overall": 70,
+          "round": 6,
+          "slot": 3,
+          "player": {
+            "id": "chen:RB:marshawn lloyd",
+            "name": "MarShawn Lloyd",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 87,
+            "chenTier": 12,
+            "adp": 91.31
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 75,
+          "round": 7,
+          "slot": 3,
+          "player": {
+            "id": "chen:QB:justin herbert",
+            "name": "Justin Herbert",
+            "position": "QB",
+            "team": "FA",
+            "chenRank": 71,
+            "chenTier": 11,
+            "adp": 74.05
+          },
+          "rosterSlot": "QB"
+        },
+        {
+          "overall": 94,
+          "round": 8,
+          "slot": 3,
+          "player": {
+            "id": "chen:WR:jayden reed",
+            "name": "Jayden Reed",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 103,
+            "chenTier": 13,
+            "adp": 102.9
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 99,
+          "round": 9,
+          "slot": 3,
+          "player": {
+            "id": "chen:RB:aaron jones sr.",
+            "name": "Aaron Jones Sr.",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 120,
+            "chenTier": 14,
+            "adp": 118.92
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 118,
+          "round": 10,
+          "slot": 3,
+          "player": {
+            "id": "chen:WR:kc concepcion",
+            "name": "KC Concepcion",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 114,
+            "chenTier": 14,
+            "adp": 115.95
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 123,
+          "round": 11,
+          "slot": 3,
+          "player": {
+            "id": "chen:WR:jakobi meyers",
+            "name": "Jakobi Meyers",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 115,
+            "chenTier": 14,
+            "adp": 116.15
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 142,
+          "round": 12,
+          "slot": 3,
+          "player": {
+            "id": "scribe:DEF:rams",
+            "name": "Rams",
+            "position": "DEF",
+            "team": "LAR"
+          },
+          "rosterSlot": "DEF"
+        },
+        {
+          "overall": 147,
+          "round": 13,
+          "slot": 3,
+          "player": {
+            "id": "chen:QB:jared goff",
+            "name": "Jared Goff",
+            "position": "QB",
+            "team": "FA",
+            "chenRank": 108,
+            "chenTier": 13,
+            "adp": 107.84
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 166,
+          "round": 14,
+          "slot": 3,
+          "player": {
+            "id": "chen:TE:hunter henry",
+            "name": "Hunter Henry",
+            "position": "TE",
+            "team": "FA",
+            "chenRank": 149,
+            "chenTier": 18,
+            "adp": 160.21
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 171,
+          "round": 15,
+          "slot": 3,
+          "player": {
+            "id": "scribe:K:harrison mevis",
+            "name": "Harrison Mevis",
+            "position": "K",
+            "team": "LAR"
+          },
+          "rosterSlot": "K"
+        }
+      ],
+      "teamName": "Biscokid",
+      "facts": {
+        "teamName": "Biscokid",
+        "slot": 3,
+        "grade": "C",
+        "rank": 9,
+        "field": 12,
+        "summary": "Value board — Jared Goff was a steal",
+        "reasons": [
+          "1 top-24 anchor, 4 inside the top 60.",
+          "Best value: Jared Goff — consensus rank 107.92 at 147 (+39).",
+          "Reached: Aaron Jones Sr. — consensus rank 119.46 at 99 (-20).",
+          "Every starting slot is covered.",
+          "Deep at RB (5) · Deep at WR (4).",
+          "Ranked 9th of 12 · avg board rank 81."
+        ],
+        "steal": "Jared Goff — consensus rank 107.92 at 147 (+39)",
+        "reach": "Aaron Jones Sr. — consensus rank 119.46 at 99 (-20)",
+        "bye": null,
+        "picks": [
+          "R1 Ja'Marr Chase (WR)",
+          "R2 Breece Hall (RB)",
+          "R3 Trey McBride (TE)",
+          "R4 David Montgomery (RB)",
+          "R5 Jaylen Warren (RB)",
+          "R6 MarShawn Lloyd (RB)",
+          "R7 Justin Herbert (QB)",
+          "R8 Jayden Reed (WR)",
+          "R9 Aaron Jones Sr. (RB)",
+          "R10 KC Concepcion (WR)",
+          "R11 Jakobi Meyers (WR)",
+          "R12 Rams (DEF)",
+          "R13 Jared Goff (QB)",
+          "R14 Hunter Henry (TE)",
+          "R15 Harrison Mevis (K)"
+        ]
+      },
+      "roster": [
+        {
+          "overall": 3,
+          "round": 1,
+          "slot": 3,
+          "name": "Ja'Marr Chase",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 3,
+          "chenTier": 1
+        },
+        {
+          "overall": 22,
+          "round": 2,
+          "slot": 3,
+          "name": "Breece Hall",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 34,
+          "chenTier": 6
+        },
+        {
+          "overall": 27,
+          "round": 3,
+          "slot": 3,
+          "name": "Trey McBride",
+          "position": "TE",
+          "team": "FA",
+          "chenRank": 25,
+          "chenTier": 4
+        },
+        {
+          "overall": 46,
+          "round": 4,
+          "slot": 3,
+          "name": "David Montgomery",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 55,
+          "chenTier": 8
+        },
+        {
+          "overall": 51,
+          "round": 5,
+          "slot": 3,
+          "name": "Jaylen Warren",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 69,
+          "chenTier": 10
+        },
+        {
+          "overall": 70,
+          "round": 6,
+          "slot": 3,
+          "name": "MarShawn Lloyd",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 87,
+          "chenTier": 12
+        },
+        {
+          "overall": 75,
+          "round": 7,
+          "slot": 3,
+          "name": "Justin Herbert",
+          "position": "QB",
+          "team": "FA",
+          "chenRank": 71,
+          "chenTier": 11
+        },
+        {
+          "overall": 94,
+          "round": 8,
+          "slot": 3,
+          "name": "Jayden Reed",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 103,
+          "chenTier": 13
+        },
+        {
+          "overall": 99,
+          "round": 9,
+          "slot": 3,
+          "name": "Aaron Jones Sr.",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 120,
+          "chenTier": 14
+        },
+        {
+          "overall": 118,
+          "round": 10,
+          "slot": 3,
+          "name": "KC Concepcion",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 114,
+          "chenTier": 14
+        },
+        {
+          "overall": 123,
+          "round": 11,
+          "slot": 3,
+          "name": "Jakobi Meyers",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 115,
+          "chenTier": 14
+        },
+        {
+          "overall": 142,
+          "round": 12,
+          "slot": 3,
+          "name": "Rams",
+          "position": "DEF",
+          "team": "LAR",
+          "chenRank": null,
+          "chenTier": null
+        },
+        {
+          "overall": 147,
+          "round": 13,
+          "slot": 3,
+          "name": "Jared Goff",
+          "position": "QB",
+          "team": "FA",
+          "chenRank": 108,
+          "chenTier": 13
+        },
+        {
+          "overall": 166,
+          "round": 14,
+          "slot": 3,
+          "name": "Hunter Henry",
+          "position": "TE",
+          "team": "FA",
+          "chenRank": 149,
+          "chenTier": 18
+        },
+        {
+          "overall": 171,
+          "round": 15,
+          "slot": 3,
+          "name": "Harrison Mevis",
+          "position": "K",
+          "team": "LAR",
+          "chenRank": null,
+          "chenTier": null
+        }
+      ]
+    },
+    {
+      "slot": 12,
+      "rank": 10,
+      "grade": "C-",
+      "score": 0.38,
+      "avgChenRank": 84.2,
+      "eliteCount": 1,
+      "startersFilled": 8,
+      "positionCounts": {
+        "QB": 1,
+        "RB": 4,
+        "WR": 7,
+        "TE": 1,
+        "K": 1,
+        "DEF": 1
+      },
+      "holes": [],
+      "strengths": [
+        "Deep at RB (4)",
+        "Deep at WR (7)"
+      ],
+      "reasons": [
+        {
+          "tone": "good",
+          "text": "1 top-24 anchor, 5 inside the top 60."
+        },
+        {
+          "tone": "good",
+          "text": "Best value: Davante Adams — consensus rank 48.16 at 60 (+12)."
+        },
+        {
+          "tone": "bad",
+          "text": "Reached: Mike Washington Jr. — consensus rank 140.63 at 109 (-32)."
+        },
+        {
+          "tone": "good",
+          "text": "Every starting slot is covered."
+        },
+        {
+          "tone": "good",
+          "text": "Deep at RB (4) · Deep at WR (7)."
+        },
+        {
+          "tone": "neutral",
+          "text": "Ranked 10th of 12 · avg board rank 84.2."
+        }
+      ],
+      "steal": {
+        "name": "Davante Adams",
+        "detail": "Davante Adams — consensus rank 48.16 at 60 (+12)"
+      },
+      "reach": {
+        "name": "Mike Washington Jr.",
+        "detail": "Mike Washington Jr. — consensus rank 140.63 at 109 (-32)"
+      },
+      "byeAlert": null,
+      "summary": "Value board — Davante Adams was a steal",
+      "picks": [
+        {
+          "overall": 12,
+          "round": 1,
+          "slot": 12,
+          "player": {
+            "id": "chen:WR:ceedee lamb",
+            "name": "CeeDee Lamb",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 10,
+            "chenTier": 2,
+            "adp": 10.62
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 13,
+          "round": 2,
+          "slot": 12,
+          "player": {
+            "id": "chen:QB:josh allen",
+            "name": "Josh Allen",
+            "position": "QB",
+            "team": "FA",
+            "chenRank": 28,
+            "chenTier": 5,
+            "adp": 28.76
+          },
+          "rosterSlot": "QB"
+        },
+        {
+          "overall": 36,
+          "round": 3,
+          "slot": 12,
+          "player": {
+            "id": "chen:RB:travis etienne jr.",
+            "name": "Travis Etienne Jr.",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 44,
+            "chenTier": 6,
+            "adp": 42.65
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 37,
+          "round": 4,
+          "slot": 12,
+          "player": {
+            "id": "chen:WR:jaylen waddle",
+            "name": "Jaylen Waddle",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 36,
+            "chenTier": 6,
+            "adp": 38.38
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 60,
+          "round": 5,
+          "slot": 12,
+          "player": {
+            "id": "chen:WR:davante adams",
+            "name": "Davante Adams",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 46,
+            "chenTier": 8,
+            "adp": 50.33
+          },
+          "rosterSlot": "FLEX"
+        },
+        {
+          "overall": 61,
+          "round": 6,
+          "slot": 12,
+          "player": {
+            "id": "chen:RB:tony pollard",
+            "name": "Tony Pollard",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 74,
+            "chenTier": 11,
+            "adp": 78.27
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 84,
+          "round": 7,
+          "slot": 12,
+          "player": {
+            "id": "chen:TE:kyle pitts sr.",
+            "name": "Kyle Pitts Sr.",
+            "position": "TE",
+            "team": "FA",
+            "chenRank": 82,
+            "chenTier": 11,
+            "adp": 82.87
+          },
+          "rosterSlot": "TE"
+        },
+        {
+          "overall": 85,
+          "round": 8,
+          "slot": 12,
+          "player": {
+            "id": "chen:WR:michael wilson",
+            "name": "Michael Wilson",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 89,
+            "chenTier": 12,
+            "adp": 93.51
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 108,
+          "round": 9,
+          "slot": 12,
+          "player": {
+            "id": "chen:WR:makai lemon",
+            "name": "Makai Lemon",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 113,
+            "chenTier": 14,
+            "adp": 113.87
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 109,
+          "round": 10,
+          "slot": 12,
+          "player": {
+            "id": "chen:RB:mike washington jr.",
+            "name": "Mike Washington Jr.",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 140,
+            "chenTier": 16,
+            "adp": 141.26
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 132,
+          "round": 11,
+          "slot": 12,
+          "player": {
+            "id": "chen:WR:romeo doubs",
+            "name": "Romeo Doubs",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 126,
+            "chenTier": 15,
+            "adp": 127.58
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 133,
+          "round": 12,
+          "slot": 12,
+          "player": {
+            "id": "chen:RB:zach charbonnet",
+            "name": "Zach Charbonnet",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 148,
+            "chenTier": 17,
+            "adp": 147.33
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 156,
+          "round": 13,
+          "slot": 12,
+          "player": {
+            "id": "scribe:DEF:jaguars",
+            "name": "Jaguars",
+            "position": "DEF",
+            "team": "JAX"
+          },
+          "rosterSlot": "DEF"
+        },
+        {
+          "overall": 157,
+          "round": 14,
+          "slot": 12,
+          "player": {
+            "id": "chen:WR:dontayvion wicks",
+            "name": "Dontayvion Wicks",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 159,
+            "chenTier": 20,
+            "adp": 182.93
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 180,
+          "round": 15,
+          "slot": 12,
+          "player": {
+            "id": "scribe:K:trey smack",
+            "name": "Trey Smack",
+            "position": "K",
+            "team": "GB"
+          },
+          "rosterSlot": "K"
+        }
+      ],
+      "teamName": "The Allen Parsons(RIP) Project",
+      "facts": {
+        "teamName": "The Allen Parsons(RIP) Project",
+        "slot": 12,
+        "grade": "C-",
+        "rank": 10,
+        "field": 12,
+        "summary": "Value board — Davante Adams was a steal",
+        "reasons": [
+          "1 top-24 anchor, 5 inside the top 60.",
+          "Best value: Davante Adams — consensus rank 48.16 at 60 (+12).",
+          "Reached: Mike Washington Jr. — consensus rank 140.63 at 109 (-32).",
+          "Every starting slot is covered.",
+          "Deep at RB (4) · Deep at WR (7).",
+          "Ranked 10th of 12 · avg board rank 84.2."
+        ],
+        "steal": "Davante Adams — consensus rank 48.16 at 60 (+12)",
+        "reach": "Mike Washington Jr. — consensus rank 140.63 at 109 (-32)",
+        "bye": null,
+        "picks": [
+          "R1 CeeDee Lamb (WR)",
+          "R2 Josh Allen (QB)",
+          "R3 Travis Etienne Jr. (RB)",
+          "R4 Jaylen Waddle (WR)",
+          "R5 Davante Adams (WR)",
+          "R6 Tony Pollard (RB)",
+          "R7 Kyle Pitts Sr. (TE)",
+          "R8 Michael Wilson (WR)",
+          "R9 Makai Lemon (WR)",
+          "R10 Mike Washington Jr. (RB)",
+          "R11 Romeo Doubs (WR)",
+          "R12 Zach Charbonnet (RB)",
+          "R13 Jaguars (DEF)",
+          "R14 Dontayvion Wicks (WR)",
+          "R15 Trey Smack (K)"
+        ]
+      },
+      "roster": [
+        {
+          "overall": 12,
+          "round": 1,
+          "slot": 12,
+          "name": "CeeDee Lamb",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 10,
+          "chenTier": 2
+        },
+        {
+          "overall": 13,
+          "round": 2,
+          "slot": 12,
+          "name": "Josh Allen",
+          "position": "QB",
+          "team": "FA",
+          "chenRank": 28,
+          "chenTier": 5
+        },
+        {
+          "overall": 36,
+          "round": 3,
+          "slot": 12,
+          "name": "Travis Etienne Jr.",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 44,
+          "chenTier": 6
+        },
+        {
+          "overall": 37,
+          "round": 4,
+          "slot": 12,
+          "name": "Jaylen Waddle",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 36,
+          "chenTier": 6
+        },
+        {
+          "overall": 60,
+          "round": 5,
+          "slot": 12,
+          "name": "Davante Adams",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 46,
+          "chenTier": 8
+        },
+        {
+          "overall": 61,
+          "round": 6,
+          "slot": 12,
+          "name": "Tony Pollard",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 74,
+          "chenTier": 11
+        },
+        {
+          "overall": 84,
+          "round": 7,
+          "slot": 12,
+          "name": "Kyle Pitts Sr.",
+          "position": "TE",
+          "team": "FA",
+          "chenRank": 82,
+          "chenTier": 11
+        },
+        {
+          "overall": 85,
+          "round": 8,
+          "slot": 12,
+          "name": "Michael Wilson",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 89,
+          "chenTier": 12
+        },
+        {
+          "overall": 108,
+          "round": 9,
+          "slot": 12,
+          "name": "Makai Lemon",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 113,
+          "chenTier": 14
+        },
+        {
+          "overall": 109,
+          "round": 10,
+          "slot": 12,
+          "name": "Mike Washington Jr.",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 140,
+          "chenTier": 16
+        },
+        {
+          "overall": 132,
+          "round": 11,
+          "slot": 12,
+          "name": "Romeo Doubs",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 126,
+          "chenTier": 15
+        },
+        {
+          "overall": 133,
+          "round": 12,
+          "slot": 12,
+          "name": "Zach Charbonnet",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 148,
+          "chenTier": 17
+        },
+        {
+          "overall": 156,
+          "round": 13,
+          "slot": 12,
+          "name": "Jaguars",
+          "position": "DEF",
+          "team": "JAX",
+          "chenRank": null,
+          "chenTier": null
+        },
+        {
+          "overall": 157,
+          "round": 14,
+          "slot": 12,
+          "name": "Dontayvion Wicks",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 159,
+          "chenTier": 20
+        },
+        {
+          "overall": 180,
+          "round": 15,
+          "slot": 12,
+          "name": "Trey Smack",
+          "position": "K",
+          "team": "GB",
+          "chenRank": null,
+          "chenTier": null
+        }
+      ]
+    },
+    {
+      "slot": 1,
+      "rank": 11,
+      "grade": "D+",
+      "score": 0.32,
+      "avgChenRank": 85.5,
+      "eliteCount": 1,
+      "startersFilled": 8,
+      "positionCounts": {
+        "QB": 1,
+        "RB": 5,
+        "WR": 5,
+        "TE": 2,
+        "K": 1,
+        "DEF": 1
+      },
+      "holes": [],
+      "strengths": [
+        "Deep at RB (5)",
+        "Deep at WR (5)"
+      ],
+      "reasons": [
+        {
+          "tone": "good",
+          "text": "1 top-24 anchor, 5 inside the top 60."
+        },
+        {
+          "tone": "good",
+          "text": "Best value: Matthew Stafford — consensus rank 109.16 at 144 (+35)."
+        },
+        {
+          "tone": "bad",
+          "text": "Reached: Dalton Schultz — consensus rank 159.11 at 120 (-39)."
+        },
+        {
+          "tone": "good",
+          "text": "Every starting slot is covered."
+        },
+        {
+          "tone": "good",
+          "text": "Deep at RB (5) · Deep at WR (5)."
+        },
+        {
+          "tone": "neutral",
+          "text": "Ranked 11th of 12 · avg board rank 85.5."
+        }
+      ],
+      "steal": {
+        "name": "Matthew Stafford",
+        "detail": "Matthew Stafford — consensus rank 109.16 at 144 (+35)"
+      },
+      "reach": {
+        "name": "Dalton Schultz",
+        "detail": "Dalton Schultz — consensus rank 159.11 at 120 (-39)"
+      },
+      "byeAlert": null,
+      "summary": "Value board — Matthew Stafford was a steal",
+      "picks": [
+        {
+          "overall": 1,
+          "round": 1,
+          "slot": 1,
+          "player": {
+            "id": "chen:RB:jahmyr gibbs",
+            "name": "Jahmyr Gibbs",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 1,
+            "chenTier": 1,
+            "adp": 1.54
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 24,
+          "round": 2,
+          "slot": 1,
+          "player": {
+            "id": "chen:RB:kyren williams",
+            "name": "Kyren Williams",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 31,
+            "chenTier": 5,
+            "adp": 33.51
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 25,
+          "round": 3,
+          "slot": 1,
+          "player": {
+            "id": "chen:WR:devonta smith",
+            "name": "DeVonta Smith",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 27,
+            "chenTier": 5,
+            "adp": 28.54
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 48,
+          "round": 4,
+          "slot": 1,
+          "player": {
+            "id": "chen:WR:dj moore",
+            "name": "DJ Moore",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 53,
+            "chenTier": 8,
+            "adp": 53.28
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 49,
+          "round": 5,
+          "slot": 1,
+          "player": {
+            "id": "chen:RB:quinshon judkins",
+            "name": "Quinshon Judkins",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 56,
+            "chenTier": 8,
+            "adp": 54.45
+          },
+          "rosterSlot": "FLEX"
+        },
+        {
+          "overall": 72,
+          "round": 6,
+          "slot": 1,
+          "player": {
+            "id": "chen:WR:carnell tate",
+            "name": "Carnell Tate",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 72,
+            "chenTier": 11,
+            "adp": 75.41
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 73,
+          "round": 7,
+          "slot": 1,
+          "player": {
+            "id": "chen:RB:j.k. dobbins",
+            "name": "J.K. Dobbins",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 86,
+            "chenTier": 12,
+            "adp": 90.9
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 96,
+          "round": 8,
+          "slot": 1,
+          "player": {
+            "id": "chen:TE:george kittle",
+            "name": "George Kittle",
+            "position": "TE",
+            "team": "FA",
+            "chenRank": 91,
+            "chenTier": 12,
+            "adp": 95
+          },
+          "rosterSlot": "TE"
+        },
+        {
+          "overall": 97,
+          "round": 9,
+          "slot": 1,
+          "player": {
+            "id": "chen:WR:wan'dale robinson",
+            "name": "Wan'Dale Robinson",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 102,
+            "chenTier": 13,
+            "adp": 102.18
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 120,
+          "round": 10,
+          "slot": 1,
+          "player": {
+            "id": "chen:TE:dalton schultz",
+            "name": "Dalton Schultz",
+            "position": "TE",
+            "team": "FA",
+            "chenRank": 153,
+            "chenTier": 18,
+            "adp": 165.21
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 121,
+          "round": 11,
+          "slot": 1,
+          "player": {
+            "id": "chen:WR:khalil shakir",
+            "name": "Khalil Shakir",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 134,
+            "chenTier": 15,
+            "adp": 135.41
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 144,
+          "round": 12,
+          "slot": 1,
+          "player": {
+            "id": "chen:QB:matthew stafford",
+            "name": "Matthew Stafford",
+            "position": "QB",
+            "team": "FA",
+            "chenRank": 109,
+            "chenTier": 13,
+            "adp": 109.31
+          },
+          "rosterSlot": "QB"
+        },
+        {
+          "overall": 145,
+          "round": 13,
+          "slot": 1,
+          "player": {
+            "id": "scribe:DEF:seahawks",
+            "name": "Seahawks",
+            "position": "DEF",
+            "team": "SEA"
+          },
+          "rosterSlot": "DEF"
+        },
+        {
+          "overall": 168,
+          "round": 14,
+          "slot": 1,
+          "player": {
+            "id": "chen:RB:isiah pacheco",
+            "name": "Isiah Pacheco",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 197,
+            "chenTier": 22,
+            "adp": 197.16
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 169,
+          "round": 15,
+          "slot": 1,
+          "player": {
+            "id": "scribe:K:harrison butker",
+            "name": "Harrison Butker",
+            "position": "K",
+            "team": "KC"
+          },
+          "rosterSlot": "K"
+        }
+      ],
+      "teamName": "Sutton My Face",
+      "facts": {
+        "teamName": "Sutton My Face",
+        "slot": 1,
+        "grade": "D+",
+        "rank": 11,
+        "field": 12,
+        "summary": "Value board — Matthew Stafford was a steal",
+        "reasons": [
+          "1 top-24 anchor, 5 inside the top 60.",
+          "Best value: Matthew Stafford — consensus rank 109.16 at 144 (+35).",
+          "Reached: Dalton Schultz — consensus rank 159.11 at 120 (-39).",
+          "Every starting slot is covered.",
+          "Deep at RB (5) · Deep at WR (5).",
+          "Ranked 11th of 12 · avg board rank 85.5."
+        ],
+        "steal": "Matthew Stafford — consensus rank 109.16 at 144 (+35)",
+        "reach": "Dalton Schultz — consensus rank 159.11 at 120 (-39)",
+        "bye": null,
+        "picks": [
+          "R1 Jahmyr Gibbs (RB)",
+          "R2 Kyren Williams (RB)",
+          "R3 DeVonta Smith (WR)",
+          "R4 DJ Moore (WR)",
+          "R5 Quinshon Judkins (RB)",
+          "R6 Carnell Tate (WR)",
+          "R7 J.K. Dobbins (RB)",
+          "R8 George Kittle (TE)",
+          "R9 Wan'Dale Robinson (WR)",
+          "R10 Dalton Schultz (TE)",
+          "R11 Khalil Shakir (WR)",
+          "R12 Matthew Stafford (QB)",
+          "R13 Seahawks (DEF)",
+          "R14 Isiah Pacheco (RB)",
+          "R15 Harrison Butker (K)"
+        ]
+      },
+      "roster": [
+        {
+          "overall": 1,
+          "round": 1,
+          "slot": 1,
+          "name": "Jahmyr Gibbs",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 1,
+          "chenTier": 1
+        },
+        {
+          "overall": 24,
+          "round": 2,
+          "slot": 1,
+          "name": "Kyren Williams",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 31,
+          "chenTier": 5
+        },
+        {
+          "overall": 25,
+          "round": 3,
+          "slot": 1,
+          "name": "DeVonta Smith",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 27,
+          "chenTier": 5
+        },
+        {
+          "overall": 48,
+          "round": 4,
+          "slot": 1,
+          "name": "DJ Moore",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 53,
+          "chenTier": 8
+        },
+        {
+          "overall": 49,
+          "round": 5,
+          "slot": 1,
+          "name": "Quinshon Judkins",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 56,
+          "chenTier": 8
+        },
+        {
+          "overall": 72,
+          "round": 6,
+          "slot": 1,
+          "name": "Carnell Tate",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 72,
+          "chenTier": 11
+        },
+        {
+          "overall": 73,
+          "round": 7,
+          "slot": 1,
+          "name": "J.K. Dobbins",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 86,
+          "chenTier": 12
+        },
+        {
+          "overall": 96,
+          "round": 8,
+          "slot": 1,
+          "name": "George Kittle",
+          "position": "TE",
+          "team": "FA",
+          "chenRank": 91,
+          "chenTier": 12
+        },
+        {
+          "overall": 97,
+          "round": 9,
+          "slot": 1,
+          "name": "Wan'Dale Robinson",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 102,
+          "chenTier": 13
+        },
+        {
+          "overall": 120,
+          "round": 10,
+          "slot": 1,
+          "name": "Dalton Schultz",
+          "position": "TE",
+          "team": "FA",
+          "chenRank": 153,
+          "chenTier": 18
+        },
+        {
+          "overall": 121,
+          "round": 11,
+          "slot": 1,
+          "name": "Khalil Shakir",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 134,
+          "chenTier": 15
+        },
+        {
+          "overall": 144,
+          "round": 12,
+          "slot": 1,
+          "name": "Matthew Stafford",
+          "position": "QB",
+          "team": "FA",
+          "chenRank": 109,
+          "chenTier": 13
+        },
+        {
+          "overall": 145,
+          "round": 13,
+          "slot": 1,
+          "name": "Seahawks",
+          "position": "DEF",
+          "team": "SEA",
+          "chenRank": null,
+          "chenTier": null
+        },
+        {
+          "overall": 168,
+          "round": 14,
+          "slot": 1,
+          "name": "Isiah Pacheco",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 197,
+          "chenTier": 22
+        },
+        {
+          "overall": 169,
+          "round": 15,
+          "slot": 1,
+          "name": "Harrison Butker",
+          "position": "K",
+          "team": "KC",
+          "chenRank": null,
+          "chenTier": null
+        }
+      ]
+    },
+    {
+      "slot": 4,
+      "rank": 12,
+      "grade": "D",
+      "score": 0.26,
+      "avgChenRank": 87.2,
+      "eliteCount": 2,
+      "startersFilled": 8,
+      "positionCounts": {
+        "QB": 1,
+        "RB": 5,
+        "WR": 5,
+        "TE": 2,
+        "K": 1,
+        "DEF": 1
+      },
+      "holes": [],
+      "strengths": [
+        "Deep at RB (5)",
+        "Deep at WR (5)"
+      ],
+      "reasons": [
+        {
+          "tone": "good",
+          "text": "2 top-24 anchors, 5 inside the top 60."
+        },
+        {
+          "tone": "good",
+          "text": "Best value: Travis Kelce — consensus rank 105.68 at 117 (+11)."
+        },
+        {
+          "tone": "bad",
+          "text": "Reached: Tank Bigsby — consensus rank 149.99 at 100 (-50)."
+        },
+        {
+          "tone": "good",
+          "text": "Every starting slot is covered."
+        },
+        {
+          "tone": "good",
+          "text": "Deep at RB (5) · Deep at WR (5)."
+        },
+        {
+          "tone": "neutral",
+          "text": "Ranked 12th of 12 · avg board rank 87.2."
+        }
+      ],
+      "steal": {
+        "name": "Travis Kelce",
+        "detail": "Travis Kelce — consensus rank 105.68 at 117 (+11)"
+      },
+      "reach": {
+        "name": "Tank Bigsby",
+        "detail": "Tank Bigsby — consensus rank 149.99 at 100 (-50)"
+      },
+      "byeAlert": null,
+      "summary": "Value board — Travis Kelce was a steal",
+      "picks": [
+        {
+          "overall": 4,
+          "round": 1,
+          "slot": 4,
+          "player": {
+            "id": "chen:WR:puka nacua",
+            "name": "Puka Nacua",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 4,
+            "chenTier": 1,
+            "adp": 4.54
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 21,
+          "round": 2,
+          "slot": 4,
+          "player": {
+            "id": "chen:RB:ashton jeanty",
+            "name": "Ashton Jeanty",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 24,
+            "chenTier": 4,
+            "adp": 23.72
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 28,
+          "round": 3,
+          "slot": 4,
+          "player": {
+            "id": "chen:RB:bucky irving",
+            "name": "Bucky Irving",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 50,
+            "chenTier": 8,
+            "adp": 51.65
+          },
+          "rosterSlot": "RB"
+        },
+        {
+          "overall": 45,
+          "round": 4,
+          "slot": 4,
+          "player": {
+            "id": "chen:WR:tetairoa mcmillan",
+            "name": "Tetairoa McMillan",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 41,
+            "chenTier": 6,
+            "adp": 39.46
+          },
+          "rosterSlot": "WR"
+        },
+        {
+          "overall": 52,
+          "round": 5,
+          "slot": 4,
+          "player": {
+            "id": "chen:WR:emeka egbuka",
+            "name": "Emeka Egbuka",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 42,
+            "chenTier": 6,
+            "adp": 41.43
+          },
+          "rosterSlot": "FLEX"
+        },
+        {
+          "overall": 69,
+          "round": 6,
+          "slot": 4,
+          "player": {
+            "id": "chen:TE:sam laporta",
+            "name": "Sam LaPorta",
+            "position": "TE",
+            "team": "FA",
+            "chenRank": 81,
+            "chenTier": 11,
+            "adp": 82.85
+          },
+          "rosterSlot": "TE"
+        },
+        {
+          "overall": 76,
+          "round": 7,
+          "slot": 4,
+          "player": {
+            "id": "chen:RB:jacory croskey-merritt",
+            "name": "Jacory Croskey-Merritt",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 101,
+            "chenTier": 13,
+            "adp": 102.15
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 93,
+          "round": 8,
+          "slot": 4,
+          "player": {
+            "id": "chen:WR:alec pierce",
+            "name": "Alec Pierce",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 92,
+            "chenTier": 12,
+            "adp": 95.14
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 100,
+          "round": 9,
+          "slot": 4,
+          "player": {
+            "id": "chen:RB:tank bigsby",
+            "name": "Tank Bigsby",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 144,
+            "chenTier": 18,
+            "adp": 155.97
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 117,
+          "round": 10,
+          "slot": 4,
+          "player": {
+            "id": "chen:TE:travis kelce",
+            "name": "Travis Kelce",
+            "position": "TE",
+            "team": "FA",
+            "chenRank": 106,
+            "chenTier": 13,
+            "adp": 105.36
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 124,
+          "round": 11,
+          "slot": 4,
+          "player": {
+            "id": "chen:WR:rashid shaheed",
+            "name": "Rashid Shaheed",
+            "position": "WR",
+            "team": "FA",
+            "chenRank": 138,
+            "chenTier": 16,
+            "adp": 144.83
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 141,
+          "round": 12,
+          "slot": 4,
+          "player": {
+            "id": "chen:RB:ray davis",
+            "name": "Ray Davis",
+            "position": "RB",
+            "team": "FA",
+            "chenRank": 168,
+            "chenTier": 21,
+            "adp": 184.86
+          },
+          "rosterSlot": "BENCH"
+        },
+        {
+          "overall": 148,
+          "round": 13,
+          "slot": 4,
+          "player": {
+            "id": "chen:QB:sam darnold",
+            "name": "Sam Darnold",
+            "position": "QB",
+            "team": "FA",
+            "chenRank": 142,
+            "chenTier": 16,
+            "adp": 150.71
+          },
+          "rosterSlot": "QB"
+        },
+        {
+          "overall": 165,
+          "round": 14,
+          "slot": 4,
+          "player": {
+            "id": "scribe:K:cameron dicker",
+            "name": "Cameron Dicker",
+            "position": "K",
+            "team": "LAC"
+          },
+          "rosterSlot": "K"
+        },
+        {
+          "overall": 172,
+          "round": 15,
+          "slot": 4,
+          "player": {
+            "id": "scribe:DEF:steelers",
+            "name": "Steelers",
+            "position": "DEF",
+            "team": "PIT"
+          },
+          "rosterSlot": "DEF"
+        }
+      ],
+      "teamName": "Puka in the LaPorta Potty",
+      "facts": {
+        "teamName": "Puka in the LaPorta Potty",
+        "slot": 4,
+        "grade": "D",
+        "rank": 12,
+        "field": 12,
+        "summary": "Value board — Travis Kelce was a steal",
+        "reasons": [
+          "2 top-24 anchors, 5 inside the top 60.",
+          "Best value: Travis Kelce — consensus rank 105.68 at 117 (+11).",
+          "Reached: Tank Bigsby — consensus rank 149.99 at 100 (-50).",
+          "Every starting slot is covered.",
+          "Deep at RB (5) · Deep at WR (5).",
+          "Ranked 12th of 12 · avg board rank 87.2."
+        ],
+        "steal": "Travis Kelce — consensus rank 105.68 at 117 (+11)",
+        "reach": "Tank Bigsby — consensus rank 149.99 at 100 (-50)",
+        "bye": null,
+        "picks": [
+          "R1 Puka Nacua (WR)",
+          "R2 Ashton Jeanty (RB)",
+          "R3 Bucky Irving (RB)",
+          "R4 Tetairoa McMillan (WR)",
+          "R5 Emeka Egbuka (WR)",
+          "R6 Sam LaPorta (TE)",
+          "R7 Jacory Croskey-Merritt (RB)",
+          "R8 Alec Pierce (WR)",
+          "R9 Tank Bigsby (RB)",
+          "R10 Travis Kelce (TE)",
+          "R11 Rashid Shaheed (WR)",
+          "R12 Ray Davis (RB)",
+          "R13 Sam Darnold (QB)",
+          "R14 Cameron Dicker (K)",
+          "R15 Steelers (DEF)"
+        ]
+      },
+      "roster": [
+        {
+          "overall": 4,
+          "round": 1,
+          "slot": 4,
+          "name": "Puka Nacua",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 4,
+          "chenTier": 1
+        },
+        {
+          "overall": 21,
+          "round": 2,
+          "slot": 4,
+          "name": "Ashton Jeanty",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 24,
+          "chenTier": 4
+        },
+        {
+          "overall": 28,
+          "round": 3,
+          "slot": 4,
+          "name": "Bucky Irving",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 50,
+          "chenTier": 8
+        },
+        {
+          "overall": 45,
+          "round": 4,
+          "slot": 4,
+          "name": "Tetairoa McMillan",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 41,
+          "chenTier": 6
+        },
+        {
+          "overall": 52,
+          "round": 5,
+          "slot": 4,
+          "name": "Emeka Egbuka",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 42,
+          "chenTier": 6
+        },
+        {
+          "overall": 69,
+          "round": 6,
+          "slot": 4,
+          "name": "Sam LaPorta",
+          "position": "TE",
+          "team": "FA",
+          "chenRank": 81,
+          "chenTier": 11
+        },
+        {
+          "overall": 76,
+          "round": 7,
+          "slot": 4,
+          "name": "Jacory Croskey-Merritt",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 101,
+          "chenTier": 13
+        },
+        {
+          "overall": 93,
+          "round": 8,
+          "slot": 4,
+          "name": "Alec Pierce",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 92,
+          "chenTier": 12
+        },
+        {
+          "overall": 100,
+          "round": 9,
+          "slot": 4,
+          "name": "Tank Bigsby",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 144,
+          "chenTier": 18
+        },
+        {
+          "overall": 117,
+          "round": 10,
+          "slot": 4,
+          "name": "Travis Kelce",
+          "position": "TE",
+          "team": "FA",
+          "chenRank": 106,
+          "chenTier": 13
+        },
+        {
+          "overall": 124,
+          "round": 11,
+          "slot": 4,
+          "name": "Rashid Shaheed",
+          "position": "WR",
+          "team": "FA",
+          "chenRank": 138,
+          "chenTier": 16
+        },
+        {
+          "overall": 141,
+          "round": 12,
+          "slot": 4,
+          "name": "Ray Davis",
+          "position": "RB",
+          "team": "FA",
+          "chenRank": 168,
+          "chenTier": 21
+        },
+        {
+          "overall": 148,
+          "round": 13,
+          "slot": 4,
+          "name": "Sam Darnold",
+          "position": "QB",
+          "team": "FA",
+          "chenRank": 142,
+          "chenTier": 16
+        },
+        {
+          "overall": 165,
+          "round": 14,
+          "slot": 4,
+          "name": "Cameron Dicker",
+          "position": "K",
+          "team": "LAC",
+          "chenRank": null,
+          "chenTier": null
+        },
+        {
+          "overall": 172,
+          "round": 15,
+          "slot": 4,
+          "name": "Steelers",
+          "position": "DEF",
+          "team": "PIT",
+          "chenRank": null,
+          "chenTier": null
+        }
+      ]
+    }
+  ]
+}
